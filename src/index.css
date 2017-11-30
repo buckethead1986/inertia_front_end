@@ -8,3 +8,7 @@ body {
   padding-left: 20%;
   padding-top: 15%;
 }
+
+.card {
+  background-color: red;
+}
