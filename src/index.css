@@ -4,13 +4,7 @@ body {
   font-family: sans-serif;
 }
 
-.ui {
-  padding-left: 10%;
-  padding-top: 10%;
-  overflow: auto;
-  white-space: nowrap;
-}
-
-.ui.card {
-  display: inline-block;
+.ui.link.cards {
+  padding-left: 20%;
+  padding-top: 15%;
 }

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./App.css";
 import Challenge from "./components/createChallenge/challenge";
-import InertiaContainer from "./containers/InertiaContainer";
+import ChallengeContainer from "./containers/ChallengeContainer";
 const NewChallenge = () => <Challenge />;
-const Inertia = () => <InertiaContainer />;
+const Inertia = () => <ChallengeContainer />;
 
 class App extends Component {
   render() {
@@ -13,7 +13,7 @@ class App extends Component {
         <Router>
           <div>
             <Route exact path="/challenge/new" component={NewChallenge} />
-            <Route exact path="/inertia" component={Inertia} />
+            <Route exact path="/inertia" component={ChallengeContainer} />
           </div>
         </Router>
       </div>
