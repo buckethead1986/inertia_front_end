@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
-class App extends Component {
+class InertiaContainer extends Component {
   render() {
     return <div> Inertia Container </div>;
   }
 }
 
-export default App;
+export default InertiaContainer;
