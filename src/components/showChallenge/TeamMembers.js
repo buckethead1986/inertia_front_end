@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React, { Component } from "react";
-import { Button, Image, List, Transition } from "semantic-ui-react";
+import { Button, Image, List, Transition, Icon } from "semantic-ui-react";
 
 class TeamMembers extends Component {
   state = {
@@ -48,17 +48,20 @@ class TeamMembers extends Component {
 
     return (
       <div>
-        {this.props.spectatorList ? "Spectators" : ""}
-        <Button.Group>
-          <Button
-            basic
-            icon={
-              this.state.defaultIcon ? this.state.defaultIcon : this.state.icon
-            }
-            onClick={this.handleChange}
-          />
-        </Button.Group>
-        {this.props.votes ? `${this.props.votes} Votes` : ""}
+        <div onClick={this.handleChange}>
+          {this.props.spectatorList ? "Spectators" : ""}
+          <Button.Group>
+            <Button
+              basic
+              icon={
+                this.state.defaultIcon
+                  ? this.state.defaultIcon
+                  : this.state.icon
+              }
+            />
+          </Button.Group>
+        </div>
+        {this.props.votes ? `${this.props.users.length} Votes` : ""}
         <Transition.Group
           as={List}
           duration={200}
@@ -70,7 +73,6 @@ class TeamMembers extends Component {
             <List.Item key={item.name}>
               <Image />
               <List.Content header={_.startCase(item.name)} />
-              {this.props.spectatorList ? item.name : ""}
             </List.Item>
           ))}
         </Transition.Group>
