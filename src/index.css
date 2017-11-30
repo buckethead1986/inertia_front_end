@@ -4,13 +4,10 @@ body {
   font-family: sans-serif;
 }
 
-.ui {
-  padding-left: 10%;
-  padding-top: 10%;
-  overflow: auto;
-  white-space: nowrap;
+.team.container {
+  display: flex;
 }
 
-.ui.card {
-  display: inline-block;
+.team {
+  padding: 90px;
 }
