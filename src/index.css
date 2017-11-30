@@ -3,3 +3,14 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.ui {
+  padding-left: 10%;
+  padding-top: 10%;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.ui.card {
+  display: inline-block;
+}
