@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
+import "semantic-ui-css/semantic.min.css";
 
 import InertiaContainer from "./containers/InertiaContainer";
 
