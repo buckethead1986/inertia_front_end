@@ -1,17 +1,19 @@
 import React from "react";
 import { Dropdown } from "semantic-ui-react";
 
-// import { friendOptions } from "../common";
-// const friendOptions = [
-//   {
-//     text: "Jenny Hess",
-//     value: "Jenny Hess",
-//     image: { avatar: true, src: "/assets/images/avatar/small/jenny.jpg" }
-//   }
-// ];
+// import { stateOptions } from "../common";
+// stateOptions = [ { key: 'AL', value: 'AL', text: 'Alabama' }, ...  ]
 
-const DropdownSelection = props => (
-  <Dropdown placeholder="Select Friend" fluid selection options={props.types} />
+const SearchDropdown = props => (
+  <Dropdown
+    onChange={props.changeUser}
+    placeholder={props.title}
+    search
+    selection
+    options={props.data}
+  />
 );
 
-export default DropdownSelection;
+export default SearchDropdown;
+
+// user plus
