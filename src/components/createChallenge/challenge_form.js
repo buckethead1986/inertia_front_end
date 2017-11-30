@@ -10,7 +10,8 @@ class ChallengeForm extends React.Component {
     this.state = {
       currentSelectedUser: "",
       currentSelectedTeam: "",
-      participants: []
+      participants: [],
+      users: []
     };
   }
 
@@ -40,6 +41,7 @@ class ChallengeForm extends React.Component {
   };
 
   render() {
+    console.log(this.props.users);
     return (
       <div>
         <h1>Make a New Challenge</h1>
@@ -80,6 +82,7 @@ class ChallengeForm extends React.Component {
           <h3>Add Participants</h3>
         </form>
         <div>
+          {this.props.users ? "ytytutu" : "gutut"}
           <SearchDropdown
             changeUser={this.changeUser}
             title="Participant"
