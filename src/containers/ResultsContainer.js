@@ -1,10 +1,32 @@
 import React, { Component } from "react";
 
 import TeamCard from "../components/showChallenge/TeamCard.js";
+import TeamMembers from "../components/showChallenge/TeamMembers";
 
-const firstTeam = ["ade", "chris", "christian", "daniel", "elliot", "helen"];
-const secondTeam = ["nick", "robert", "john", "sue"];
-const spectators = ["john", "sara", "sam", "logan"];
+const firstTeam = [
+  { name: "ade" },
+  { name: "chris" },
+  { name: "christian" },
+  { name: "daniel" },
+  { name: "elliot" },
+  { name: "helen" }
+];
+const secondTeam = [
+  { name: "nick" },
+  { name: "robert" },
+  { name: "john" },
+  { name: "sue" }
+];
+const spectators = [
+  { name: "john" },
+  { name: "sara" },
+  { name: "sam" },
+  { name: "logan" }
+];
+
+// const firstTeam = ["ade", "chris", "christian", "daniel", "elliot", "helen"];
+// const secondTeam = ["nick", "robert", "john", "sue"];
+// const spectators = ["john", "sara", "sam", "logan"];
 
 class ResultsContainer extends Component {
   constructor(props) {
@@ -29,6 +51,9 @@ class ResultsContainer extends Component {
     console.log(this.state);
     return (
       <div className="team container">
+        <div className="spectators">
+          <TeamMembers users={this.state.spectators} spectatorList={true} />
+        </div>
         <div className="team">
           <TeamCard
             users={this.state.teamOne.participants}
@@ -45,7 +70,6 @@ class ResultsContainer extends Component {
             spectators={this.state.spectators}
           />
         </div>
-        <div>Spectators</div>
       </div>
     );
   }

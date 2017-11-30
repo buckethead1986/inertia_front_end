@@ -5,7 +5,6 @@ import challenge from "../api/challengeData";
 
 class ChallengeContainer extends Component {
   render() {
-    console.log(challenge);
     return (
       <div>
         <ResultsContainer />

@@ -13,7 +13,8 @@ body {
 }
 
 .spectators {
-  position: relative;
-  padding-top: 30%;
+  position: absolute;
+  padding-left: 37%;
+  padding-top: 25%;
   display: block;
 }

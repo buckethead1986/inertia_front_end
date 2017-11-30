@@ -43,11 +43,12 @@ class TeamMembers extends Component {
   };
 
   render() {
-    console.log(this.state);
+    console.log(this.state.participants);
     const { items } = this.state;
 
     return (
       <div>
+        {this.props.spectatorList ? "Spectators" : ""}
         <Button.Group>
           <Button
             basic
@@ -58,7 +59,6 @@ class TeamMembers extends Component {
           />
         </Button.Group>
         {this.props.votes ? `${this.props.votes} Votes` : ""}
-
         <Transition.Group
           as={List}
           duration={200}
@@ -67,9 +67,10 @@ class TeamMembers extends Component {
           verticalAlign="middle"
         >
           {items.map(item => (
-            <List.Item key={item}>
+            <List.Item key={item.name}>
               <Image />
-              <List.Content header={_.startCase(item)} />
+              <List.Content header={_.startCase(item.name)} />
+              {this.props.spectatorList ? item.name : ""}
             </List.Item>
           ))}
         </Transition.Group>
