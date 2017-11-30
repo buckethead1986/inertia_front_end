@@ -15,6 +15,7 @@ class TeamCard extends React.Component {
   toggleVisibility = () => this.setState({ visible: !this.state.visible });
 
   render() {
+    console.log(this.props);
     return (
       <Transition
         animation={"tada"}
@@ -35,7 +36,13 @@ class TeamCard extends React.Component {
                 <TeamMembers users={this.props.users} />
               </Card.Description>
             </Card.Content>
-            <Card.Content extra>{this.props.votes} Votes</Card.Content>
+            <Card.Content extra>
+              <TeamMembers
+                users={this.props.spectators}
+                defaultIcon={"user circle"}
+                votes={this.props.votes}
+              />
+            </Card.Content>
           </Card>
         </div>
       </Transition>

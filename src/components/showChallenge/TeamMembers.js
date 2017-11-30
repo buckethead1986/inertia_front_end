@@ -5,8 +5,9 @@ import { Button, Image, List, Transition } from "semantic-ui-react";
 class TeamMembers extends Component {
   state = {
     items: this.props.users.slice(0, 0),
-    toggledOn: false,
-    icon: "chevron down"
+    toggledOn: true,
+    icon: "chevron down",
+    defaultIcon: this.props.defaultIcon
   };
 
   num_of_users = this.props.users.length;
@@ -15,13 +16,21 @@ class TeamMembers extends Component {
     let newItems;
     let newIcon;
     if (this.state.toggledOn) {
-      newIcon = "chevron up";
+      if (this.state.defaultIcon) {
+        newIcon = this.state.defaultIcon;
+      } else {
+        newIcon = "chevron up";
+      }
       newItems = this.props.users.slice(
         0,
         this.state.items.length + this.num_of_users
       );
     } else {
-      newIcon = "chevron down";
+      if (this.state.defaultIcon) {
+        newIcon = this.state.defaultIcon;
+      } else {
+        newIcon = "chevron down";
+      }
       newItems = this.state.items.slice(0, 0);
     }
 
@@ -40,8 +49,15 @@ class TeamMembers extends Component {
     return (
       <div>
         <Button.Group>
-          <Button icon={this.state.icon} onClick={this.handleChange} />
+          <Button
+            basic
+            icon={
+              this.state.defaultIcon ? this.state.defaultIcon : this.state.icon
+            }
+            onClick={this.handleChange}
+          />
         </Button.Group>
+        {this.props.votes ? `${this.props.votes} Votes` : ""}
 
         <Transition.Group
           as={List}

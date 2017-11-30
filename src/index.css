@@ -11,3 +11,9 @@ body {
 .team {
   padding: 90px;
 }
+
+.spectators {
+  position: relative;
+  padding-top: 30%;
+  display: block;
+}
