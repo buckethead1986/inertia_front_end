@@ -24,10 +24,6 @@ const spectators = [
   { name: "logan" }
 ];
 
-// const firstTeam = ["ade", "chris", "christian", "daniel", "elliot", "helen"];
-// const secondTeam = ["nick", "robert", "john", "sue"];
-// const spectators = ["john", "sara", "sam", "logan"];
-
 class ResultsContainer extends Component {
   constructor(props) {
     super(props);
@@ -48,7 +44,7 @@ class ResultsContainer extends Component {
   }
 
   render() {
-    console.log(this.state);
+    console.log(this.props.challenge);
     return (
       <div className="team container">
         <div className="spectators">

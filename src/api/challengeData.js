@@ -7,6 +7,7 @@ const challenge = [
     type: "deadline",
     criteria: null,
     deadline: "Friday @ 5pm",
+    team_names: ["The Avengers", "The Incredibles"],
     // Here we'll render all the user_challenges with the id of the challenge we're currently showing
     user_challenge: [
       // All the challenge ids here will be the same

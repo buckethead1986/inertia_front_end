@@ -6,15 +6,17 @@ body {
 
 .team.container {
   display: flex;
+  padding-top: 0%;
 }
 
 .team {
   padding: 90px;
+  padding-top: 30px;
 }
 
 .spectators {
   position: absolute;
   padding-left: 37%;
-  padding-top: 7%;
+  padding-top: 18px;
   display: block;
 }
