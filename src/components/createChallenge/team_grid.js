@@ -1,8 +1,8 @@
 import React from "react";
-import { Grid, Image } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import Participant from "./participant";
 
-class GridExampleDividedNumber extends React.Component {
+class TeamGrid extends React.Component {
   filterTeamA = () => {
     const TeamA = this.props.participants
       .filter(part => {
@@ -79,4 +79,4 @@ class GridExampleDividedNumber extends React.Component {
   }
 }
 
-export default GridExampleDividedNumber;
+export default TeamGrid;

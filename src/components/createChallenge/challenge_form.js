@@ -10,12 +10,16 @@ class ChallengeForm extends React.Component {
     super();
 
     this.state = {
+      challengeType: "",
+      challengeDeadline: "",
+      challengeName: "",
+      challengeDescription: "",
+      teamAName: "Team A",
+      teamBName: "Team B",
       currentSelectedUser: "",
       currentSelectedTeam: "",
       participants: [],
       users: [],
-      teamAName: "Team A",
-      teamBName: "Team B",
       deadline: false
     };
   }
@@ -28,6 +32,10 @@ class ChallengeForm extends React.Component {
   };
 
   addParticipant = () => {
+    const currentUser = this.state.users.find(user => {
+      return user.username === this.state.currentSelectedUser;
+    });
+    console.log(currentUser);
     // only adds participant to participants state if both name and team fields arent blank,
     //then filters user state to remove user of that name (cant be added twice)
     //and sets currentSelectedUser state to ""
@@ -35,19 +43,16 @@ class ChallengeForm extends React.Component {
       this.state.currentSelectedTeam !== "" &&
       this.state.currentSelectedUser !== ""
     ) {
-      this.setState({
-        users: this.state.users.filter(user => {
-          return user.username !== this.state.currentSelectedUser;
-        }),
-        participants: [
-          ...this.state.participants,
-          {
-            name: this.state.currentSelectedUser,
-            team: this.state.currentSelectedTeam
-          }
-        ],
-        currentSelectedUser: ""
-      });
+      this.setState(
+        {
+          users: this.state.users.filter(user => {
+            // debugger;
+            return user.username !== this.state.currentSelectedUser;
+          }),
+          participants: [...this.state.participants, currentUser]
+        },
+        () => console.log(this.state)
+      );
     }
   };
 
@@ -106,24 +111,55 @@ class ChallengeForm extends React.Component {
     });
   };
 
-  postChallengeData = () => {
+  postChallengeData() {
     //posts challenge data to API upon form submit
-    console.log("posted");
     const headers = {
-      Accepts: "application/json",
+      Accept: "application/json",
       "Content-Type": "application/json"
     };
-    const body = {};
-    // fetch("https://http://localhost:3001/api/v1/challenges", {
-    //   method: "POST",
-    //   headers: headers,
-    //   body: body
-    // });
+    const body = {
+      name: this.state.challengeName,
+      description: this.state.challengeDescription,
+      challenge_type: this.state.challengeType,
+      criteria: this.state.challengeDeadline,
+      team_names: this.state.teamAName
+    };
+    fetch("http://localhost:3001/api/v1/challenges", {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(body)
+    });
+  }
+
+  changeChallengeType = (e, data) => {
+    if (data.value === "Deadline") {
+      this.setState({
+        deadline: true,
+        challengeType: "Deadline"
+      });
+    } else {
+      this.setState({
+        deadline: false,
+        challengeType: "Not Deadline"
+      });
+    }
   };
 
-  changeChallengeType = () => {
-    this.setState(prevState => {
-      return { deadline: !prevState.deadline };
+  changeChallengeName = e => {
+    this.setState({
+      challengeName: e.target.value
+    });
+  };
+
+  changeChallengeDescription = e => {
+    this.setState({
+      challengeDescription: e.target.value
+    });
+  };
+
+  changeChallengeDeadline = data => {
+    this.setState({
+      challengeDeadline: data._d
     });
   };
 
@@ -149,14 +185,21 @@ class ChallengeForm extends React.Component {
               }
             ]}
           />
-          <ChallengeGrid deadline={this.state.deadline} />
+          <ChallengeGrid
+            deadline={this.state.deadline}
+            changeName={this.changeChallengeName}
+            changeDescription={this.changeChallengeDescription}
+            changeDeadline={this.changeChallengeDeadline}
+            changeTeamAName={this.changeTeamAName}
+            changeTeamBName={this.changeTeamBName}
+          />
           <br />
           <button className="ui large primary button" type="submit">
             Create Challenge
           </button>
           <br />
-          <h3>Add Participants</h3>
         </form>
+        <h3>Add Participants</h3>
         <div>
           <SearchDropdown
             changeUser={this.changeUser}

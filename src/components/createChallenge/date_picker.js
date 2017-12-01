@@ -17,9 +17,12 @@ class PickDate extends React.Component {
   }
 
   handleChange(date) {
-    this.setState({
-      startDate: date
-    });
+    this.setState(
+      {
+        startDate: date
+      },
+      () => this.props.changeDeadline(date)
+    );
   }
 
   render() {
