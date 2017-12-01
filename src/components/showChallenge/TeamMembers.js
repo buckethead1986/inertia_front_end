@@ -3,12 +3,17 @@ import React, { Component } from "react";
 import { Button, Image, List, Transition, Icon } from "semantic-ui-react";
 
 class TeamMembers extends Component {
-  state = {
-    items: this.props.users.slice(0, 0),
-    toggledOn: true,
-    icon: "chevron down",
-    defaultIcon: this.props.defaultIcon
-  };
+  constructor(props) {
+    super(props);
+
+    console.log("Users are ", this.props.users);
+    this.state = {
+      items: [],
+      toggledOn: true,
+      icon: "chevron down",
+      defaultIcon: this.props.defaultIcon
+    };
+  }
 
   num_of_users = this.props.users.length;
 
@@ -21,10 +26,7 @@ class TeamMembers extends Component {
       } else {
         newIcon = "chevron up";
       }
-      newItems = this.props.users.slice(
-        0,
-        this.state.items.length + this.num_of_users
-      );
+      newItems = this.props.users;
     } else {
       if (this.state.defaultIcon) {
         newIcon = this.state.defaultIcon;
@@ -33,7 +35,6 @@ class TeamMembers extends Component {
       }
       newItems = this.state.items.slice(0, 0);
     }
-
     const toggle = !this.state.toggledOn;
     this.setState({
       items: newItems,

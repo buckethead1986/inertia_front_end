@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import TeamCard from "../components/showChallenge/TeamCard.js";
 import TeamMembers from "../components/showChallenge/TeamMembers";
+import { formatResults } from "../services/formatResults.js";
 
 const firstTeam = [
   { name: "ade" },
@@ -29,42 +30,52 @@ class ResultsContainer extends Component {
     super(props);
 
     this.state = {
-      teamOne: {
-        name: "The Avengers",
-        participants: firstTeam,
-        votes: 8
-      },
-      teamTwo: {
-        name: "The Incredibles",
-        participants: secondTeam,
-        votes: 4
-      },
-      spectators: spectators
+      challenge: {}
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (Object.keys(nextProps.challenge).length) {
+      this.setState({
+        challenge: nextProps.challenge
+      });
+    }
+  }
+
   render() {
-    console.log(this.props.challenge);
     return (
       <div className="team container">
         <div className="spectators">
-          <TeamMembers users={this.state.spectators} spectatorList={true} />
+          {this.state.challenge.spectators ? (
+            <TeamMembers
+              users={this.state.challenge.spectators.users}
+              spectatorList={true}
+            />
+          ) : (
+            ""
+          )}
         </div>
         <div className="team">
-          <TeamCard
-            users={this.state.teamOne.participants}
-            teamName={this.state.teamOne.name}
-            votes={this.state.teamOne.votes}
-            spectators={this.state.spectators}
-          />
+          {this.state.challenge.teamOne ? (
+            <TeamCard
+              users={this.state.challenge.teamOne.participants}
+              teamName={this.state.challenge.teamOne.name}
+              spectators={this.state.challenge.spectators}
+            />
+          ) : (
+            ""
+          )}
         </div>
         <div className="team">
-          <TeamCard
-            users={this.state.teamTwo.participants}
-            teamName={this.state.teamTwo.name}
-            votes={this.state.teamTwo.votes}
-            spectators={this.state.spectators}
-          />
+          {this.state.challenge.teamOne ? (
+            <TeamCard
+              users={this.state.challenge.teamTwo.participants}
+              teamName={this.state.challenge.teamTwo.name}
+              spectators={this.state.challenge.spectators}
+            />
+          ) : (
+            ""
+          )}
         </div>
       </div>
     );
