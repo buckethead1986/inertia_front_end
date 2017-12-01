@@ -43,6 +43,10 @@ class ResultsContainer extends Component {
   }
 
   render() {
+<<<<<<< HEAD
+=======
+    // console.log(this.state);
+>>>>>>> 1a2de4a02f33b4b99d438bf4caff0be1c0fd3138
     return (
       <div className="team container">
         <div className="spectators">

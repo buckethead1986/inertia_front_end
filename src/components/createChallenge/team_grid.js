@@ -1,8 +1,8 @@
 import React from "react";
-import { Grid, Image } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import Participant from "./participant";
 
-class GridExampleDividedNumber extends React.Component {
+class TeamGrid extends React.Component {
   filterTeamA = () => {
     const TeamA = this.props.participants
       .filter(part => {
@@ -53,10 +53,10 @@ class GridExampleDividedNumber extends React.Component {
       <Grid columns={3} divided>
         <Grid.Row>
           <Grid.Column>
-            <h4>Team A</h4>
+            <h4>{this.props.teamNames[0]}</h4>
           </Grid.Column>
           <Grid.Column>
-            <h4>Team B</h4>
+            <h4>{this.props.teamNames[1]}</h4>
           </Grid.Column>
           <Grid.Column>
             <h4>Spectators</h4>
@@ -79,4 +79,4 @@ class GridExampleDividedNumber extends React.Component {
   }
 }
 
-export default GridExampleDividedNumber;
+export default TeamGrid;
