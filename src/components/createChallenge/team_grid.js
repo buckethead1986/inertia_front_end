@@ -53,10 +53,10 @@ class GridExampleDividedNumber extends React.Component {
       <Grid columns={3} divided>
         <Grid.Row>
           <Grid.Column>
-            <h4>Team A</h4>
+            <h4>{this.props.teamNames[0]}</h4>
           </Grid.Column>
           <Grid.Column>
-            <h4>Team B</h4>
+            <h4>{this.props.teamNames[1]}</h4>
           </Grid.Column>
           <Grid.Column>
             <h4>Spectators</h4>

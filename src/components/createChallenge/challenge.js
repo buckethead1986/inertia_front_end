@@ -5,7 +5,7 @@ class Challenge extends React.Component {
   render() {
     return (
       <div>
-        <ChallengeForm />
+        <ChallengeForm users={this.props.users} />
       </div>
     );
   }

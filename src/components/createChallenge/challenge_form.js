@@ -10,21 +10,65 @@ class ChallengeForm extends React.Component {
     this.state = {
       currentSelectedUser: "",
       currentSelectedTeam: "",
-      participants: []
+      participants: [],
+      users: [],
+      teamAName: "Team A",
+      teamBName: "Team B"
     };
   }
 
+  filterUsers = () => {
+    this.setState({
+      users: this.state.users.filter(user => {
+        return user.username !== this.state.currentSelectedUser;
+      })
+    });
+  };
+
+  componentWillReceiveProps = nextProps => {
+    this.setState({
+      users: nextProps.users
+    });
+  };
+
   addParticipant = e => {
     e.preventDefault();
-    this.setState({
-      participants: [
-        ...this.state.participants,
-        {
-          name: this.state.currentSelectedUser,
-          team: this.state.currentSelectedTeam
-        }
-      ]
-    });
+    this.setState(
+      {
+        participants: [
+          ...this.state.participants,
+          {
+            name: this.state.currentSelectedUser,
+            team: this.state.currentSelectedTeam
+          }
+        ]
+      },
+      () => this.filterUsers()
+    );
+  };
+
+  changeTeamAName = e => {
+    if (e.target.value !== "") {
+      this.setState({
+        teamAName: e.target.value
+      });
+    } else {
+      this.setState({
+        teamAName: "Team A"
+      });
+    }
+  };
+
+  changeTeamBName = e => {
+    if (e.target.value !== "") {
+      this.setState({
+        teamBName: e.target.value
+      });
+    } else {
+      this.setState({
+        teamBName: "Team B"
+      });
+    }
   };
 
   changeUser = (e, data) => {
@@ -40,6 +84,7 @@ class ChallengeForm extends React.Component {
   };
 
   render() {
+    // console.log(this.state.users);
     return (
       <div>
         <h1>Make a New Challenge</h1>
@@ -72,6 +117,12 @@ class ChallengeForm extends React.Component {
           <div>
             Description <input type="text" />
           </div>
+          <div onChange={this.changeTeamAName}>
+            Team A Name <input type="text" />
+          </div>
+          <div onChange={this.changeTeamBName}>
+            Team B Name <input type="text" />
+          </div>
           <br />
           <button className="ui large primary button" type="submit">
             Create Challenge
@@ -83,14 +134,9 @@ class ChallengeForm extends React.Component {
           <SearchDropdown
             changeUser={this.changeUser}
             title="Participant"
-            data={[
-              { key: 1, value: "Nicholas", text: "Nicholas" },
-              { key: 2, value: "Robert", text: "Robert" },
-              { key: 3, value: "Laura", text: "Laura" },
-              { key: 4, value: "Becky", text: "Becky" },
-              { key: 5, value: "Gene", text: "Gene" }
-            ]}
+            data={this.state.users}
           />
+
           <SelectionDropdown
             changeTeam={this.changeTeam}
             title="Select Team"
@@ -110,7 +156,10 @@ class ChallengeForm extends React.Component {
           <br />
           <h3>Current Lineup</h3>
           <div>
-            <TeamGrid participants={this.state.participants} />
+            <TeamGrid
+              participants={this.state.participants}
+              teamNames={[this.state.teamAName, this.state.teamBName]}
+            />
           </div>
         </div>
       </div>
