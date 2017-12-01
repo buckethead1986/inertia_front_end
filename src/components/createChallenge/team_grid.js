@@ -6,7 +6,7 @@ class TeamGrid extends React.Component {
   filterTeamA = () => {
     const TeamA = this.props.participants
       .filter(part => {
-        return part.team === "Team A";
+        return part.role === 1;
       })
       .map((part, id) => {
         return (
@@ -21,7 +21,7 @@ class TeamGrid extends React.Component {
   filterTeamB = () => {
     const TeamB = this.props.participants
       .filter(part => {
-        return part.team === "Team B";
+        return part.role === 2;
       })
       .map((part, id) => {
         return (
@@ -36,7 +36,7 @@ class TeamGrid extends React.Component {
   filterSpectators = () => {
     const Spectators = this.props.participants
       .filter(part => {
-        return part.team === "Spectator";
+        return part.role === 3;
       })
       .map((part, id) => {
         return (

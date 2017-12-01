@@ -24,40 +24,41 @@ class ChallengeForm extends React.Component {
     };
   }
 
+  //when users prop comes from async fetch request (in App.js), updates state
   componentWillReceiveProps = nextProps => {
-    //when users prop comes from async fetch request (in App.js), updates state
     this.setState({
       users: nextProps.users
     });
   };
 
+  // only adds participant to participants state if both name and team fields arent blank,
+  //then filters user state to remove user of that name (so they cant be added to multiple teams),
+  //adds that user to participants state (to show up in TeamGrid, and be posted in a fetch to user_controller API)
+  //and sets currentSelectedUser state to "", to prevent a bug where they could be added to a team
+  //repeatedly
   addParticipant = () => {
     const currentUser = this.state.users.find(user => {
       return user.username === this.state.currentSelectedUser;
     });
-    console.log(currentUser);
-    // only adds participant to participants state if both name and team fields arent blank,
-    //then filters user state to remove user of that name (cant be added twice)
-    //and sets currentSelectedUser state to ""
     if (
       this.state.currentSelectedTeam !== "" &&
       this.state.currentSelectedUser !== ""
     ) {
-      this.setState(
-        {
-          users: this.state.users.filter(user => {
-            // debugger;
-            return user.username !== this.state.currentSelectedUser;
-          }),
-          participants: [...this.state.participants, currentUser]
-        },
-        () => console.log(this.state)
-      );
+      this.setState({
+        users: this.state.users.filter(user => {
+          return user.username !== this.state.currentSelectedUser;
+        }),
+        participants: [
+          ...this.state.participants,
+          { ...currentUser, role: this.state.currentSelectedTeam }
+        ],
+        currentSelectedUser: ""
+      });
     }
   };
 
+  //updates team A name, with a few checks to prevent naming confusion of equal names
   changeTeamAName = e => {
-    //updates team A name, with a few checks to prevent naming confusion of equal names
     if (e.target.value === "Spectators") {
       this.setState({
         teamAName: "Spectaturds"
@@ -77,9 +78,8 @@ class ChallengeForm extends React.Component {
     }
   };
 
+  //updates team B name, with a few checks to prevent naming confusion of equal names
   changeTeamBName = e => {
-    //updates team A name, with a few checks to prevent naming confusion of equal names
-
     if (e.target.value === "Spectators") {
       this.setState({
         teamBName: "Special Snowflakes"
@@ -111,8 +111,8 @@ class ChallengeForm extends React.Component {
     });
   };
 
+  //posts challenge data to API upon form submit
   postChallengeData() {
-    //posts challenge data to API upon form submit
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json"
@@ -211,9 +211,9 @@ class ChallengeForm extends React.Component {
             changeTeam={this.changeTeam}
             title="Select Team"
             data={[
-              { key: 1, text: "Spectator", value: "Spectator" },
-              { key: 2, text: "Team A", value: "Team A" },
-              { key: 3, text: "Team B", value: "Team B" }
+              { text: "Spectator", value: 3 },
+              { text: "Team A", value: 1 },
+              { text: "Team B", value: 2 }
             ]}
           />
           <button
