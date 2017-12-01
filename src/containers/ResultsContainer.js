@@ -48,7 +48,7 @@ class ResultsContainer extends Component {
   }
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     return (
       <div className="team container">
         <div className="spectators">

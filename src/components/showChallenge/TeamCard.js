@@ -15,7 +15,7 @@ class TeamCard extends React.Component {
   toggleVisibility = () => this.setState({ visible: !this.state.visible });
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <Transition
         animation={"tada"}

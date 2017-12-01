@@ -2,6 +2,8 @@ import React from "react";
 import SelectionDropdown from "./selection_dropdown";
 import SearchDropdown from "./search_dropdown";
 import TeamGrid from "./team_grid";
+import ChallengeGrid from "./challenge_grid";
+import ChallengeTypeDropdown from "./challenge_type_dropdown";
 
 class ChallengeForm extends React.Component {
   constructor() {
@@ -13,42 +15,53 @@ class ChallengeForm extends React.Component {
       participants: [],
       users: [],
       teamAName: "Team A",
-      teamBName: "Team B"
+      teamBName: "Team B",
+      deadline: false
     };
   }
 
-  filterUsers = () => {
-    this.setState({
-      users: this.state.users.filter(user => {
-        return user.username !== this.state.currentSelectedUser;
-      })
-    });
-  };
-
   componentWillReceiveProps = nextProps => {
+    //when users prop comes from async fetch request (in App.js), updates state
     this.setState({
       users: nextProps.users
     });
   };
 
-  addParticipant = e => {
-    e.preventDefault();
-    this.setState(
-      {
+  addParticipant = () => {
+    // only adds participant to participants state if both name and team fields arent blank,
+    //then filters user state to remove user of that name (cant be added twice)
+    //and sets currentSelectedUser state to ""
+    if (
+      this.state.currentSelectedTeam !== "" &&
+      this.state.currentSelectedUser !== ""
+    ) {
+      this.setState({
+        users: this.state.users.filter(user => {
+          return user.username !== this.state.currentSelectedUser;
+        }),
         participants: [
           ...this.state.participants,
           {
             name: this.state.currentSelectedUser,
             team: this.state.currentSelectedTeam
           }
-        ]
-      },
-      () => this.filterUsers()
-    );
+        ],
+        currentSelectedUser: ""
+      });
+    }
   };
 
   changeTeamAName = e => {
-    if (e.target.value !== "") {
+    //updates team A name, with a few checks to prevent naming confusion of equal names
+    if (e.target.value === "Spectators") {
+      this.setState({
+        teamAName: "Spectaturds"
+      });
+    } else if (e.target.value === this.state.teamBName) {
+      this.setState({
+        teamAName: e.target.value + "2"
+      });
+    } else if (e.target.value !== "") {
       this.setState({
         teamAName: e.target.value
       });
@@ -60,7 +73,17 @@ class ChallengeForm extends React.Component {
   };
 
   changeTeamBName = e => {
-    if (e.target.value !== "") {
+    //updates team A name, with a few checks to prevent naming confusion of equal names
+
+    if (e.target.value === "Spectators") {
+      this.setState({
+        teamBName: "Special Snowflakes"
+      });
+    } else if (e.target.value === this.state.teamAName) {
+      this.setState({
+        teamBName: e.target.value + "2"
+      });
+    } else if (e.target.value !== "") {
       this.setState({
         teamBName: e.target.value
       });
@@ -83,46 +106,50 @@ class ChallengeForm extends React.Component {
     });
   };
 
+  postChallengeData = () => {
+    //posts challenge data to API upon form submit
+    console.log("posted");
+    const headers = {
+      Accepts: "application/json",
+      "Content-Type": "application/json"
+    };
+    const body = {};
+    // fetch("https://http://localhost:3001/api/v1/challenges", {
+    //   method: "POST",
+    //   headers: headers,
+    //   body: body
+    // });
+  };
+
+  changeChallengeType = () => {
+    this.setState(prevState => {
+      return { deadline: !prevState.deadline };
+    });
+  };
+
   render() {
-    // console.log(this.state.users);
     return (
       <div>
         <h1>Make a New Challenge</h1>
         <form
           onSubmit={e => {
-            console.log("submitted");
             e.preventDefault();
-            // this.props.handleCreateCocktail(this.state);
+            this.postChallengeData();
           }}
         >
-          <SelectionDropdown
+          <ChallengeTypeDropdown
+            onChange={this.changeChallengeType}
             title="Select Challenge Type"
             data={[
-              { key: "One on One", text: "One on One", value: "One on One" },
+              { key: "Deadline", text: "Deadline", value: "Deadline" },
               {
-                key: "Request an opponent",
-                text: "Request an opponent",
-                value: "Request an opponent"
-              },
-              {
-                key: "Multi-person teams",
-                text: "Multi-person Teams",
-                value: "Multi-person Teams"
+                key: "Not Deadline",
+                text: "Not Deadline",
+                value: "Not Deadline"
               }
             ]}
           />
-          <div>
-            Name <input className="inputField" type="text" />
-          </div>
-          <div>
-            Description <input type="text" />
-          </div>
-          <div onChange={this.changeTeamAName}>
-            Team A Name <input type="text" />
-          </div>
-          <div onChange={this.changeTeamBName}>
-            Team B Name <input type="text" />
-          </div>
+          <ChallengeGrid deadline={this.state.deadline} />
           <br />
           <button className="ui large primary button" type="submit">
             Create Challenge
@@ -168,26 +195,3 @@ class ChallengeForm extends React.Component {
 }
 
 export default ChallengeForm;
-
-// <div className="field">
-//   <div
-//     className="ui basic blue circular icon button"
-//     onClick={this.addField}
-//   >
-//     <i className="plus icon" />
-//   </div>
-// </div>
-
-// addField = e => {
-//   e.preventDefault();
-//   this.setState({
-//     participants: [...this.state.participants, { name: "" }]
-//   });
-// };
-//
-// subtractField = e => {
-//   e.preventDefault();
-//   this.setState({
-//     participants: [...this.state.participants]
-//   });
-// };

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./App.css";
-import Challenge from "./components/createChallenge/challenge";
 import ChallengeContainer from "./containers/ChallengeContainer";
 import InertiaContainer from "./containers/InertiaContainer";
 
@@ -30,9 +29,9 @@ class App extends Component {
             <Route
               exact
               path="/challenge/new"
-              render={() => <Challenge users={this.state.users} />}
+              render={() => <InertiaContainer users={this.state.users} />}
             />
-            <Route exact path="/inertia" component={Inertia} />
+            <Route exact path="/inertia" component={ChallengeContainer} />
           </div>
         </Router>
       </div>

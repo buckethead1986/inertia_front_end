@@ -43,7 +43,7 @@ class TeamMembers extends Component {
   };
 
   render() {
-    console.log(this.state.participants);
+    // console.log(this.state.participants);
     const { items } = this.state;
 
     return (
