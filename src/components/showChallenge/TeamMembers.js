@@ -6,7 +6,6 @@ class TeamMembers extends Component {
   constructor(props) {
     super(props);
 
-    console.log("Users are ", this.props.users);
     this.state = {
       items: [],
       toggledOn: true,

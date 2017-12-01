@@ -39,7 +39,7 @@ class TeamCard extends React.Component {
               <TeamMembers
                 users={this.props.spectators}
                 defaultIcon={"user circle"}
-                votes={this.props.votes}
+                votes={this.props.spectators.length}
               />
             </Card.Content>
           </Card>
