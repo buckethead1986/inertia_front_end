@@ -9,53 +9,48 @@ class ChallengeView extends Component {
     super(props);
 
     this.state = {
-      challenge: {},
-      visible: true
+      challenge: {}
     };
   }
 
-  toggleVisibility = () => this.setState({ visible: !this.state.visible });
-
-  componentDidUpdate() {
+  componentDidMount() {
     const results = formatResults(this.props.challenge);
     this.setState({
       challenge: results
     });
-    this.toggleVisibility();
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    // Checks to make sure it doesn't continue updating state in an infinite loop
-    if (Object.keys(this.state.challenge).length) {
-      return nextState.challenge !== this.state.challenge;
-    } else {
-      return true;
-    }
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   // Checks to make sure it doesn't continue updating state in an infinite loop
+  //   if (Object.keys(this.state.challenge).length) {
+  //     return nextState.challenge !== this.state.challenge;
+  //   } else {
+  //     return true;
+  //   }
+  // }
 
   render() {
+    console.log(this.state);
     return (
       <div>
-        <Transition
-          animation={"tada"}
-          duration={500}
-          visible={this.state.visible}
+        <Header
+          style={{ padding: "20px", paddingBottom: "0px" }}
+          centered
+          as="h2"
+          icon
+          textAlign="center"
         >
-          <Header
-            style={{ padding: "20px", paddingBottom: "0px" }}
-            centered
-            as="h2"
-            icon
-            textAlign="center"
-          >
-            <Icon name="trophy" circular />
-            {this.props.challenge ? this.props.challenge.name : ""}
-          </Header>
-        </Transition>
+          <Icon name="trophy" circular />
+          {this.props.challenge ? this.props.challenge.name : ""}
+        </Header>
         <Header style={{ padding: "0px" }} centered as="h4" textAlign="center">
           {this.props.challenge ? this.props.challenge.description : ""}
         </Header>
-        <ResultsContainer challenge={this.state.challenge} />
+        {this.state.challenge.teamOne ? (
+          <ResultsContainer challenge={this.state.challenge} />
+        ) : (
+          ""
+        )}
         <CommentsContainer />
       </div>
     );

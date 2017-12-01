@@ -25,9 +25,14 @@ class ChallengeContainer extends Component {
       });
   };
   render() {
+    console.log(this.state);
     return (
       <div>
-        <ChallengeView challenge={this.state.challenge} />
+        {this.state.challenge.name ? (
+          <ChallengeView challenge={this.state.challenge} />
+        ) : (
+          ""
+        )}
       </div>
     );
   }

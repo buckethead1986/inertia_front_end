@@ -34,19 +34,17 @@ class ResultsContainer extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (Object.keys(nextProps.challenge).length) {
+  componentWillMount() {
+    console.log("HERE FIRST");
+    if (Object.keys(this.props.challenge).length) {
       this.setState({
-        challenge: nextProps.challenge
+        challenge: this.props.challenge
       });
     }
   }
 
   render() {
-<<<<<<< HEAD
-=======
-    // console.log(this.state);
->>>>>>> 1a2de4a02f33b4b99d438bf4caff0be1c0fd3138
+    console.log(this.props);
     return (
       <div className="team container">
         <div className="spectators">
