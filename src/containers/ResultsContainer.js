@@ -41,18 +41,20 @@ class ResultsContainer extends Component {
               teamName={this.state.challenge.teamOne.name}
               spectators={this.state.challenge.spectators}
               votes={this.state.challenge.spectators.votedTeamOne}
+              onTeamOne
             />
           ) : (
             ""
           )}
         </div>
         <div className="team">
-          {this.state.challenge.teamOne ? (
+          {this.state.challenge.teamTwo ? (
             <TeamCard
               users={this.state.challenge.teamTwo.participants}
               teamName={this.state.challenge.teamTwo.name}
               spectators={this.state.challenge.spectators}
               votes={this.state.challenge.spectators.votedTeamTwo}
+              onTeamTwo
             />
           ) : (
             ""

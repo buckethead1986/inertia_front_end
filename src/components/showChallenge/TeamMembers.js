@@ -60,7 +60,11 @@ class TeamMembers extends Component {
             />
           </Button.Group>
         </div>
-        {this.props.votes ? `${this.props.users.length} Votes` : ""}
+        {this.props.voting
+          ? this.props.votes
+            ? `${this.props.users.length} votes`
+            : "No votes yet"
+          : ""}
         <Transition.Group
           as={List}
           duration={200}

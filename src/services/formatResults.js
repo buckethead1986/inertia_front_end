@@ -41,15 +41,26 @@ const filterParticipants = challenge => {
   });
 };
 
+const removeFromSpectators = personObj => {
+  const newSpectators = resultsObject.spectators.users.filter(user => {
+    return user.id !== personObj.id;
+  });
+
+  resultsObject.spectators.users = newSpectators;
+};
+
 const sortVotes = challenge => {
   challenge.user_challenges.forEach(userChallenge => {
     const newObj = {
+      id: userChallenge.user.id,
       name: userChallenge.user.username
     };
     if (userChallenge.vote === 1) {
       resultsObject.spectators.votedTeamOne.push(newObj);
+      removeFromSpectators(newObj);
     } else if (userChallenge.vote === 2) {
       resultsObject.spectators.votedTeamTwo.push(newObj);
+      removeFromSpectators(newObj);
     }
   });
 };
