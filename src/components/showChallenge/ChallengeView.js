@@ -20,17 +20,7 @@ class ChallengeView extends Component {
     });
   }
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   // Checks to make sure it doesn't continue updating state in an infinite loop
-  //   if (Object.keys(this.state.challenge).length) {
-  //     return nextState.challenge !== this.state.challenge;
-  //   } else {
-  //     return true;
-  //   }
-  // }
-
   render() {
-    console.log(this.state);
     return (
       <div>
         <Header

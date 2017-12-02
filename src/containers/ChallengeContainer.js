@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ChallengeView from "../components/showChallenge/ChallengeView";
-// import challenge from "../api/challengeData";
 
 class ChallengeContainer extends Component {
   constructor(props) {
@@ -24,8 +23,8 @@ class ChallengeContainer extends Component {
         });
       });
   };
+
   render() {
-    console.log(this.state);
     return (
       <div>
         {this.state.challenge.name ? (

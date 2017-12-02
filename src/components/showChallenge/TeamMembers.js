@@ -17,6 +17,7 @@ class TeamMembers extends Component {
   num_of_users = this.props.users.length;
 
   handleChange = () => {
+    console.log(this.props.users);
     let newItems;
     let newIcon;
     if (this.state.toggledOn) {
@@ -44,7 +45,6 @@ class TeamMembers extends Component {
 
   render() {
     const { items } = this.state;
-
     return (
       <div>
         <div onClick={this.handleChange}>

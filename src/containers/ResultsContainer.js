@@ -4,27 +4,6 @@ import TeamCard from "../components/showChallenge/TeamCard.js";
 import TeamMembers from "../components/showChallenge/TeamMembers";
 import { formatResults } from "../services/formatResults.js";
 
-const firstTeam = [
-  { name: "ade" },
-  { name: "chris" },
-  { name: "christian" },
-  { name: "daniel" },
-  { name: "elliot" },
-  { name: "helen" }
-];
-const secondTeam = [
-  { name: "nick" },
-  { name: "robert" },
-  { name: "john" },
-  { name: "sue" }
-];
-const spectators = [
-  { name: "john" },
-  { name: "sara" },
-  { name: "sam" },
-  { name: "logan" }
-];
-
 class ResultsContainer extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +14,6 @@ class ResultsContainer extends Component {
   }
 
   componentWillMount() {
-    console.log("HERE FIRST");
     if (Object.keys(this.props.challenge).length) {
       this.setState({
         challenge: this.props.challenge
@@ -44,7 +22,6 @@ class ResultsContainer extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className="team container">
         <div className="spectators">
@@ -63,6 +40,7 @@ class ResultsContainer extends Component {
               users={this.state.challenge.teamOne.participants}
               teamName={this.state.challenge.teamOne.name}
               spectators={this.state.challenge.spectators}
+              votes={this.state.challenge.spectators.votedTeamOne}
             />
           ) : (
             ""
@@ -74,6 +52,7 @@ class ResultsContainer extends Component {
               users={this.state.challenge.teamTwo.participants}
               teamName={this.state.challenge.teamTwo.name}
               spectators={this.state.challenge.spectators}
+              votes={this.state.challenge.spectators.votedTeamTwo}
             />
           ) : (
             ""

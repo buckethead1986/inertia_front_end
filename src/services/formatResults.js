@@ -8,7 +8,9 @@ const resultsObject = {
     participants: []
   },
   spectators: {
-    users: []
+    users: [],
+    votedTeamOne: [],
+    votedTeamTwo: []
   }
 };
 
@@ -39,8 +41,22 @@ const filterParticipants = challenge => {
   });
 };
 
+const sortVotes = challenge => {
+  challenge.user_challenges.forEach(userChallenge => {
+    const newObj = {
+      name: userChallenge.user.username
+    };
+    if (userChallenge.vote === 1) {
+      resultsObject.spectators.votedTeamOne.push(newObj);
+    } else if (userChallenge.vote === 2) {
+      resultsObject.spectators.votedTeamTwo.push(newObj);
+    }
+  });
+};
+
 export const formatResults = challenge => {
   teamNames(challenge.team_names);
   filterParticipants(challenge);
+  sortVotes(challenge);
   return resultsObject;
 };
