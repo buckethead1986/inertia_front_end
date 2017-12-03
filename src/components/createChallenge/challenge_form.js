@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect } from "react-router";
 import SelectionDropdown from "./selection_dropdown";
 import SearchDropdown from "./search_dropdown";
 import TeamGrid from "./team_grid";
@@ -20,7 +21,8 @@ class ChallengeForm extends React.Component {
       currentSelectedTeam: "",
       participants: [],
       users: [],
-      deadline: false
+      deadline: false,
+      fireRedirect: false
     };
   }
 
@@ -44,71 +46,20 @@ class ChallengeForm extends React.Component {
       this.state.currentSelectedTeam !== "" &&
       this.state.currentSelectedUser !== ""
     ) {
-      this.setState({
-        users: this.state.users.filter(user => {
-          return user.username !== this.state.currentSelectedUser;
-        }),
-        participants: [
-          ...this.state.participants,
-          { ...currentUser, role: this.state.currentSelectedTeam }
-        ],
-        currentSelectedUser: ""
-      });
+      this.setState(
+        {
+          users: this.state.users.filter(user => {
+            return user.username !== this.state.currentSelectedUser;
+          }),
+          participants: [
+            ...this.state.participants,
+            { ...currentUser, role: this.state.currentSelectedTeam }
+          ],
+          currentSelectedUser: ""
+        },
+        () => this.postParticipantData()
+      );
     }
-  };
-
-  //updates team A name, with a few checks to prevent naming confusion of equal names
-  changeTeamAName = e => {
-    if (e.target.value === "Spectators") {
-      this.setState({
-        teamAName: "Spectaturds"
-      });
-    } else if (e.target.value === this.state.teamBName) {
-      this.setState({
-        teamAName: e.target.value + "2"
-      });
-    } else if (e.target.value !== "") {
-      this.setState({
-        teamAName: e.target.value
-      });
-    } else {
-      this.setState({
-        teamAName: "Team A"
-      });
-    }
-  };
-
-  //updates team B name, with a few checks to prevent naming confusion of equal names
-  changeTeamBName = e => {
-    if (e.target.value === "Spectators") {
-      this.setState({
-        teamBName: "Special Snowflakes"
-      });
-    } else if (e.target.value === this.state.teamAName) {
-      this.setState({
-        teamBName: e.target.value + "2"
-      });
-    } else if (e.target.value !== "") {
-      this.setState({
-        teamBName: e.target.value
-      });
-    } else {
-      this.setState({
-        teamBName: "Team B"
-      });
-    }
-  };
-
-  changeUser = (e, data) => {
-    this.setState({
-      currentSelectedUser: data.value
-    });
-  };
-
-  changeTeam = (e, data) => {
-    this.setState({
-      currentSelectedTeam: data.value
-    });
   };
 
   //posts challenge data to API upon form submit
@@ -129,7 +80,26 @@ class ChallengeForm extends React.Component {
       headers: headers,
       body: JSON.stringify(body)
     });
+    // .then(res => this.postParticipantData());
   }
+
+  postParticipantData = () => {
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
+    const body = {
+      body
+    };
+    console.log(this.state.participants);
+    fetch("http://localhost:3001/api/v1/user_challenges", {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(body)
+    })
+      .then(res => res.json())
+      .then(json => console.log(json));
+  };
 
   changeChallengeType = (e, data) => {
     if (data.value === "Deadline") {
@@ -145,6 +115,12 @@ class ChallengeForm extends React.Component {
     }
   };
 
+  changeChallengeDeadline = data => {
+    this.setState({
+      challengeDeadline: data._d
+    });
+  };
+
   changeChallengeName = e => {
     this.setState({
       challengeName: e.target.value
@@ -157,10 +133,163 @@ class ChallengeForm extends React.Component {
     });
   };
 
-  changeChallengeDeadline = data => {
+  //updates team A name, with a few checks to prevent naming confusion of equal names
+  // changeTeamAName = e => {
+  //   if (e.target.value === "Spectators") {
+  //     this.setState({
+  //       teamAName: "Spectaturds"
+  //     });
+  //   } else if (e.target.value === this.state.teamBName) {
+  //     this.setState({
+  //       teamAName: e.target.value + "2"
+  //     });
+  //   } else if (e.target.value === "Es") {
+  //     this.setState({
+  //       teamAName: "ES! ES! ES!"
+  //     });
+  //   } else if (e.target.value === "Jason") {
+  //     this.setState({
+  //       teamAName: "Navy Blue Tracksuits"
+  //     });
+  //   } else if (e.target.value === "Tim") {
+  //     this.setState({
+  //       teamAName: "I want an invite to the wedding"
+  //     });
+  //   } else if (e.target.value !== "") {
+  //     this.setState({
+  //       teamAName: e.target.value
+  //     });
+  //   } else {
+  //     this.setState({
+  //       teamAName: "Team A"
+  //     });
+  //   }
+  // };
+
+  //updates team B name, with a few checks to prevent naming confusion of equal names
+  // changeTeamBName = e => {
+  //   if (e.target.value === "Spectators") {
+  //     this.setState({
+  //       teamBName: "Special Snowflakes"
+  //     });
+  //   } else if (e.target.value === this.state.teamAName) {
+  //     this.setState({
+  //       teamBName: e.target.value + "2"
+  //     });
+  //   } else if (e.target.value === "Es") {
+  //     this.setState({
+  //       teamBName: "OH MY GOD IT'S ES"
+  //     });
+  //   } else if (e.target.value === "Jason") {
+  //     this.setState({
+  //       teamBName: "Cat-e-gor-ees"
+  //     });
+  //   } else if (e.target.value === "Tim") {
+  //     this.setState({
+  //       teamBName: "Beanies for everyone!"
+  //     });
+  //   } else if (e.target.value !== "") {
+  //     this.setState({
+  //       teamBName: e.target.value
+  //     });
+  //   } else {
+  //     this.setState({
+  //       teamBName: "Team B"
+  //     });
+  //   }
+  // };
+
+  changeTeamAName = e => {
+    switch (e.target.value) {
+      case "Spectators":
+        this.setState({
+          teamAName: "Spectaturds"
+        });
+        break;
+      case this.state.teamBName:
+        this.setState({
+          teamAName: e.target.value + "2"
+        });
+        break;
+      case "Es":
+        this.setState({
+          teamAName: "ES! ES! ES!"
+        });
+        break;
+      case "Jason":
+        this.setState({
+          teamAName: "Navy Blue Tracksuits"
+        });
+        break;
+      case "Tim":
+        this.setState({
+          teamAName: "I want an invite to the wedding"
+        });
+        break;
+      case "":
+        this.setState({
+          teamAName: "Team A"
+        });
+        break;
+      default:
+        this.setState({
+          teamAName: e.target.value
+        });
+    }
+  };
+  changeTeamBName = e => {
+    switch (e.target.value) {
+      case "Spectators":
+        this.setState({
+          teamBName: "Special Snowflakes"
+        });
+        break;
+      case this.state.teamAName:
+        this.setState({
+          teamBName: e.target.value + "2"
+        });
+        break;
+      case "Es":
+        this.setState({
+          teamBName: "OH MY GOD IT'S ES"
+        });
+        break;
+      case "Jason":
+        this.setState({
+          teamBName: "Cat-e-gor-ees"
+        });
+        break;
+      case "Tim":
+        this.setState({
+          teamBName: "Beanies for everyone!"
+        });
+        break;
+      case "":
+        this.setState({
+          teamBName: "Team B"
+        });
+        break;
+      default:
+        this.setState({
+          teamBName: e.target.value
+        });
+    }
+  };
+
+  changeUser = (e, data) => {
     this.setState({
-      challengeDeadline: data._d
+      currentSelectedUser: data.value
     });
+  };
+
+  changeTeam = (e, data) => {
+    this.setState({
+      currentSelectedTeam: data.value
+    });
+  };
+
+  submitForm = e => {
+    this.setState({ fireRedirect: true });
   };
 
   render() {
@@ -171,6 +300,7 @@ class ChallengeForm extends React.Component {
           onSubmit={e => {
             e.preventDefault();
             this.postChallengeData();
+            this.submitForm();
           }}
         >
           <ChallengeTypeDropdown
@@ -192,6 +322,11 @@ class ChallengeForm extends React.Component {
             changeDeadline={this.changeChallengeDeadline}
             changeTeamAName={this.changeTeamAName}
             changeTeamBName={this.changeTeamBName}
+            currentName={this.state.challengeName}
+            currentDescription={this.state.challengeDescription}
+            currentTeamAName={this.state.teamAName}
+            currentTeamBName={this.state.teamBName}
+            currentDeadline={this.state.challengeDeadline}
           />
           <br />
           <button className="ui large primary button" type="submit">
@@ -199,42 +334,45 @@ class ChallengeForm extends React.Component {
           </button>
           <br />
         </form>
-        <h3>Add Participants</h3>
-        <div>
-          <SearchDropdown
-            changeUser={this.changeUser}
-            title="Participant"
-            data={this.state.users}
-          />
-
-          <SelectionDropdown
-            changeTeam={this.changeTeam}
-            title="Select Team"
-            data={[
-              { text: "Spectator", value: 3 },
-              { text: "Team A", value: 1 },
-              { text: "Team B", value: 2 }
-            ]}
-          />
-          <button
-            onClick={this.addParticipant}
-            className="ui large primary button"
-            type="submit"
-          >
-            Add Participant
-          </button>
-          <br />
-          <h3>Current Lineup</h3>
-          <div>
-            <TeamGrid
-              participants={this.state.participants}
-              teamNames={[this.state.teamAName, this.state.teamBName]}
-            />
-          </div>
-        </div>
+        {this.state.fireRedirect && <Redirect to={"/challenges/:id"} />}
       </div>
     );
   }
 }
 
 export default ChallengeForm;
+
+//add participants code, to be put on specific challenge show page.
+// <h3>Add Participants</h3>
+// <div>
+//   <SearchDropdown
+//     changeUser={this.changeUser}
+//     title="Participant"
+//     data={this.state.users}
+//   />
+//
+//   <SelectionDropdown
+//     changeTeam={this.changeTeam}
+//     title="Select Team"
+//     data={[
+//       { text: "Spectator", value: 3 },
+//       { text: "Team A", value: 1 },
+//       { text: "Team B", value: 2 }
+//     ]}
+//   />
+//   <button
+//     onClick={this.addParticipant}
+//     className="ui large primary button"
+//     type="submit"
+//   >
+//     Add Participant
+//   </button>
+//   <br />
+//   <h3>Current Lineup</h3>
+//   <div>
+//     <TeamGrid
+//       participants={this.state.participants}
+//       teamNames={[this.state.teamAName, this.state.teamBName]}
+//     />
+//   </div>
+// </div>

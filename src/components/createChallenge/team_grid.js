@@ -3,10 +3,10 @@ import { Grid } from "semantic-ui-react";
 import Participant from "./participant";
 
 class TeamGrid extends React.Component {
-  filterTeamA = () => {
-    const TeamA = this.props.participants
+  filterTeam = team_id => {
+    const Team = this.props.participants
       .filter(part => {
-        return part.role === 1;
+        return part.role === team_id;
       })
       .map((part, id) => {
         return (
@@ -15,37 +15,7 @@ class TeamGrid extends React.Component {
           </li>
         );
       });
-    return TeamA;
-  };
-
-  filterTeamB = () => {
-    const TeamB = this.props.participants
-      .filter(part => {
-        return part.role === 2;
-      })
-      .map((part, id) => {
-        return (
-          <li key={id}>
-            <Participant part={part} />
-          </li>
-        );
-      });
-    return TeamB;
-  };
-
-  filterSpectators = () => {
-    const Spectators = this.props.participants
-      .filter(part => {
-        return part.role === 3;
-      })
-      .map((part, id) => {
-        return (
-          <li key={id}>
-            <Participant part={part} />
-          </li>
-        );
-      });
-    return Spectators;
+    return Team;
   };
 
   render() {
@@ -65,13 +35,13 @@ class TeamGrid extends React.Component {
 
         <Grid.Row>
           <Grid.Column>
-            <ul>{this.filterTeamA()}</ul>
+            <ul>{this.filterTeam(1)}</ul>
           </Grid.Column>
           <Grid.Column>
-            <ul>{this.filterTeamB()}</ul>
+            <ul>{this.filterTeam(2)}</ul>
           </Grid.Column>
           <Grid.Column>
-            <ul>{this.filterSpectators()}</ul>
+            <ul>{this.filterTeam(3)}</ul>
           </Grid.Column>
         </Grid.Row>
       </Grid>
