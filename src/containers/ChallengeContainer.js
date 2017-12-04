@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ChallengeView from "../components/showChallenge/ChallengeView";
-const url = "http://localhost:3001/api/v1/";
 
 class ChallengeContainer extends Component {
   constructor(props) {
@@ -21,11 +20,11 @@ class ChallengeContainer extends Component {
 
   userBelongsToChallenge = () => {
     if (this.state.challenge.name) {
-      const users = this.state.challenge.user_challenges.map(uc => {
-        return uc.user;
+      const userIds = this.state.challenge.user_challenges.map(uc => {
+        return uc.user.id;
       });
-      if (users.includes(this.props.currentUser)) {
-        console.log("Success");
+      if (userIds.includes(this.props.currentUser.id)) {
+        console.log(this.props);
       }
     }
   };
@@ -33,7 +32,7 @@ class ChallengeContainer extends Component {
   fetchChallenge = () => {
     const id = window.location.href.split("/");
     const specific_id = id[id.length - 1];
-    fetch(`${url}challenges/${specific_id}`)
+    fetch(`${this.props.url}challenges/${specific_id}`)
       .then(res => res.json())
       .then(json => {
         this.setState({

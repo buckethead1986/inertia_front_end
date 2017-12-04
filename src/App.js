@@ -74,7 +74,10 @@ class App extends Component {
             <Route
               path="/challenges/:id"
               render={() => (
-                <ChallengeContainer currentUser={this.state.currentUser} />
+                <ChallengeContainer
+                  currentUser={this.state.currentUser}
+                  url={url}
+                />
               )}
             />
           </div>
