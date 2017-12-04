@@ -120,7 +120,7 @@ class ChallengeForm extends React.Component {
         team_names: this.state.teamAName + "/" + this.state.teamBName,
         user_challenges: []
       };
-      return fetch("http://localhost:3001/api/v1/challenges", {
+      return fetch("https://inertia-app.herokuapp.com/api/v1/challenges", {
         method: "POST",
         headers: headers,
         body: JSON.stringify(body)
@@ -142,7 +142,7 @@ class ChallengeForm extends React.Component {
         user_id: part.id,
         role: part.role
       };
-      fetch("http://localhost:3001/api/v1/user_challenges", {
+      fetch("https://inertia-app.herokuapp.com/api/v1/user_challenges", {
         method: "POST",
         headers: headers,
         body: JSON.stringify(body)
@@ -274,7 +274,6 @@ class ChallengeForm extends React.Component {
   };
 
   submitForm = json_id => {
-    console.log(json_id);
     this.setState({
       fireRedirect: true,
       redirection: `/challenge/${json_id}`
