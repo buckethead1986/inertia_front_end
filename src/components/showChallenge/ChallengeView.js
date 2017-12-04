@@ -33,7 +33,7 @@ class ChallengeView extends Component {
   }
 
   render() {
-    console.log(this.state);
+    console.log(this.state.challenge.voter);
     return (
       <div>
         <Header
@@ -48,6 +48,13 @@ class ChallengeView extends Component {
         </Header>
         <Header style={{ padding: "0px" }} centered as="h4" textAlign="center">
           {this.props.challenge ? this.props.challenge.description : ""}
+        </Header>
+        <Header style={{ padding: "0px" }} centered as="h4" textAlign="center">
+          {this.state.challenge.voter
+            ? this.state.voted
+              ? `You already voted for Team ${this.state.challenge.voter.team}`
+              : "Didn't Vote"
+            : ""}
         </Header>
         {this.state.challenge.teamOne ? (
           <ResultsContainer challenge={this.state.challenge} />

@@ -42,6 +42,7 @@ class ResultsContainer extends Component {
               spectators={this.state.challenge.spectators}
               votes={this.state.challenge.spectators.votedTeamOne}
               onTeamOne
+              currentVoter={this.state.challenge.voter}
             />
           ) : (
             ""
@@ -55,6 +56,7 @@ class ResultsContainer extends Component {
               spectators={this.state.challenge.spectators}
               votes={this.state.challenge.spectators.votedTeamTwo}
               onTeamTwo
+              currentVoter={this.state.challenge.voter}
             />
           ) : (
             ""

@@ -90,7 +90,7 @@ const voted = currentUser => {
     resultsObject["voter"]["voted"] = true;
     resultsObject["voter"]["team"] = 2;
   } else {
-    console.log("Didn't vote");
+    console.log("Isn't a spectator");
   }
 };
 
@@ -99,6 +99,5 @@ export const formatResults = (challenge, currentUser) => {
   filterParticipants(challenge);
   sortVotes(challenge);
   voted(currentUser);
-  console.log(resultsObject);
   return resultsObject;
 };
