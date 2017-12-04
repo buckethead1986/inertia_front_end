@@ -6,6 +6,8 @@ import ChallengeContainer from "./containers/ChallengeContainer";
 import InertiaContainer from "./containers/InertiaContainer";
 import Challenges from "./components/challengeIndex/challenges";
 import ChallengeTest from "./components/createChallenge/challenge_test";
+import Signup from "./components/createUser/signup";
+import Login from "./components/loginUser/login";
 
 //take these out
 import Direct from "./components/createChallenge/direct";
@@ -17,7 +19,23 @@ class App extends Component {
     users: []
   };
 
-  componentDidMount = () => {
+  componentWillMount() {
+    const token = localStorage.getItem("token");
+    if (token) {
+      console.log(token);
+      fetch("https://inertia-app.herokuapp.com/api/v1/current_user", {
+        headers: {
+          "Content-Type": "application/json",
+          Accepts: "application/json",
+          Authorization: token
+        }
+      }).then(res => console.log(res));
+    } else {
+      this.props.history.push("/login");
+    }
+  }
+
+  componentDidMount() {
     fetch("https://inertia-app.herokuapp.com/api/v1/users")
       .then(res => res.json())
       .then(json =>
@@ -25,7 +43,7 @@ class App extends Component {
           users: json
         })
       );
-  };
+  }
 
   render() {
     return (
@@ -34,13 +52,14 @@ class App extends Component {
           <div>
             <Route exact path="/direct" component={Direct} />
             <Route exact path="/redirect" component={Redirect} />
-            <Route exact path="/signup" component={Redirect} />
-            <Route path="/challenges/:id" component={ChallengeContainer} />
+            <Route exact path="/signup" component={Signup} />
             <Route
               exact
               path="/challenge/new"
               render={() => <InertiaContainer users={this.state.users} />}
             />
+            <Route exact path="/login" component={Login} />
+            <Route path="/challenges/:id" component={ChallengeContainer} />
             <Route
               exact
               path="/challenge/new2"
