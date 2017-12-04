@@ -23,8 +23,8 @@ class ChallengeContainer extends Component {
       const userIds = this.state.challenge.user_challenges.map(uc => {
         return uc.user.id;
       });
-      if (userIds.includes(this.props.currentUser.id)) {
-        console.log(this.props);
+      if (!userIds.includes(this.props.currentUser.id)) {
+        this.props.history.push("/");
       }
     }
   };
@@ -42,11 +42,13 @@ class ChallengeContainer extends Component {
   };
 
   render() {
-    console.log(this.state.challenge);
     return (
       <div>
         {this.state.challenge.name ? (
-          <ChallengeView challenge={this.state.challenge} />
+          <ChallengeView
+            challenge={this.state.challenge}
+            currentUser={this.props.currentUser}
+          />
         ) : (
           ""
         )}

@@ -65,9 +65,40 @@ const sortVotes = challenge => {
   });
 };
 
-export const formatResults = challenge => {
+const voted = currentUser => {
+  const userIds = resultsObject.spectators.users.map(user => {
+    return user.id;
+  });
+
+  const userIdsTeamOne = resultsObject.spectators.votedTeamOne.map(user => {
+    return user.id;
+  });
+
+  const userIdsTeamTwo = resultsObject.spectators.votedTeamTwo.map(user => {
+    return user.id;
+  });
+  if (userIds.includes(currentUser.id)) {
+    resultsObject["voter"] = {};
+    resultsObject["voter"]["voted"] = false;
+    resultsObject["voter"]["team"] = null;
+  } else if (userIdsTeamOne.includes(currentUser.id)) {
+    resultsObject["voter"] = {};
+    resultsObject["voter"]["voted"] = true;
+    resultsObject["voter"]["team"] = 1;
+  } else if (userIdsTeamTwo.includes(currentUser.id)) {
+    resultsObject["voter"] = {};
+    resultsObject["voter"]["voted"] = true;
+    resultsObject["voter"]["team"] = 2;
+  } else {
+    console.log("Didn't vote");
+  }
+};
+
+export const formatResults = (challenge, currentUser) => {
   teamNames(challenge.team_names);
   filterParticipants(challenge);
   sortVotes(challenge);
+  voted(currentUser);
+  console.log(resultsObject);
   return resultsObject;
 };

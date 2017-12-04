@@ -73,10 +73,12 @@ class App extends Component {
             <Route exact path="/login" component={Login} />
             <Route
               path="/challenges/:id"
-              render={() => (
+              render={props => (
                 <ChallengeContainer
+                  {...props}
                   currentUser={this.state.currentUser}
                   url={url}
+                  users={this.state.users}
                 />
               )}
             />

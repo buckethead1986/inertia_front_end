@@ -9,18 +9,31 @@ class ChallengeView extends Component {
     super(props);
 
     this.state = {
-      challenge: {}
+      challenge: {},
+      voted: null,
+      teamVotedFor: null
     };
   }
 
   componentDidMount() {
-    const results = formatResults(this.props.challenge);
-    this.setState({
-      challenge: results
-    });
+    const results = formatResults(this.props.challenge, this.props.currentUser);
+    let stateObj;
+    if (results.voter) {
+      stateObj = {
+        challenge: results,
+        voted: results.voter.voted,
+        teamVotedFor: results.voter.team
+      };
+    } else {
+      stateObj = {
+        challenge: results
+      };
+    }
+    this.setState(stateObj);
   }
 
   render() {
+    console.log(this.state);
     return (
       <div>
         <Header
