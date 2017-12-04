@@ -28,7 +28,7 @@ const team_options = [
   { text: "Team B", value: 2 }
 ];
 
-const url = "http://localhost:3001/api/v1/"
+const url = "http://localhost:3001/api/v1/";
 
 class ChallengeForm extends React.Component {
   constructor() {
@@ -167,25 +167,6 @@ class ChallengeForm extends React.Component {
     }
   };
 
-  changeChallengeDeadline = data => {
-    // console.log(data);
-    this.setState({
-      challengeDeadline: data._d
-    });
-  };
-
-  changeChallengeName = e => {
-    this.setState({
-      challengeName: e.target.value
-    });
-  };
-
-  changeChallengeDescription = e => {
-    this.setState({
-      challengeDescription: e.target.value
-    });
-  };
-
   changeTeamAName = e => {
     switch (e.target.value) {
       case "Spectators":
@@ -263,6 +244,25 @@ class ChallengeForm extends React.Component {
     }
   };
 
+  changeChallengeDeadline = data => {
+    // console.log(data);
+    this.setState({
+      challengeDeadline: data._d
+    });
+  };
+
+  changeChallengeName = e => {
+    this.setState({
+      challengeName: e.target.value
+    });
+  };
+
+  changeChallengeDescription = e => {
+    this.setState({
+      challengeDescription: e.target.value
+    });
+  };
+
   changeUser = (e, data) => {
     this.setState({
       currentSelectedUser: data.value
@@ -272,6 +272,12 @@ class ChallengeForm extends React.Component {
   changeTeam = (e, data) => {
     this.setState({
       currentSelectedTeam: data.value
+    });
+  };
+
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
     });
   };
 
@@ -315,6 +321,7 @@ class ChallengeForm extends React.Component {
                 ) : null}
                 <Form.Group widths="equal">
                   <Form.Field
+                    name="challengeName"
                     onChange={this.changeChallengeName}
                     id="challenge-name"
                     control={Input}
@@ -325,6 +332,7 @@ class ChallengeForm extends React.Component {
 
                 <Form.Group widths="equal">
                   <Form.Field
+                    name="teamAName"
                     onChange={this.changeTeamAName}
                     id="team-a-name"
                     control={Input}
@@ -334,6 +342,7 @@ class ChallengeForm extends React.Component {
                 </Form.Group>
                 <Form.Group widths="equal">
                   <Form.Field
+                    name="teamBName"
                     onChange={this.changeTeamBName}
                     id="team-b-name"
                     control={Input}
@@ -343,6 +352,7 @@ class ChallengeForm extends React.Component {
                 </Form.Group>
 
                 <Form.Field
+                  name="challengeDescription"
                   onChange={this.changeChallengeDescription}
                   control={TextArea}
                   label="Challenge Description"
