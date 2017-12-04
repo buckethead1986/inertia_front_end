@@ -21,10 +21,14 @@ class App extends Component {
     currentUser: {}
   };
 
+  logout = () => {
+    localStorage.removeItem("token");
+    this.setState({ currentUser: {} });
+  };
+
   componentWillMount() {
     const token = localStorage.getItem("token");
     if (token) {
-      console.log(token);
       fetch(`${url}current_user`, {
         headers: {
           "content-type": "application/json",
@@ -35,7 +39,9 @@ class App extends Component {
         .then(res => res.json())
         .then(json => this.setState({ currentUser: json }));
     } else {
-      this.props.history.push("/login");
+      if (!window.location.href.includes("signup")) {
+        this.props.history.push("/login");
+      }
     }
   }
 
@@ -50,7 +56,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <div>
         <Router>
@@ -61,7 +66,9 @@ class App extends Component {
             <Route
               exact
               path="/challenge/new"
-              render={() => <InertiaContainer users={this.state.users} />}
+              render={() => (
+                <InertiaContainer users={this.state.users} url={url} />
+              )}
             />
             <Route exact path="/login" component={Login} />
             <Route

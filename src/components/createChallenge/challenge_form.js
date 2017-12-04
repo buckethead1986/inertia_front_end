@@ -1,12 +1,8 @@
 import React from "react";
 import { Redirect } from "react-router";
-import PropTypes from "prop-types";
-import SelectionDropdown from "./selection_dropdown";
+import { Grid } from "semantic-ui-react";
 import SearchDropdown from "./search_dropdown";
 import TeamGrid from "./team_grid";
-import ChallengeGrid from "./challenge_grid";
-import ChallengeTypeDropdown from "./challenge_type_dropdown";
-import ChallengeTest from "./challenge_test";
 import DateTime from "react-datetime";
 import {
   Button,
@@ -17,7 +13,6 @@ import {
   Select,
   TextArea
 } from "semantic-ui-react";
-import { Grid } from "semantic-ui-react";
 const options = [
   { key: 1, text: "Deadline", value: "deadline" },
   { key: 2, text: "Not Deadline", value: "not deadline" }
@@ -28,7 +23,12 @@ const team_options = [
   { text: "Team B", value: 2 }
 ];
 
-const url = "http://localhost:3001/api/v1/";
+// import ChallengeTest from "./challenge_test";
+// import ChallengeTypeDropdown from "./challenge_type_dropdown";
+// import ChallengeGrid from "./challenge_grid";
+// import SelectionDropdown from "./selection_dropdown";
+// import PropTypes from "prop-types";
+// const url = "http://localhost:3001/api/v1/";
 
 class ChallengeForm extends React.Component {
   constructor() {
@@ -122,7 +122,7 @@ class ChallengeForm extends React.Component {
         team_names: this.state.teamAName + "/" + this.state.teamBName,
         user_challenges: []
       };
-      return fetch(`${url}challenges`, {
+      return fetch(`${this.props.url}challenges`, {
         method: "POST",
         headers: headers,
         body: JSON.stringify(body)
@@ -144,7 +144,7 @@ class ChallengeForm extends React.Component {
         user_id: part.id,
         role: part.role
       };
-      fetch(`${url}user_challenges`, {
+      fetch(`${this.props.url}user_challenges`, {
         method: "POST",
         headers: headers,
         body: JSON.stringify(body)
@@ -251,17 +251,17 @@ class ChallengeForm extends React.Component {
     });
   };
 
-  changeChallengeName = e => {
-    this.setState({
-      challengeName: e.target.value
-    });
-  };
-
-  changeChallengeDescription = e => {
-    this.setState({
-      challengeDescription: e.target.value
-    });
-  };
+  // changeChallengeName = e => {
+  //   this.setState({
+  //     challengeName: e.target.value
+  //   });
+  // };
+  //
+  // changeChallengeDescription = e => {
+  //   this.setState({
+  //     challengeDescription: e.target.value
+  //   });
+  // };
 
   changeUser = (e, data) => {
     this.setState({
@@ -322,7 +322,7 @@ class ChallengeForm extends React.Component {
                 <Form.Group widths="equal">
                   <Form.Field
                     name="challengeName"
-                    onChange={this.changeChallengeName}
+                    onChange={this.handleChange}
                     id="challenge-name"
                     control={Input}
                     label="Challenge Name"
@@ -332,7 +332,6 @@ class ChallengeForm extends React.Component {
 
                 <Form.Group widths="equal">
                   <Form.Field
-                    name="teamAName"
                     onChange={this.changeTeamAName}
                     id="team-a-name"
                     control={Input}
@@ -342,7 +341,6 @@ class ChallengeForm extends React.Component {
                 </Form.Group>
                 <Form.Group widths="equal">
                   <Form.Field
-                    name="teamBName"
                     onChange={this.changeTeamBName}
                     id="team-b-name"
                     control={Input}
@@ -353,7 +351,7 @@ class ChallengeForm extends React.Component {
 
                 <Form.Field
                   name="challengeDescription"
-                  onChange={this.changeChallengeDescription}
+                  onChange={this.handleChange}
                   control={TextArea}
                   label="Challenge Description"
                   placeholder="What's going to happen in this challenge?"
@@ -441,81 +439,3 @@ class ChallengeForm extends React.Component {
 }
 
 export default ChallengeForm;
-
-// <div>
-//   <h1>Make a New Challenge</h1>
-//   <form
-//     onSubmit={e => {
-//       e.preventDefault();
-//       this.postChallengeData();
-//       this.submitForm();
-//     }}
-//   >
-//     <ChallengeTypeDropdown
-//       onChange={this.changeChallengeType}
-//       title="Select Challenge Type"
-//       data={[
-//         { key: "Deadline", text: "Deadline", value: "Deadline" },
-//         {
-//           key: "Not Deadline",
-//           text: "Not Deadline",
-//           value: "Not Deadline"
-//         }
-//       ]}
-//     />
-//     <ChallengeGrid
-//       deadline={this.state.deadline}
-//       changeName={this.changeChallengeName}
-//       changeDescription={this.changeChallengeDescription}
-//       changeDeadline={this.changeChallengeDeadline}
-//       changeTeamAName={this.changeTeamAName}
-//       changeTeamBName={this.changeTeamBName}
-//       currentName={this.state.challengeName}
-//       currentDescription={this.state.challengeDescription}
-//       currentTeamAName={this.state.teamAName}
-//       currentTeamBName={this.state.teamBName}
-//       currentDeadline={this.state.challengeDeadline}
-//     />
-//     <br />
-//     <button className="ui large primary button" type="submit">
-//       Create Challenge
-//     </button>
-//     <br />
-//   </form>
-//   {this.state.fireRedirect && <Redirect to={"/challenges/:id"} />}
-// </div>
-
-//add participants code, to be put on specific challenge show page.
-// <h3>Add Participants</h3>
-// <div>
-//   <SearchDropdown
-//     changeUser={this.changeUser}
-//     title="Participant"
-//     data={this.state.users}
-//   />
-//
-//   <SelectionDropdown
-//     changeTeam={this.changeTeam}
-//     title="Select Team"
-//     data={[
-//       { text: "Spectator", value: 3 },
-//       { text: "Team A", value: 1 },
-//       { text: "Team B", value: 2 }
-//     ]}
-//   />
-//   <button
-//     onClick={this.addParticipant}
-//     className="ui large primary button"
-//     type="submit"
-//   >
-//     Add Participant
-//   </button>
-//   <br />
-//   <h3>Current Lineup</h3>
-//   <div>
-//     <TeamGrid
-//       participants={this.state.participants}
-//       teamNames={[this.state.teamAName, this.state.teamBName]}
-//     />
-//   </div>
-// </div>

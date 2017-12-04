@@ -6,7 +6,7 @@ class InertiaContainer extends Component {
   render() {
     return (
       <div>
-        <Challenge users={this.props.users} />
+        <Challenge users={this.props.users} url={this.props.url} />
       </div>
     );
   }

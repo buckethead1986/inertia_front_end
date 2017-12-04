@@ -32,7 +32,6 @@ class Signup extends React.Component {
       .then(res => res.json())
       .then(json => {
         if (!json.error) {
-          console.log(this.props.history);
           localStorage.setItem("token", json.jwt);
           this.props.history.push("/");
         }
@@ -40,7 +39,6 @@ class Signup extends React.Component {
   };
 
   render() {
-    console.log("here");
     return (
       <div>
         <h2>Log in</h2>
