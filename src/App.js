@@ -18,7 +18,7 @@ class App extends Component {
   };
 
   componentDidMount = () => {
-    fetch("http://localhost:3001/api/v1/users")
+    fetch("https://inertia-app.herokuapp.com/api/v1/users")
       .then(res => res.json())
       .then(json =>
         this.setState({
