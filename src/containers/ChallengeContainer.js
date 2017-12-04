@@ -15,7 +15,10 @@ class ChallengeContainer extends Component {
   }
 
   fetchChallenge = () => {
-    fetch("http://localhost:3001/api/v1/challenges/10")
+    const id = window.location.href.split("/");
+    const specific_id = id[id.length - 1];
+    console.log(specific_id);
+    fetch(`https://inertia-app.herokuapp.com/api/v1/challenges/${specific_id}`)
       .then(res => res.json())
       .then(json => {
         this.setState({

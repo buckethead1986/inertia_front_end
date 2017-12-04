@@ -34,7 +34,7 @@ class App extends Component {
           <div>
             <Route exact path="/direct" component={Direct} />
             <Route exact path="/redirect" component={Redirect} />
-            <Route exact path="/challenges" component={Challenges} />
+            <Route path="/challenges/:id" component={ChallengeContainer} />
             <Route
               exact
               path="/challenge/new"

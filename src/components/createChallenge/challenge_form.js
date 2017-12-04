@@ -276,7 +276,7 @@ class ChallengeForm extends React.Component {
   submitForm = json_id => {
     this.setState({
       fireRedirect: true,
-      redirection: `/challenge/${json_id}`
+      redirection: `/challenges/${json_id}`
     });
   };
 
