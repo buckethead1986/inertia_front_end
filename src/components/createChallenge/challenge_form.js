@@ -425,27 +425,6 @@ class ChallengeForm extends React.Component {
         {this.state.fireRedirect && <Redirect to={this.state.redirection} />}
       </div>
     );
-
-    // return (
-    //   <div>
-    //     <ChallengeTest
-    //       deadline={this.state.deadline}
-    //       changeName={this.changeChallengeName}
-    //       changeChallengeType={this.changeChallengeType}
-    //       changeDescription={this.changeChallengeDescription}
-    //       changeDeadline={this.changeChallengeDeadline}
-    //       changeTeamAName={this.changeTeamAName}
-    //       changeTeamBName={this.changeTeamBName}
-    //       currentName={this.state.challengeName}
-    //       currentDescription={this.state.challengeDescription}
-    //       currentTeamAName={this.state.teamAName}
-    //       currentTeamBName={this.state.teamBName}
-    //       currentDeadline={this.state.challengeDeadline}
-    //       users={this.state.users}
-    //       addParticipant={this.addParticipant}
-    //     />
-    //   </div>
-    // );
   }
 }
 
