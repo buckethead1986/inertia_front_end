@@ -1,5 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router";
+import PropTypes from "prop-types";
 import SelectionDropdown from "./selection_dropdown";
 import SearchDropdown from "./search_dropdown";
 import TeamGrid from "./team_grid";
@@ -44,7 +45,8 @@ class ChallengeForm extends React.Component {
       users: [],
       deadline: false,
       fireRedirect: false,
-      waiverClicked: false
+      waiverClicked: false,
+      redirection: ""
     };
   }
 
@@ -104,33 +106,32 @@ class ChallengeForm extends React.Component {
 
   //posts challenge data to API upon form submit
   postChallengeData = e => {
-    console.log("submitted");
-    const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    };
-    const body = {
-      name: this.state.challengeName,
-      description: this.state.challengeDescription,
-      challenge_type: this.state.challengeType,
-      criteria: this.state.challengeDeadline,
-      public: true,
-      team_names: this.state.teamAName + "/" + this.state.teamBName,
-      user_challenges: []
-    };
-    return fetch("http://localhost:3001/api/v1/challenges", {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify(body)
-    })
-      .then(res => res.json())
-      .then(json => this.postParticipantData(json))
-      .then(() => this.submitForm());
+    if (this.state.waiverClicked === true) {
+      const headers = {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      };
+      const body = {
+        name: this.state.challengeName,
+        description: this.state.challengeDescription,
+        challenge_type: this.state.challengeType,
+        criteria: this.state.challengeDeadline,
+        public: true,
+        team_names: this.state.teamAName + "/" + this.state.teamBName,
+        user_challenges: []
+      };
+      return fetch("http://localhost:3001/api/v1/challenges", {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(body)
+      })
+        .then(res => res.json())
+        .then(json => this.postParticipantData(json));
+    }
   };
 
   postParticipantData = json => {
-    console.log(this.state.participants);
-    console.log(json);
+    const json_id = json.id;
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json"
@@ -145,10 +146,9 @@ class ChallengeForm extends React.Component {
         method: "POST",
         headers: headers,
         body: JSON.stringify(body)
-      })
-        .then(res => res.json())
-        .then(json => console.log(json));
+      });
     });
+    this.submitForm(json_id);
   };
 
   changeChallengeType = (e, data) => {
@@ -167,12 +167,9 @@ class ChallengeForm extends React.Component {
 
   changeChallengeDeadline = data => {
     // console.log(data);
-    this.setState(
-      {
-        challengeDeadline: data._d
-      },
-      () => console.log(this.state.challengeDeadline)
-    );
+    this.setState({
+      challengeDeadline: data._d
+    });
   };
 
   changeChallengeName = e => {
@@ -276,17 +273,18 @@ class ChallengeForm extends React.Component {
     });
   };
 
-  submitForm = e => {
-    this.setState({ fireRedirect: true });
+  submitForm = json_id => {
+    console.log(json_id);
+    this.setState({
+      fireRedirect: true,
+      redirection: `/challenge/${json_id}`
+    });
   };
 
   clickWaiver = () => {
-    this.setState(
-      prevState => {
-        return { waiverClicked: !prevState.waiverClicked };
-      },
-      () => console.log(this.state.waiverClicked)
-    );
+    this.setState(prevState => {
+      return { waiverClicked: !prevState.waiverClicked };
+    });
   };
 
   render() {
@@ -425,7 +423,7 @@ class ChallengeForm extends React.Component {
             </Grid.Row>
           </Grid>
         </Form>
-        {this.state.fireRedirect && <Redirect to={"/inertia"} />}
+        {this.state.fireRedirect && <Redirect to={this.state.redirection} />}
       </div>
     );
 
