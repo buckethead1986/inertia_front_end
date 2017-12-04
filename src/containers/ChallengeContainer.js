@@ -15,10 +15,24 @@ class ChallengeContainer extends Component {
     this.fetchChallenge();
   }
 
+  componentDidUpdate() {
+    this.userBelongsToChallenge();
+  }
+
+  userBelongsToChallenge = () => {
+    if (this.state.challenge.name) {
+      const users = this.state.challenge.user_challenges.map(uc => {
+        return uc.user;
+      });
+      if (users.includes(this.props.currentUser)) {
+        console.log("Success");
+      }
+    }
+  };
+
   fetchChallenge = () => {
     const id = window.location.href.split("/");
     const specific_id = id[id.length - 1];
-    console.log(specific_id);
     fetch(`${url}challenges/${specific_id}`)
       .then(res => res.json())
       .then(json => {
@@ -29,7 +43,7 @@ class ChallengeContainer extends Component {
   };
 
   render() {
-    console.log(this.props);
+    console.log(this.state.challenge);
     return (
       <div>
         {this.state.challenge.name ? (
