@@ -20,7 +20,7 @@ class TeamGrid extends React.Component {
 
   render() {
     return (
-      <Grid columns={3} divided>
+      <Grid columns={3}>
         <Grid.Row>
           <Grid.Column>
             <h4>{this.props.teamNames[0]}</h4>

@@ -5,6 +5,27 @@ import SearchDropdown from "./search_dropdown";
 import TeamGrid from "./team_grid";
 import ChallengeGrid from "./challenge_grid";
 import ChallengeTypeDropdown from "./challenge_type_dropdown";
+import ChallengeTest from "./challenge_test";
+import DateTime from "react-datetime";
+import {
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  Radio,
+  Select,
+  TextArea
+} from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
+const options = [
+  { key: 1, text: "Deadline", value: "deadline" },
+  { key: 2, text: "Not Deadline", value: "not deadline" }
+];
+const team_options = [
+  { text: "Spectator", value: 3 },
+  { text: "Team A", value: 1 },
+  { text: "Team B", value: 2 }
+];
 
 class ChallengeForm extends React.Component {
   constructor() {
@@ -22,9 +43,31 @@ class ChallengeForm extends React.Component {
       participants: [],
       users: [],
       deadline: false,
-      fireRedirect: false
+      fireRedirect: false,
+      waiverClicked: false
     };
   }
+
+  formatTime = () => {
+    if (this.state.challengeDeadline !== undefined) {
+      const deadline = this.state.challengeDeadline.toString().split(" ");
+      const deadlineTimeSplit = `${deadline[4]}`.split(":");
+      if (parseInt(deadlineTimeSplit[0]) > 11) {
+        deadlineTimeSplit[0] = parseInt(deadlineTimeSplit[0]) - 12;
+        deadline[7] = "PM";
+      } else {
+        deadlineTimeSplit[0] = deadlineTimeSplit[0];
+        deadline[7] = "AM";
+      }
+      if (deadlineTimeSplit[0] === "00") {
+        deadlineTimeSplit[0] = "12";
+      }
+      const deadlineDate = `By ${deadlineTimeSplit[0]}:${deadlineTimeSplit[1]} ${deadline[7]} on ${deadline[0]}, ${deadline[1]} ${deadline[2]}, ${deadline[3]}`;
+      return deadlineDate;
+    } else {
+      return "Your Deadline is invalid";
+    }
+  };
 
   //when users prop comes from async fetch request (in App.js), updates state
   componentWillReceiveProps = nextProps => {
@@ -46,24 +89,22 @@ class ChallengeForm extends React.Component {
       this.state.currentSelectedTeam !== "" &&
       this.state.currentSelectedUser !== ""
     ) {
-      this.setState(
-        {
-          users: this.state.users.filter(user => {
-            return user.username !== this.state.currentSelectedUser;
-          }),
-          participants: [
-            ...this.state.participants,
-            { ...currentUser, role: this.state.currentSelectedTeam }
-          ],
-          currentSelectedUser: ""
-        },
-        () => this.postParticipantData()
-      );
+      this.setState({
+        users: this.state.users.filter(user => {
+          return user.username !== this.state.currentSelectedUser;
+        }),
+        participants: [
+          ...this.state.participants,
+          { ...currentUser, role: this.state.currentSelectedTeam }
+        ],
+        currentSelectedUser: ""
+      });
     }
   };
 
   //posts challenge data to API upon form submit
-  postChallengeData() {
+  postChallengeData = e => {
+    console.log("submitted");
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json"
@@ -73,36 +114,45 @@ class ChallengeForm extends React.Component {
       description: this.state.challengeDescription,
       challenge_type: this.state.challengeType,
       criteria: this.state.challengeDeadline,
-      team_names: this.state.teamAName
+      public: true,
+      team_names: this.state.teamAName + "/" + this.state.teamBName,
+      user_challenges: []
     };
-    fetch("http://localhost:3001/api/v1/challenges", {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify(body)
-    });
-    // .then(res => this.postParticipantData());
-  }
-
-  postParticipantData = () => {
-    const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    };
-    const body = {
-      body
-    };
-    console.log(this.state.participants);
-    fetch("http://localhost:3001/api/v1/user_challenges", {
+    return fetch("http://localhost:3001/api/v1/challenges", {
       method: "POST",
       headers: headers,
       body: JSON.stringify(body)
     })
       .then(res => res.json())
-      .then(json => console.log(json));
+      .then(json => this.postParticipantData(json))
+      .then(() => this.submitForm());
+  };
+
+  postParticipantData = json => {
+    console.log(this.state.participants);
+    console.log(json);
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
+    this.state.participants.forEach(part => {
+      const body = {
+        challenge_id: json.id,
+        user_id: part.id,
+        role: part.role
+      };
+      fetch("http://localhost:3001/api/v1/user_challenges", {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(body)
+      })
+        .then(res => res.json())
+        .then(json => console.log(json));
+    });
   };
 
   changeChallengeType = (e, data) => {
-    if (data.value === "Deadline") {
+    if (data.value === "deadline") {
       this.setState({
         deadline: true,
         challengeType: "Deadline"
@@ -116,9 +166,13 @@ class ChallengeForm extends React.Component {
   };
 
   changeChallengeDeadline = data => {
-    this.setState({
-      challengeDeadline: data._d
-    });
+    // console.log(data);
+    this.setState(
+      {
+        challengeDeadline: data._d
+      },
+      () => console.log(this.state.challengeDeadline)
+    );
   };
 
   changeChallengeName = e => {
@@ -132,72 +186,6 @@ class ChallengeForm extends React.Component {
       challengeDescription: e.target.value
     });
   };
-
-  //updates team A name, with a few checks to prevent naming confusion of equal names
-  // changeTeamAName = e => {
-  //   if (e.target.value === "Spectators") {
-  //     this.setState({
-  //       teamAName: "Spectaturds"
-  //     });
-  //   } else if (e.target.value === this.state.teamBName) {
-  //     this.setState({
-  //       teamAName: e.target.value + "2"
-  //     });
-  //   } else if (e.target.value === "Es") {
-  //     this.setState({
-  //       teamAName: "ES! ES! ES!"
-  //     });
-  //   } else if (e.target.value === "Jason") {
-  //     this.setState({
-  //       teamAName: "Navy Blue Tracksuits"
-  //     });
-  //   } else if (e.target.value === "Tim") {
-  //     this.setState({
-  //       teamAName: "I want an invite to the wedding"
-  //     });
-  //   } else if (e.target.value !== "") {
-  //     this.setState({
-  //       teamAName: e.target.value
-  //     });
-  //   } else {
-  //     this.setState({
-  //       teamAName: "Team A"
-  //     });
-  //   }
-  // };
-
-  //updates team B name, with a few checks to prevent naming confusion of equal names
-  // changeTeamBName = e => {
-  //   if (e.target.value === "Spectators") {
-  //     this.setState({
-  //       teamBName: "Special Snowflakes"
-  //     });
-  //   } else if (e.target.value === this.state.teamAName) {
-  //     this.setState({
-  //       teamBName: e.target.value + "2"
-  //     });
-  //   } else if (e.target.value === "Es") {
-  //     this.setState({
-  //       teamBName: "OH MY GOD IT'S ES"
-  //     });
-  //   } else if (e.target.value === "Jason") {
-  //     this.setState({
-  //       teamBName: "Cat-e-gor-ees"
-  //     });
-  //   } else if (e.target.value === "Tim") {
-  //     this.setState({
-  //       teamBName: "Beanies for everyone!"
-  //     });
-  //   } else if (e.target.value !== "") {
-  //     this.setState({
-  //       teamBName: e.target.value
-  //     });
-  //   } else {
-  //     this.setState({
-  //       teamBName: "Team B"
-  //     });
-  //   }
-  // };
 
   changeTeamAName = e => {
     switch (e.target.value) {
@@ -292,55 +280,222 @@ class ChallengeForm extends React.Component {
     this.setState({ fireRedirect: true });
   };
 
+  clickWaiver = () => {
+    this.setState(
+      prevState => {
+        return { waiverClicked: !prevState.waiverClicked };
+      },
+      () => console.log(this.state.waiverClicked)
+    );
+  };
+
   render() {
     return (
       <div>
-        <h1>Make a New Challenge</h1>
-        <form
-          onSubmit={e => {
-            e.preventDefault();
-            this.postChallengeData();
-            this.submitForm();
-          }}
-        >
-          <ChallengeTypeDropdown
-            onChange={this.changeChallengeType}
-            title="Select Challenge Type"
-            data={[
-              { key: "Deadline", text: "Deadline", value: "Deadline" },
-              {
-                key: "Not Deadline",
-                text: "Not Deadline",
-                value: "Not Deadline"
-              }
-            ]}
-          />
-          <ChallengeGrid
-            deadline={this.state.deadline}
-            changeName={this.changeChallengeName}
-            changeDescription={this.changeChallengeDescription}
-            changeDeadline={this.changeChallengeDeadline}
-            changeTeamAName={this.changeTeamAName}
-            changeTeamBName={this.changeTeamBName}
-            currentName={this.state.challengeName}
-            currentDescription={this.state.challengeDescription}
-            currentTeamAName={this.state.teamAName}
-            currentTeamBName={this.state.teamBName}
-            currentDeadline={this.state.challengeDeadline}
-          />
-          <br />
-          <button className="ui large primary button" type="submit">
-            Create Challenge
-          </button>
-          <br />
-        </form>
-        {this.state.fireRedirect && <Redirect to={"/challenges/:id"} />}
+        <Form>
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width={5}>
+                <h2>Make a New Challenge</h2>
+                <Form.Group widths="equal">
+                  <Form.Field
+                    onChange={this.changeChallengeType}
+                    control={Select}
+                    label="Challenge Type"
+                    options={options}
+                    placeholder="Challenge Type"
+                  />
+                </Form.Group>
+                {this.state.deadline === true ? (
+                  <Form.Group widths="equal">
+                    <DateTime
+                      onBlur={this.changeChallengeDeadline}
+                      inputProps={{ placeholder: new Date() }}
+                    />
+                  </Form.Group>
+                ) : null}
+                <Form.Group widths="equal">
+                  <Form.Field
+                    onChange={this.changeChallengeName}
+                    id="challenge-name"
+                    control={Input}
+                    label="Challenge Name"
+                    placeholder="Challenge Name"
+                  />
+                </Form.Group>
+
+                <Form.Group widths="equal">
+                  <Form.Field
+                    onChange={this.changeTeamAName}
+                    id="team-a-name"
+                    control={Input}
+                    label="Team A name"
+                    placeholder="Team A name"
+                  />
+                </Form.Group>
+                <Form.Group widths="equal">
+                  <Form.Field
+                    onChange={this.changeTeamBName}
+                    id="team-b-name"
+                    control={Input}
+                    label="Team B Name"
+                    placeholder="Team B Name"
+                  />
+                </Form.Group>
+
+                <Form.Field
+                  onChange={this.changeChallengeDescription}
+                  control={TextArea}
+                  label="Challenge Description"
+                  placeholder="What's going to happen in this challenge?"
+                />
+                <Form.Field
+                  onChange={this.clickWaiver}
+                  control={Checkbox}
+                  label="Nothing dangerous or illegal will happen because of this challenge"
+                />
+              </Grid.Column>
+              <Grid.Column width={5}>
+                <h2>Add Participants</h2>
+
+                <Form.Group widths="equal">
+                  <Form.Field
+                    onChange={this.changeTeam}
+                    control={Select}
+                    label="Select a Team"
+                    options={team_options}
+                    placeholder="Select a Team"
+                  />
+                </Form.Group>
+                <Form.Group widths="equal">
+                  <Form.Field>
+                    <SearchDropdown
+                      changeUser={this.changeUser}
+                      label="Select Participant"
+                      title="Participant"
+                      data={this.state.users}
+                    />
+                  </Form.Field>
+                  <Form.Field>
+                    <button
+                      onClick={this.addParticipant}
+                      className="ui large primary button"
+                    >
+                      Add Participant
+                    </button>
+                  </Form.Field>
+                </Form.Group>
+                <TeamGrid
+                  teamNames={[this.state.teamAName, this.state.teamBName]}
+                  participants={this.state.participants}
+                />
+              </Grid.Column>
+
+              <Grid.Column width={5}>
+                <h2>Current Lineup</h2>
+                {this.state.challengeName !== "" ? (
+                  <div>
+                    <h3>Challenge: {this.state.challengeName}</h3>
+                    <h4>pits</h4>
+                    <h3>Team A: {this.state.teamAName}</h3>
+                    <h4>vs</h4>
+                    <h3>Team B: {this.state.teamBName}</h3>
+                  </div>
+                ) : null}
+
+                {this.state.challengeName !== "" &&
+                this.state.challengeDescription !== "" ? (
+                  <div>
+                    <br />
+                    <h3>IN A NO HOLDS BARRED MATCH DECIDING</h3>
+                    <h3>{this.state.challengeDescription}</h3>
+                  </div>
+                ) : null}
+                {this.state.challengeDeadline !== "" &&
+                this.state.challengeName !== "" &&
+                this.state.challengeDescription !== "" ? (
+                  <h3>{this.formatTime()} </h3>
+                ) : null}
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Form.Field onClick={this.postChallengeData} control={Button}>
+                Submit
+              </Form.Field>
+            </Grid.Row>
+          </Grid>
+        </Form>
+        {this.state.fireRedirect && <Redirect to={"/inertia"} />}
       </div>
     );
+
+    // return (
+    //   <div>
+    //     <ChallengeTest
+    //       deadline={this.state.deadline}
+    //       changeName={this.changeChallengeName}
+    //       changeChallengeType={this.changeChallengeType}
+    //       changeDescription={this.changeChallengeDescription}
+    //       changeDeadline={this.changeChallengeDeadline}
+    //       changeTeamAName={this.changeTeamAName}
+    //       changeTeamBName={this.changeTeamBName}
+    //       currentName={this.state.challengeName}
+    //       currentDescription={this.state.challengeDescription}
+    //       currentTeamAName={this.state.teamAName}
+    //       currentTeamBName={this.state.teamBName}
+    //       currentDeadline={this.state.challengeDeadline}
+    //       users={this.state.users}
+    //       addParticipant={this.addParticipant}
+    //     />
+    //   </div>
+    // );
   }
 }
 
 export default ChallengeForm;
+
+// <div>
+//   <h1>Make a New Challenge</h1>
+//   <form
+//     onSubmit={e => {
+//       e.preventDefault();
+//       this.postChallengeData();
+//       this.submitForm();
+//     }}
+//   >
+//     <ChallengeTypeDropdown
+//       onChange={this.changeChallengeType}
+//       title="Select Challenge Type"
+//       data={[
+//         { key: "Deadline", text: "Deadline", value: "Deadline" },
+//         {
+//           key: "Not Deadline",
+//           text: "Not Deadline",
+//           value: "Not Deadline"
+//         }
+//       ]}
+//     />
+//     <ChallengeGrid
+//       deadline={this.state.deadline}
+//       changeName={this.changeChallengeName}
+//       changeDescription={this.changeChallengeDescription}
+//       changeDeadline={this.changeChallengeDeadline}
+//       changeTeamAName={this.changeTeamAName}
+//       changeTeamBName={this.changeTeamBName}
+//       currentName={this.state.challengeName}
+//       currentDescription={this.state.challengeDescription}
+//       currentTeamAName={this.state.teamAName}
+//       currentTeamBName={this.state.teamBName}
+//       currentDeadline={this.state.challengeDeadline}
+//     />
+//     <br />
+//     <button className="ui large primary button" type="submit">
+//       Create Challenge
+//     </button>
+//     <br />
+//   </form>
+//   {this.state.fireRedirect && <Redirect to={"/challenges/:id"} />}
+// </div>
 
 //add participants code, to be put on specific challenge show page.
 // <h3>Add Participants</h3>
