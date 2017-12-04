@@ -28,6 +28,8 @@ const team_options = [
   { text: "Team B", value: 2 }
 ];
 
+const url = "http://localhost:3001/api/v1/"
+
 class ChallengeForm extends React.Component {
   constructor() {
     super();
@@ -120,7 +122,7 @@ class ChallengeForm extends React.Component {
         team_names: this.state.teamAName + "/" + this.state.teamBName,
         user_challenges: []
       };
-      return fetch("https://inertia-app.herokuapp.com/api/v1/challenges", {
+      return fetch(`${url}challenges`, {
         method: "POST",
         headers: headers,
         body: JSON.stringify(body)
@@ -142,7 +144,7 @@ class ChallengeForm extends React.Component {
         user_id: part.id,
         role: part.role
       };
-      fetch("https://inertia-app.herokuapp.com/api/v1/user_challenges", {
+      fetch(`${url}user_challenges`, {
         method: "POST",
         headers: headers,
         body: JSON.stringify(body)

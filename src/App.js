@@ -12,6 +12,7 @@ import Login from "./components/loginUser/login";
 //take these out
 import Direct from "./components/createChallenge/direct";
 import Redirect from "./components/createChallenge/redirect";
+const url = "http://localhost:3001/api/v1/"
 
 const Inertia = () => <ChallengeContainer />;
 class App extends Component {
@@ -23,11 +24,11 @@ class App extends Component {
     const token = localStorage.getItem("token");
     if (token) {
       console.log(token);
-      fetch("https://inertia-app.herokuapp.com/api/v1/current_user", {
+      fetch(`${url}current_user`, {
         headers: {
-          "Content-Type": "application/json",
-          Accepts: "application/json",
-          Authorization: token
+          "content-type": "application/json",
+          'accept': "application/json",
+          'Authorization': localStorage.getItem("token")
         }
       }).then(res => console.log(res));
     } else {
@@ -36,7 +37,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch("https://inertia-app.herokuapp.com/api/v1/users")
+    fetch(`${url}users`)
       .then(res => res.json())
       .then(json =>
         this.setState({

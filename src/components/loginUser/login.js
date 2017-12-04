@@ -1,5 +1,6 @@
 import React from "react";
 import { Form } from "semantic-ui-react";
+const url = "http://localhost:3001/api/v1/"
 
 class Signup extends React.Component {
   constructor() {
@@ -23,7 +24,7 @@ class Signup extends React.Component {
       "Content-Type": "application/json"
     };
     const body = this.state;
-    fetch("http://inertia-app.herokuapp.com/api/v1/auth", {
+    fetch(`${url}auth`, {
       method: "POST",
       headers,
       body: JSON.stringify(body)
