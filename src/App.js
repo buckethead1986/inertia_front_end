@@ -12,12 +12,13 @@ import Login from "./components/loginUser/login";
 //take these out
 import Direct from "./components/createChallenge/direct";
 import Redirect from "./components/createChallenge/redirect";
-const url = "http://localhost:3001/api/v1/"
+const url = "http://localhost:3001/api/v1/";
 
 const Inertia = () => <ChallengeContainer />;
 class App extends Component {
   state = {
-    users: []
+    users: [],
+    currentUser: {}
   };
 
   componentWillMount() {
@@ -27,10 +28,12 @@ class App extends Component {
       fetch(`${url}current_user`, {
         headers: {
           "content-type": "application/json",
-          'accept': "application/json",
-          'Authorization': localStorage.getItem("token")
+          accept: "application/json",
+          Authorization: localStorage.getItem("token")
         }
-      }).then(res => console.log(res));
+      })
+        .then(res => res.json())
+        .then(json => this.setState({ currentUser: json }));
     } else {
       this.props.history.push("/login");
     }
@@ -47,6 +50,7 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.state);
     return (
       <div>
         <Router>
@@ -60,13 +64,12 @@ class App extends Component {
               render={() => <InertiaContainer users={this.state.users} />}
             />
             <Route exact path="/login" component={Login} />
-            <Route path="/challenges/:id" component={ChallengeContainer} />
             <Route
-              exact
-              path="/challenge/new2"
-              render={() => <ChallengeTest users={this.state.users} />}
+              path="/challenges/:id"
+              render={() => (
+                <ChallengeContainer currentUser={this.state.currentUser} />
+              )}
             />
-            <Route exact path="/inertia" component={ChallengeContainer} />
           </div>
         </Router>
       </div>

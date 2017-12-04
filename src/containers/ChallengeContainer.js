@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ChallengeView from "../components/showChallenge/ChallengeView";
-const url = "https://localhost:3001/api/v1/"
+const url = "http://localhost:3001/api/v1/";
 
 class ChallengeContainer extends Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class ChallengeContainer extends Component {
     const id = window.location.href.split("/");
     const specific_id = id[id.length - 1];
     console.log(specific_id);
-    fetch(`${url}${specific_id}`)
+    fetch(`${url}challenges/${specific_id}`)
       .then(res => res.json())
       .then(json => {
         this.setState({
@@ -29,6 +29,7 @@ class ChallengeContainer extends Component {
   };
 
   render() {
+    console.log(this.props);
     return (
       <div>
         {this.state.challenge.name ? (

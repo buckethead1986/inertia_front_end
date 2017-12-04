@@ -1,6 +1,6 @@
 import React from "react";
 import { Form } from "semantic-ui-react";
-const url = "http://localhost:3001/api/v1/"
+const url = "http://localhost:3001/api/v1/";
 
 class Signup extends React.Component {
   constructor() {
@@ -28,28 +28,31 @@ class Signup extends React.Component {
       method: "POST",
       headers,
       body: JSON.stringify(body)
-    });
+    }).then(() => this.props.history.push("/"));
   };
 
   render() {
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <Form.Group widths="equal">
-          <Form.Input
-            name="username"
-            onChange={this.handleChange}
-            label="Username"
-            placeholder="Username"
-          />
-          <Form.Input
-            name="password"
-            onChange={this.handleChange}
-            label="Password"
-            placeholder="Password"
-          />
-        </Form.Group>
-        <Form.Button>Submit</Form.Button>
-      </Form>
+      <div>
+        <h2>Signup</h2>
+        <Form onSubmit={this.handleSubmit}>
+          <Form.Group widths="equal">
+            <Form.Input
+              name="username"
+              onChange={this.handleChange}
+              label="Username"
+              placeholder="Username"
+            />
+            <Form.Input
+              name="password"
+              onChange={this.handleChange}
+              label="Password"
+              placeholder="Password"
+            />
+          </Form.Group>
+          <Form.Button>Submit</Form.Button>
+        </Form>
+      </div>
     );
   }
 }
