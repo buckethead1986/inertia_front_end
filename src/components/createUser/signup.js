@@ -28,7 +28,14 @@ class Signup extends React.Component {
       method: "POST",
       headers,
       body: JSON.stringify(body)
-    }).then(() => this.props.history.push("/"));
+    })
+      .then(res => res.json())
+      .then(json => {
+        if (!json.error) {
+          localStorage.setItem("token", json.jwt);
+          this.props.history.push("/challenges");
+        }
+      });
   };
 
   render() {

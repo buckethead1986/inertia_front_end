@@ -9,7 +9,6 @@ import {
   Checkbox,
   Form,
   Input,
-  Radio,
   Select,
   TextArea
 } from "semantic-ui-react";

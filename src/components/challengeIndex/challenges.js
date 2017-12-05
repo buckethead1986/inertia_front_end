@@ -47,12 +47,28 @@ class Challenges extends React.Component {
   // };
 
   render() {
-    const UserChallenges = this.state.userChallenges.map(challenge => {
-      return <ChallengeCard challenge={challenge} />;
+    console.log(this.state.userChallenges);
+    console.log(this.state.otherChallenges);
+    const UserChallenges = this.state.userChallenges.map((challenge, id) => {
+      return (
+        <ChallengeCard
+          key={id}
+          challenge={challenge}
+          user={this.props.currentUser.id}
+        />
+      );
     });
-    const NonUserChallenges = this.state.otherChallenges.map(challenge => {
-      return <ChallengeCard challenge={challenge} />;
-    });
+    const NonUserChallenges = this.state.otherChallenges.map(
+      (challenge, id) => {
+        return (
+          <ChallengeCard
+            key={id}
+            challenge={challenge}
+            user={this.props.currentUser.id}
+          />
+        );
+      }
+    );
 
     return (
       <Grid>

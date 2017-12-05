@@ -1,13 +1,45 @@
 import React from "react";
 import { Card } from "semantic-ui-react";
+import { withRouter } from "react-router-dom";
 
-const ChallengeCard = () => (
-  <Card
-    href="#card-example-link-card"
-    header="Elliot Baker"
-    meta="Friend"
-    description="Elliot is a sound engineer living in Nashville who enjoys playing guitar and hanging with his cat."
-  />
-);
+class ChallengeCard extends React.Component {
+  constructor() {
+    super();
 
-export default ChallengeCard;
+    this.state = {
+      role: ""
+    };
+  }
+
+  filterRoles = () => {
+    this.props.challenge.user_challenges.forEach(uc => {
+      if (uc.user_id === this.props.user) {
+        switch (uc.role) {
+          case "3":
+            this.setState({
+              role: "Spectator"
+            });
+          default:
+            this.setState({
+              role: "Participant"
+            });
+        }
+      }
+    });
+  };
+
+  render() {
+    console.log(this.props);
+    return (
+      <Card
+        onClick={() =>
+          this.props.history.push(`/challenges/${this.props.challenge.id}`)}
+        header={this.props.challenge.name}
+        meta={this.state.role}
+        description={this.props.challenge.description}
+      />
+    );
+  }
+}
+
+export default withRouter(ChallengeCard);
