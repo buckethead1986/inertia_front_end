@@ -11,14 +11,15 @@ import Login from "./components/loginUser/login";
 import Challenges from "./components/challengeIndex/challenges";
 import LoginNavbar from "./components/navbar/LoginNavbar";
 
-//take these out
-// import Challenges from "./components/challengeIndex/challenges";
-
 const url = "http://localhost:3001/api/v1/";
 
 class App extends Component {
+  constructor() {
+    super();
+    this.updateState = this.updateState.bind(this);
+  }
+
   state = {
-    users: [],
     currentUser: {}
   };
 
@@ -44,18 +45,27 @@ class App extends Component {
     this.props.history.push("/login");
   };
 
+  updateState = json => {
+    this.setState({ currentUser: json });
+  };
+
+  fetchUserInformation = () => {
+    fetch(`${url}current_user`, {
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json",
+        Authorization: localStorage.getItem("token")
+      }
+    })
+      .then(res => res.json())
+      .then(this.updateState);
+  };
+
   componentWillMount() {
     const token = localStorage.getItem("token");
+    console.log(token);
     if (token) {
-      fetch(`${url}current_user`, {
-        headers: {
-          "content-type": "application/json",
-          accept: "application/json",
-          Authorization: localStorage.getItem("token")
-        }
-      })
-        .then(res => res.json())
-        .then(json => this.setState({ currentUser: json }));
+      this.fetchUserInformation();
     } else {
       if (!window.location.href.includes("signup")) {
         this.props.history.push("/login");
@@ -63,15 +73,15 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
-    fetch(`${url}users`)
-      .then(res => res.json())
-      .then(json =>
-        this.setState({
-          users: json
-        })
-      );
-  }
+  // componentDidMount = () => {
+  //   fetch(`${url}challenges`)
+  //     .then(res => res.json())
+  //     .then(json =>
+  //       this.setState({
+  //         challenges: json
+  //       })
+  //     );
+  // };
 
   render() {
     return (
@@ -92,7 +102,13 @@ class App extends Component {
         )}
         <div>
           <Route exact path="/signup" component={Signup} />
-          <Route exact path="/login" component={Login} />
+          <Route
+            exact
+            path="/login"
+            render={props => (
+              <Login fetchUser={this.fetchUserInformation} {...props} />
+            )}
+          />
           <Route
             exact
             path="/challenge/new"
@@ -107,11 +123,7 @@ class App extends Component {
             path="/challenges"
             render={() => (
               <div>
-                <Challenges
-                  users={this.state.users}
-                  url={url}
-                  currentUser={this.state.currentUser}
-                />
+                <Challenges url={url} currentUser={this.state.currentUser} />
               </div>
             )}
           />

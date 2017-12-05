@@ -45,11 +45,15 @@ class ChallengeForm extends React.Component {
   }
 
   //when users prop comes from async fetch request (in App.js), updates state
-  componentWillReceiveProps = nextProps => {
-    this.setState({
-      users: nextProps.users
-    });
-  };
+  componentDidMount() {
+    fetch(`${this.props.url}users`)
+      .then(res => res.json())
+      .then(json =>
+        this.setState({
+          users: json
+        })
+      );
+  }
 
   formatTime = () => {
     if (this.state.challengeDeadline !== undefined) {

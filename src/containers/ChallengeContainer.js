@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+
 import ChallengeView from "../components/showChallenge/ChallengeView";
 
 class ChallengeContainer extends Component {
@@ -58,4 +60,4 @@ class ChallengeContainer extends Component {
   }
 }
 
-export default ChallengeContainer;
+export default withRouter(ChallengeContainer);
