@@ -16,20 +16,20 @@ class ChallengeContainer extends Component {
     this.fetchChallenge();
   }
 
-  componentDidUpdate() {
-    this.userBelongsToChallenge();
-  }
+  // componentDidUpdate() {
+  //   this.userBelongsToChallenge();
+  // }
 
-  userBelongsToChallenge = () => {
-    if (this.state.challenge.name) {
-      const userIds = this.state.challenge.user_challenges.map(uc => {
-        return uc.user.id;
-      });
-      if (!userIds.includes(this.props.currentUser.id)) {
-        this.props.history.push("/");
-      }
-    }
-  };
+  // userBelongsToChallenge = () => {
+  //   if (this.state.challenge.name) {
+  //     const userIds = this.state.challenge.user_challenges.map(uc => {
+  //       return uc.user.id;
+  //     });
+  //     if (!userIds.includes(this.props.currentUser.id)) {
+  //       this.props.history.push("/");
+  //     }
+  //   }
+  // };
 
   fetchChallenge = () => {
     const id = window.location.href.split("/");
