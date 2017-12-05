@@ -1,5 +1,7 @@
-const resultsObject = (() => {
+const getObject = () => {
   return {
+    name: "",
+    description: "",
     teamOne: {
       name: "",
       participants: []
@@ -14,7 +16,32 @@ const resultsObject = (() => {
       votedTeamTwo: []
     }
   };
-})();
+};
+
+const resultsObject = getObject();
+
+const clearResultsObject = () => {
+  resultsObject.name = "";
+  resultsObject.description = "";
+  resultsObject.teamOne = {
+    name: "",
+    participants: []
+  };
+  resultsObject.teamTwo = {
+    name: "",
+    participants: []
+  };
+  resultsObject.spectators = {
+    users: [],
+    votedTeamOne: [],
+    votedTeamTwo: []
+  };
+};
+
+const challengeName = challenge => {
+  resultsObject.name = challenge.name;
+  resultsObject.description = challenge.description;
+};
 
 const teamNames = teamNameString => {
   const teamNames = teamNameString.split("/");
@@ -97,6 +124,8 @@ const voted = currentUser => {
 };
 
 export const formatResults = (challenge, currentUser) => {
+  clearResultsObject();
+  challengeName(challenge);
   teamNames(challenge.team_names);
   filterParticipants(challenge);
   sortVotes(challenge);
