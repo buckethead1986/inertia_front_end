@@ -1,18 +1,20 @@
-const resultsObject = {
-  teamOne: {
-    name: "",
-    participants: []
-  },
-  teamTwo: {
-    name: "",
-    participants: []
-  },
-  spectators: {
-    users: [],
-    votedTeamOne: [],
-    votedTeamTwo: []
-  }
-};
+const resultsObject = (() => {
+  return {
+    teamOne: {
+      name: "",
+      participants: []
+    },
+    teamTwo: {
+      name: "",
+      participants: []
+    },
+    spectators: {
+      users: [],
+      votedTeamOne: [],
+      votedTeamTwo: []
+    }
+  };
+})();
 
 const teamNames = teamNameString => {
   const teamNames = teamNameString.split("/");
