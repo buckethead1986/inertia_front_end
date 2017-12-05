@@ -9,6 +9,7 @@ class ChallengeContainer extends Component {
     super(props);
 
     this.state = {
+      originalChallenge: {},
       challenge: {},
       voted: null,
       teamVotedFor: null
@@ -43,14 +44,19 @@ class ChallengeContainer extends Component {
       .then(res => res.json())
       .then(json => {
         this.formatChallengeResults(json);
+        this.setState({
+          originalChallenge: json
+        });
       });
   };
 
   handleVote = teamVotedFor => {
     // Make a post request to the user challenge object
-    const userChallenge = this.props.challenge.user_challenges.find(uc => {
-      return uc.user.id === this.props.currentUser.id;
-    });
+    const userChallenge = this.state.originalChallenge.user_challenges.find(
+      uc => {
+        return uc.user.id === this.props.currentUser.id;
+      }
+    );
 
     fetch(`http://localhost:3001/api/v1/user_challenges/${userChallenge.id}`, {
       headers: {
@@ -60,7 +66,7 @@ class ChallengeContainer extends Component {
       method: "PATCH",
       body: JSON.stringify({ vote: teamVotedFor })
     }).then(res => {
-      this.props.fetchChallenge();
+      this.fetchChallenge();
       // this.setState({
       //   voted: true,
       //   challenge: {
@@ -79,7 +85,7 @@ class ChallengeContainer extends Component {
             challenge={this.state.challenge}
             currentUser={this.props.currentUser}
             fetchChallenge={this.fetchChallenge}
-            handleVote={this.props.handleVote}
+            handleVote={this.handleVote}
           />
         ) : (
           ""

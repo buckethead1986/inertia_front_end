@@ -53,6 +53,7 @@ class TeamCard extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <Transition
         animation={"tada"}
