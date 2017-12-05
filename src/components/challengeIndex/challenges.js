@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router";
-import ChallengeCard from "./challengeCard";
+import ChallengeCard from "./ChallengeCard";
 import { Grid } from "semantic-ui-react";
 
 class Challenges extends React.Component {

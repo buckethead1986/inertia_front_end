@@ -6,9 +6,9 @@ import ChallengeContainer from "./containers/ChallengeContainer";
 import InertiaContainer from "./containers/InertiaContainer";
 import ChallengeForm from "./components/createChallenge/ChallengeForm";
 import Navbar from "./components/navbar/Navbar";
-import Signup from "./components/createUser/signup";
-import Login from "./components/loginUser/login";
-import Challenges from "./components/challengeIndex/challenges";
+import Signup from "./components/createUser/Signup";
+import Login from "./components/loginUser/Login";
+import Challenges from "./components/challengeIndex/Challenges";
 import LoginNavbar from "./components/navbar/LoginNavbar";
 
 const url = "http://localhost:3001/api/v1/";
