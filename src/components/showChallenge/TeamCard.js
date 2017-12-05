@@ -61,7 +61,7 @@ class TeamCard extends React.Component {
         visible={this.state.visible}
       >
         <div>
-          <Card>
+          <Card centered color={this.props.onTeamOne ? "green" : "blue"}>
             <Image />
             <Card.Content>
               <Card.Header>{this.props.teamName}</Card.Header>

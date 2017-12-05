@@ -116,8 +116,8 @@ class ChallengeForm extends React.Component {
         criteria: this.state.challengeDeadline,
         public: true,
         team_names: this.state.teamAName + "/" + this.state.teamBName,
-        user_challenges: [],
-        user_created: this.props.currentUser
+        user_created: this.props.currentUser.id,
+        user_challenges: []
       };
       return fetch(`${this.props.url}challenges`, {
         method: "POST",
