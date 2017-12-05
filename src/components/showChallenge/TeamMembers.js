@@ -57,6 +57,7 @@ class TeamMembers extends Component {
 
   render() {
     const { items } = this.state;
+    console.log("Votes are ", this.props.votes);
     return (
       <div>
         <div onClick={this.handleChange}>
@@ -73,9 +74,7 @@ class TeamMembers extends Component {
           </Button.Group>
         </div>
         {this.props.voting
-          ? this.props.votes
-            ? `${this.state.users.length} votes`
-            : "No votes yet"
+          ? this.props.votes ? `${this.props.votes} votes` : "No votes yet"
           : ""}
         <Transition.Group
           as={List}
