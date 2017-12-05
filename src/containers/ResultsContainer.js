@@ -21,7 +21,8 @@ class ResultsContainer extends Component {
     }
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
+    console.log("Next props are ", nextProps);
     if (Object.keys(this.props.challenge).length) {
       this.setState({
         challenge: this.props.challenge
@@ -30,7 +31,7 @@ class ResultsContainer extends Component {
   }
 
   render() {
-    console.log(this.state.challenge.spectators.votedTeamOne);
+    console.log(this.state.challenge.spectators);
     return (
       <div className="team container">
         <div className="spectators">

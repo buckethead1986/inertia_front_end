@@ -35,6 +35,7 @@ class ChallengeContainer extends Component {
     fetch(`${this.props.url}challenges/${specific_id}`)
       .then(res => res.json())
       .then(json => {
+        console.log("DONE FETCHING");
         this.setState({
           challenge: json
         });

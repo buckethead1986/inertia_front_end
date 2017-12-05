@@ -20,6 +20,7 @@ class ChallengeView extends Component {
   }
 
   formatChallengeResults = () => {
+    console.log("STATE IS ", this.state.challenge);
     const results = formatResults(this.props.challenge, this.props.currentUser);
     let stateObj;
     if (results.voter) {
@@ -41,6 +42,15 @@ class ChallengeView extends Component {
     const userChallenge = this.props.challenge.user_challenges.find(uc => {
       return uc.user.id === this.props.currentUser.id;
     });
+    // let newArray;
+    // let newObj;
+    // if (teamVotedFor === 1) {
+    //   newArray = [...this.state.challenge.votedTeamOne, this.props.currentUser];
+    //   newObj = { votedTeamOne: newArray };
+    // } else if (teamVotedFor === 2) {
+    //   newArray = [...this.state.challenge.votedTeamTwo, this.props.currentUser];
+    //   newObj = { votedTeamTwo: newArray };
+    // }
 
     fetch(`http://localhost:3001/api/v1/user_challenges/${userChallenge.id}`, {
       headers: {
@@ -63,7 +73,6 @@ class ChallengeView extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <div>
         <Header
@@ -82,8 +91,8 @@ class ChallengeView extends Component {
         <Header style={{ padding: "0px" }} centered as="h4" textAlign="center">
           {this.state.challenge.voter
             ? this.state.voted
-              ? `You already voted for Team ${this.state.challenge.voter.team}`
-              : "Didn't Vote"
+              ? `You voted for Team ${this.state.challenge.voter.team}`
+              : "You haven't voted yet"
             : ""}
         </Header>
         {this.state.challenge.teamOne ? (
