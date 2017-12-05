@@ -63,7 +63,6 @@ class App extends Component {
 
   componentWillMount() {
     const token = localStorage.getItem("token");
-    console.log(token);
     if (token) {
       this.fetchUserInformation();
     } else {
@@ -72,16 +71,6 @@ class App extends Component {
       }
     }
   }
-
-  // componentDidMount = () => {
-  //   fetch(`${url}challenges`)
-  //     .then(res => res.json())
-  //     .then(json =>
-  //       this.setState({
-  //         challenges: json
-  //       })
-  //     );
-  // };
 
   render() {
     return (

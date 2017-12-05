@@ -1,6 +1,5 @@
 import React from "react";
 import { Form } from "semantic-ui-react";
-import { Redirect } from "react-router";
 
 const url = "http://localhost:3001/api/v1/";
 
@@ -42,7 +41,6 @@ class Signup extends React.Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <div>
         <h2>Log in</h2>
