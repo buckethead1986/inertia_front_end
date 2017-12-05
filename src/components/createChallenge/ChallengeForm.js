@@ -13,8 +13,8 @@ import {
   TextArea
 } from "semantic-ui-react";
 const options = [
-  { key: 1, text: "Deadline", value: "deadline" },
-  { key: 2, text: "Not Deadline", value: "not deadline" }
+  { key: 1, text: "Deadline", value: "deadline" }
+  // { key: 2, text: "Not Deadline", value: "not deadline" }
 ];
 const team_options = [
   { text: "Spectator", value: 3 },
@@ -291,7 +291,6 @@ class ChallengeForm extends React.Component {
   };
 
   changeChallengeDeadline = data => {
-    // console.log(data);
     this.setState({
       challengeDeadline: data._d
     });
