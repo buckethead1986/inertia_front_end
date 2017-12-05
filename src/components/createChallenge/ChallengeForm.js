@@ -1,8 +1,8 @@
 import React from "react";
 import { Redirect } from "react-router";
 import { Grid } from "semantic-ui-react";
-import SearchDropdown from "./search_dropdown";
-import TeamGrid from "./team_grid";
+import SearchDropdown from "./SearchDropdown";
+import TeamGrid from "./TeamGrid";
 import DateTime from "react-datetime";
 import {
   Button,
@@ -22,13 +22,6 @@ const team_options = [
   { text: "Team A", value: 1 },
   { text: "Team B", value: 2 }
 ];
-
-// import ChallengeTest from "./challenge_test";
-// import ChallengeTypeDropdown from "./challenge_type_dropdown";
-// import ChallengeGrid from "./challenge_grid";
-// import SelectionDropdown from "./selection_dropdown";
-// import PropTypes from "prop-types";
-// const url = "http://localhost:3001/api/v1/";
 
 class ChallengeForm extends React.Component {
   constructor() {
@@ -52,6 +45,13 @@ class ChallengeForm extends React.Component {
     };
   }
 
+  //when users prop comes from async fetch request (in App.js), updates state
+  componentWillReceiveProps = nextProps => {
+    this.setState({
+      users: nextProps.users
+    });
+  };
+
   formatTime = () => {
     if (this.state.challengeDeadline !== undefined) {
       const deadline = this.state.challengeDeadline.toString().split(" ");
@@ -66,22 +66,11 @@ class ChallengeForm extends React.Component {
       if (deadlineTimeSplit[0] === "00") {
         deadlineTimeSplit[0] = "12";
       }
-      const deadlineDate = `By ${deadlineTimeSplit[0]}:${
-        deadlineTimeSplit[1]
-      } ${deadline[7]} on ${deadline[0]}, ${deadline[1]} ${deadline[2]}, ${
-        deadline[3]
-      }`;
+      const deadlineDate = `By ${deadlineTimeSplit[0]}:${deadlineTimeSplit[1]} ${deadline[7]} on ${deadline[0]}, ${deadline[1]} ${deadline[2]}, ${deadline[3]}`;
       return deadlineDate;
     } else {
       return "Your Deadline is invalid";
     }
-  };
-
-  //when users prop comes from async fetch request (in App.js), updates state
-  componentWillReceiveProps = nextProps => {
-    this.setState({
-      users: nextProps.users
-    });
   };
 
   // only adds participant to participants state if both name and team fields arent blank,
@@ -171,80 +160,130 @@ class ChallengeForm extends React.Component {
     }
   };
 
+  updateDropdownTeamA = team => {
+    team_options[1].text = this.state.teamAName;
+  };
+
+  updateDropdownTeamB = team => {
+    team_options[2].text = this.state.teamBName;
+  };
+
   changeTeamAName = e => {
     switch (e.target.value) {
       case "Spectators":
-        this.setState({
-          teamAName: "Spectaturds"
-        });
+        this.setState(
+          {
+            teamAName: "Spectaturds"
+          },
+          () => this.updateDropdownTeamA()
+        );
         break;
       case this.state.teamBName:
-        this.setState({
-          teamAName: e.target.value + "2"
-        });
+        this.setState(
+          {
+            teamAName: e.target.value + "2"
+          },
+          () => this.updateDropdownTeamA()
+        );
         break;
       case "Es":
-        this.setState({
-          teamAName: "ES! ES! ES!"
-        });
+        this.setState(
+          {
+            teamAName: "ES! ES! ES!"
+          },
+          () => this.updateDropdownTeamA()
+        );
         break;
       case "Jason":
-        this.setState({
-          teamAName: "Navy Blue Tracksuits"
-        });
+        this.setState(
+          {
+            teamAName: "Navy Blue Tracksuits"
+          },
+          () => this.updateDropdownTeamA()
+        );
         break;
       case "Tim":
-        this.setState({
-          teamAName: "I want an invite to the wedding"
-        });
+        this.setState(
+          {
+            teamAName: "I want an invite to the wedding"
+          },
+          () => this.updateDropdownTeamA()
+        );
         break;
       case "":
-        this.setState({
-          teamAName: "Team A"
-        });
+        this.setState(
+          {
+            teamAName: "Team A"
+          },
+          () => this.updateDropdownTeamA()
+        );
         break;
       default:
-        this.setState({
-          teamAName: e.target.value
-        });
+        this.setState(
+          {
+            teamAName: e.target.value
+          },
+          () => this.updateDropdownTeamA()
+        );
     }
   };
   changeTeamBName = e => {
     switch (e.target.value) {
       case "Spectators":
-        this.setState({
-          teamBName: "Special Snowflakes"
-        });
+        this.setState(
+          {
+            teamBName: "Special Snowflakes"
+          },
+          () => this.updateDropdownTeamB()
+        );
         break;
       case this.state.teamAName:
-        this.setState({
-          teamBName: e.target.value + "2"
-        });
+        this.setState(
+          {
+            teamBName: e.target.value + "2"
+          },
+          () => this.updateDropdownTeamB()
+        );
         break;
       case "Es":
-        this.setState({
-          teamBName: "OH MY GOD IT'S ES"
-        });
+        this.setState(
+          {
+            teamBName: "OH MY GOD IT'S ES"
+          },
+          () => this.updateDropdownTeamB()
+        );
         break;
       case "Jason":
-        this.setState({
-          teamBName: "Cat-e-gor-ees"
-        });
+        this.setState(
+          {
+            teamBName: "Cat-e-gor-ees"
+          },
+          () => this.updateDropdownTeamB()
+        );
         break;
       case "Tim":
-        this.setState({
-          teamBName: "Beanies for everyone!"
-        });
+        this.setState(
+          {
+            teamBName: "Beanies for everyone!"
+          },
+          () => this.updateDropdownTeamB()
+        );
         break;
       case "":
-        this.setState({
-          teamBName: "Team B"
-        });
+        this.setState(
+          {
+            teamBName: "Team B"
+          },
+          () => this.updateDropdownTeamB()
+        );
         break;
       default:
-        this.setState({
-          teamBName: e.target.value
-        });
+        this.setState(
+          {
+            teamBName: e.target.value
+          },
+          () => this.updateDropdownTeamB()
+        );
     }
   };
 
@@ -254,18 +293,6 @@ class ChallengeForm extends React.Component {
       challengeDeadline: data._d
     });
   };
-
-  // changeChallengeName = e => {
-  //   this.setState({
-  //     challengeName: e.target.value
-  //   });
-  // };
-  //
-  // changeChallengeDescription = e => {
-  //   this.setState({
-  //     challengeDescription: e.target.value
-  //   });
-  // };
 
   changeUser = (e, data) => {
     this.setState({
