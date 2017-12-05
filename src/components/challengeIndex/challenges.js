@@ -33,6 +33,7 @@ class Challenges extends React.Component {
   //     });
   //   });
   // };
+  // test
 
   OtherChallenges = json => {
     json.map(challenge => {
