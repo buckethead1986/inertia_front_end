@@ -42,7 +42,6 @@ class ChallengeContainer extends Component {
   };
 
   render() {
-    console.log(this.state.challenge);
     return (
       <div>
         {this.state.challenge.name ? (

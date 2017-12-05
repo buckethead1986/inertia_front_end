@@ -36,13 +36,15 @@ class Signup extends React.Component {
       <div>
         <h2>Signup</h2>
         <Form onSubmit={this.handleSubmit}>
-          <Form.Group widths="equal">
+          <Form.Group widths="12">
             <Form.Input
               name="username"
               onChange={this.handleChange}
               label="Username"
               placeholder="Username"
             />
+          </Form.Group>
+          <Form.Group widths="12">
             <Form.Input
               name="password"
               onChange={this.handleChange}
