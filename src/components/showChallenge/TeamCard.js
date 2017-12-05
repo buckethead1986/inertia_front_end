@@ -31,8 +31,15 @@ class TeamCard extends React.Component {
 
   toggleVisibility = () => this.setState({ visible: !this.state.visible });
 
+  handleClick = () => {
+    if (this.props.onTeamOne) {
+      this.props.handleVote(1);
+    } else {
+      this.props.handleVote(2);
+    }
+  };
+
   render() {
-    console.log(this.props.currentVoter && this.props.currentVoter.team);
     return (
       <Transition
         animation={"tada"}
@@ -55,7 +62,7 @@ class TeamCard extends React.Component {
             </Card.Content>
             {this.props.currentVoter ? (
               !this.props.currentVoter.team ? (
-                <Button content="Like" />
+                <Button content="Like" onClick={this.handleClick} />
               ) : (
                 ""
               )

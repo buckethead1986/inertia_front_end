@@ -48,6 +48,7 @@ class ChallengeContainer extends Component {
           <ChallengeView
             challenge={this.state.challenge}
             currentUser={this.props.currentUser}
+            fetchChallenge={this.fetchChallenge}
           />
         ) : (
           ""

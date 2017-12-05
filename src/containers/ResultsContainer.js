@@ -21,7 +21,16 @@ class ResultsContainer extends Component {
     }
   }
 
+  componentWillReceiveProps() {
+    if (Object.keys(this.props.challenge).length) {
+      this.setState({
+        challenge: this.props.challenge
+      });
+    }
+  }
+
   render() {
+    console.log(this.state.challenge.spectators.votedTeamOne);
     return (
       <div className="team container">
         <div className="spectators">
@@ -43,6 +52,7 @@ class ResultsContainer extends Component {
               votes={this.state.challenge.spectators.votedTeamOne}
               onTeamOne
               currentVoter={this.state.challenge.voter}
+              handleVote={this.props.handleVote}
             />
           ) : (
             ""
@@ -57,6 +67,7 @@ class ResultsContainer extends Component {
               votes={this.state.challenge.spectators.votedTeamTwo}
               onTeamTwo
               currentVoter={this.state.challenge.voter}
+              handleVote={this.props.handleVote}
             />
           ) : (
             ""

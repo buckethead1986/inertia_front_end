@@ -16,6 +16,10 @@ class ChallengeView extends Component {
   }
 
   componentDidMount() {
+    this.formatChallengeResults();
+  }
+
+  formatChallengeResults = () => {
     const results = formatResults(this.props.challenge, this.props.currentUser);
     let stateObj;
     if (results.voter) {
@@ -30,10 +34,36 @@ class ChallengeView extends Component {
       };
     }
     this.setState(stateObj);
-  }
+  };
+
+  handleVote = teamVotedFor => {
+    // Make a post request to the user challenge object
+    const userChallenge = this.props.challenge.user_challenges.find(uc => {
+      return uc.user.id === this.props.currentUser.id;
+    });
+
+    fetch(`http://localhost:3001/api/v1/user_challenges/${userChallenge.id}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      method: "PATCH",
+      body: JSON.stringify({ vote: teamVotedFor })
+    }).then(res => {
+      this.props.fetchChallenge();
+      this.formatChallengeResults();
+      this.setState({
+        voted: true,
+        challenge: {
+          ...this.state.challenge,
+          voter: { voted: true, team: teamVotedFor }
+        }
+      });
+    });
+  };
 
   render() {
-    console.log(this.state.challenge.voter);
+    console.log(this.state);
     return (
       <div>
         <Header
@@ -57,7 +87,10 @@ class ChallengeView extends Component {
             : ""}
         </Header>
         {this.state.challenge.teamOne ? (
-          <ResultsContainer challenge={this.state.challenge} />
+          <ResultsContainer
+            challenge={this.state.challenge}
+            handleVote={this.handleVote}
+          />
         ) : (
           ""
         )}
