@@ -103,7 +103,11 @@ class App extends Component {
             path="/challenge/new"
             render={() => (
               <div>
-                <ChallengeForm users={this.state.users} url={url} />
+                <ChallengeForm
+                  users={this.state.users}
+                  url={url}
+                  currentUser={this.state.currentUser}
+                />
               </div>
             )}
           />
