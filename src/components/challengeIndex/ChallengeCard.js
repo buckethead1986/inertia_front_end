@@ -32,6 +32,7 @@ class ChallengeCard extends React.Component {
   render() {
     return (
       <Card
+        centered
         color={this.props.color}
         onClick={() =>
           this.props.history.push(`/challenges/${this.props.challenge.id}`)}
