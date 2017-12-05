@@ -11,7 +11,7 @@ class ChallengeCard extends React.Component {
     };
   }
 
-  filterRoles = () => {
+  componentDidMount = () => {
     this.props.challenge.user_challenges.forEach(uc => {
       if (uc.user_id === this.props.user) {
         switch (uc.role) {
@@ -19,6 +19,7 @@ class ChallengeCard extends React.Component {
             this.setState({
               role: "Spectator"
             });
+            break;
           default:
             this.setState({
               role: "Participant"
@@ -29,7 +30,6 @@ class ChallengeCard extends React.Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <Card
         onClick={() =>
