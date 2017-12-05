@@ -6,7 +6,8 @@ import TeamMembers from "./TeamMembers";
 class TeamCard extends React.Component {
   state = {
     visible: true,
-    teamVotedFor: null
+    teamVotedFor: null,
+    users: []
   };
 
   componentDidMount() {
@@ -39,6 +40,18 @@ class TeamCard extends React.Component {
     }
   };
 
+  componentDidMount() {
+    const newArray = [];
+    const userIds = [];
+    this.props.users.forEach(user => {
+      if (!userIds.includes(user.id)) newArray.push(user);
+      userIds.push(user.id);
+    });
+    this.setState({
+      users: newArray
+    });
+  }
+
   render() {
     return (
       <Transition
@@ -53,11 +66,11 @@ class TeamCard extends React.Component {
               <Card.Header>{this.props.teamName}</Card.Header>
               <Card.Meta>
                 <span className="date">
-                  {this.props.users.length} participants
+                  {this.state.users.length} participants
                 </span>
               </Card.Meta>
               <Card.Description>
-                <TeamMembers users={this.props.users} />
+                <TeamMembers users={this.state.users} />
               </Card.Description>
             </Card.Content>
             {this.props.currentVoter ? (

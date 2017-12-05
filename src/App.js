@@ -6,8 +6,8 @@ import ChallengeContainer from "./containers/ChallengeContainer";
 import InertiaContainer from "./containers/InertiaContainer";
 import ChallengeForm from "./components/createChallenge/ChallengeForm";
 import Navbar from "./components/navbar/Navbar";
-import Signup from "./components/createUser/Signup";
-import Login from "./components/loginUser/Login";
+import Signup from "./components/createUser/signup";
+import Login from "./components/loginUser/login";
 import Challenges from "./components/challengeIndex/challenges";
 import LoginNavbar from "./components/navbar/LoginNavbar";
 
@@ -117,9 +117,10 @@ class App extends Component {
           />
           <Route
             path="/challenges/:id"
-            render={() => (
+            render={props => (
               <div>
                 <ChallengeContainer
+                  {...props}
                   url={url}
                   currentUser={this.state.currentUser}
                 />

@@ -51,13 +51,11 @@ const removeFromSpectators = personObj => {
 
 const sortVotes = challenge => {
   challenge.user_challenges.forEach(userChallenge => {
-    console.log(userChallenge);
     const newObj = {
       id: userChallenge.user.id,
       name: userChallenge.user.username
     };
     if (userChallenge.vote === 1) {
-      console.log("HERE");
       resultsObject.spectators.votedTeamOne.push(newObj);
       removeFromSpectators(newObj);
     } else if (userChallenge.vote === 2) {

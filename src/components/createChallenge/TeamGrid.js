@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid } from "semantic-ui-react";
-import Participant from "./Participant";
+import Participant from "./participant";
 
 class TeamGrid extends React.Component {
   filterTeam = team_id => {

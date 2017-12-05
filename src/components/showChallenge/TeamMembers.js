@@ -10,7 +10,8 @@ class TeamMembers extends Component {
       items: [],
       toggledOn: true,
       icon: "chevron down",
-      defaultIcon: this.props.defaultIcon
+      defaultIcon: this.props.defaultIcon,
+      users: []
     };
   }
 
@@ -42,6 +43,18 @@ class TeamMembers extends Component {
     });
   };
 
+  componentDidMount() {
+    const newArray = [];
+    const userIds = [];
+    this.props.users.forEach(user => {
+      if (!userIds.includes(user.id)) newArray.push(user);
+      userIds.push(user.id);
+    });
+    this.setState({
+      users: newArray
+    });
+  }
+
   render() {
     const { items } = this.state;
     return (
@@ -61,7 +74,7 @@ class TeamMembers extends Component {
         </div>
         {this.props.voting
           ? this.props.votes
-            ? `${this.props.users.length} votes`
+            ? `${this.state.users.length} votes`
             : "No votes yet"
           : ""}
         <Transition.Group
