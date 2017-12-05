@@ -1,20 +1,21 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { withRouter, Route } from "react-router-dom";
 import "./App.css";
 import "./date_time.css";
 import ChallengeContainer from "./containers/ChallengeContainer";
 import InertiaContainer from "./containers/InertiaContainer";
+import ChallengeForm from "./components/createChallenge/ChallengeForm";
+import Navbar from "./components/navbar/Navbar";
+import Signup from "./components/createUser/Signup";
+import Login from "./components/loginUser/Login";
 import Challenges from "./components/challengeIndex/challenges";
-import ChallengeTest from "./components/createChallenge/challenge_test";
-import Signup from "./components/createUser/signup";
-import Login from "./components/loginUser/login";
+import LoginNavbar from "./components/navbar/LoginNavbar";
 
 //take these out
-import Direct from "./components/createChallenge/direct";
-import Redirect from "./components/createChallenge/redirect";
+// import Challenges from "./components/challengeIndex/challenges";
+
 const url = "http://localhost:3001/api/v1/";
 
-const Inertia = () => <ChallengeContainer />;
 class App extends Component {
   state = {
     users: [],
@@ -24,6 +25,23 @@ class App extends Component {
   logout = () => {
     localStorage.removeItem("token");
     this.setState({ currentUser: {} });
+    this.props.history.push("/login");
+  };
+
+  challengesLink = () => {
+    this.props.history.push("/challenges");
+  };
+
+  newChallengeLink = () => {
+    this.props.history.push("/challenge/new");
+  };
+
+  signup = () => {
+    this.props.history.push("/signup");
+  };
+
+  backToLogin = () => {
+    this.props.history.push("/login");
   };
 
   componentWillMount() {
@@ -58,30 +76,60 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Router>
-          <div>
-            <Route exact path="/direct" component={Direct} />
-            <Route exact path="/redirect" component={Redirect} />
-            <Route exact path="/signup" component={Signup} />
-            <Route
-              exact
-              path="/challenge/new"
-              render={() => (
-                <InertiaContainer users={this.state.users} url={url} />
-              )}
-            />
-            <Route exact path="/login" component={Login} />
-            <Route
-              path="/challenges/:id"
-              render={() => (
-                <ChallengeContainer currentUser={this.state.currentUser} />
-              )}
-            />
-          </div>
-        </Router>
+        {this.props.location.pathname !== "/login" &&
+        this.props.location.pathname !== "/signup" ? (
+          <Navbar
+            logout={this.logout}
+            challengesLink={this.challengesLink}
+            newChallengeLink={this.newChallengeLink}
+          />
+        ) : (
+          <LoginNavbar
+            location={this.props.location.pathname}
+            signup={this.signup}
+            backToLogin={this.backToLogin}
+          />
+        )}
+        <div>
+          <Route exact path="/signup" component={Signup} />
+          <Route exact path="/login" component={Login} />
+          <Route
+            exact
+            path="/challenge/new"
+            render={() => (
+              <div>
+                <ChallengeForm users={this.state.users} url={url} />
+              </div>
+            )}
+          />
+          <Route
+            exact
+            path="/challenges"
+            render={() => (
+              <div>
+                <Challenges
+                  users={this.state.users}
+                  url={url}
+                  currentUser={this.state.currentUser}
+                />
+              </div>
+            )}
+          />
+          <Route
+            path="/challenges/:id"
+            render={() => (
+              <div>
+                <ChallengeContainer
+                  url={url}
+                  currentUser={this.state.currentUser}
+                />
+              </div>
+            )}
+          />
+        </div>
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);

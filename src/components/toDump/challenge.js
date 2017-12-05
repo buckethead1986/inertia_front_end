@@ -1,5 +1,5 @@
 import React from "react";
-import ChallengeForm from "./challenge_form";
+import ChallengeForm from "./ChallengeForm";
 
 class Challenge extends React.Component {
   render() {

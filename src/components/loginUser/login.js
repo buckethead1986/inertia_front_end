@@ -1,5 +1,6 @@
 import React from "react";
 import { Form } from "semantic-ui-react";
+import SignupButton from "./Button";
 const url = "http://localhost:3001/api/v1/";
 
 class Signup extends React.Component {
@@ -33,7 +34,7 @@ class Signup extends React.Component {
       .then(json => {
         if (!json.error) {
           localStorage.setItem("token", json.jwt);
-          this.props.history.push("/");
+          this.props.history.push("/challenges");
         }
       });
   };
@@ -43,17 +44,20 @@ class Signup extends React.Component {
       <div>
         <h2>Log in</h2>
         <Form onSubmit={this.handleSubmit}>
-          <Form.Group widths="equal">
+          <Form.Group widths="12">
             <Form.Input
               name="username"
               onChange={this.handleChange}
               label="Username"
               placeholder="Username"
             />
+          </Form.Group>
+          <Form.Group widths="12">
             <Form.Input
               name="password"
               onChange={this.handleChange}
               label="Password"
+              type="password"
               placeholder="Password"
             />
           </Form.Group>
