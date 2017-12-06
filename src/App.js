@@ -110,12 +110,18 @@ class App extends Component {
           />
         )}
         <div>
-          <Route exact path="/signup" component={Signup} />
           <Route
             exact
             path="/login"
             render={props => (
               <Login fetchUser={this.fetchUserInformation} {...props} />
+            )}
+          />
+          <Route
+            exact
+            path="/signup"
+            render={props => (
+              <Signup fetchUser={this.fetchUserInformation} {...props} />
             )}
           />
           <Route

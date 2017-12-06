@@ -3,7 +3,7 @@ import { Form } from "semantic-ui-react";
 
 const url = "https://inertia-app.herokuapp.com/api/v1/";
 
-class Signup extends React.Component {
+class Login extends React.Component {
   constructor() {
     super();
 
@@ -68,4 +68,4 @@ class Signup extends React.Component {
     );
   }
 }
-export default Signup;
+export default Login;

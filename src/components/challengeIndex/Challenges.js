@@ -121,6 +121,7 @@ class Challenges extends React.Component {
   };
 
   render() {
+    console.log(this.state);
     const UserChallenges = this.state.userChallenges.map((challenge, id) => {
       return (
         <ChallengeCard

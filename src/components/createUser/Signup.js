@@ -35,7 +35,29 @@ class Signup extends React.Component {
           localStorage.setItem("token", json.jwt);
           this.props.history.push("/challenges");
         }
-      });
+      })
+      .then(this.handleSubmitted);
+  };
+
+  handleSubmitted = () => {
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
+    const body = this.state;
+    fetch(`${url}auth`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body)
+    })
+      .then(res => res.json())
+      .then(json => {
+        if (!json.error) {
+          localStorage.setItem("token", json.jwt);
+          this.props.history.push("/challenges");
+        }
+      })
+      .then(this.props.fetchUser);
   };
 
   render() {
