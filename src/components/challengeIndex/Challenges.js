@@ -9,9 +9,13 @@ class Challenges extends React.Component {
     this.state = {
       challenges: [],
       userChallenges: [],
-      otherChallenges: [],
       completedUserChallenges: [],
-      otherCompletedChallenges: []
+      otherChallenges: [],
+      otherCompletedChallenges: [],
+      showUserChallenges: true,
+      showCompletedUserChallenges: true,
+      showOtherChallenges: true,
+      showOtherCompletedChallenges: true
     };
   }
 
@@ -79,24 +83,39 @@ class Challenges extends React.Component {
     });
     this.setState(
       {
-        userChallenges: userChallenges,
-        completedUserChallenges: completedUserChallenges,
-        otherChallenges: otherChallenges,
-        otherCompletedChallenges: otherCompletedChallenges
+        userChallenges,
+        completedUserChallenges,
+        otherChallenges,
+        otherCompletedChallenges
       },
       () => console.log(this.state)
     );
   };
 
-  // checkWin = () => {
-  //   let now = new Date().toISOString();
-  //   const completedChallenges = this.state.userChallenges.map(challenge => {
-  //     if (challenge.criteria < now) {
-  //       challenge["completed"] = true;
-  //     }
-  //   });
-  //   console.log(this.state.userChallenges);
-  // };
+  showUserChallenges = e => {
+    this.setState(prevState => {
+      return { showUserChallenges: !prevState.showUserChallenges };
+    });
+  };
+  showCompletedUserChallenges = e => {
+    this.setState(prevState => {
+      return {
+        showCompletedUserChallenges: !prevState.showCompletedUserChallenges
+      };
+    });
+  };
+  showOtherChallenges = e => {
+    this.setState(prevState => {
+      return { showOtherChallenges: !prevState.showOtherChallenges };
+    });
+  };
+  showOtherCompletedChallenges = e => {
+    this.setState(prevState => {
+      return {
+        showOtherCompletedChallenges: !prevState.showOtherCompletedChallenges
+      };
+    });
+  };
 
   render() {
     const UserChallenges = this.state.userChallenges.map((challenge, id) => {
@@ -144,33 +163,68 @@ class Challenges extends React.Component {
       }
     );
 
+    //looks complex, but its the same thing 4 times.  Shows and hides current user challenges, completed user challenges, current other challenges, and completed other challenges, based on state.
     return (
       <Grid>
         <Grid.Row>
-          <Grid.Column width={4}>
-            <div>
-              <h3>Your Current Challenges</h3>
-              {UserChallenges}
-            </div>
-          </Grid.Column>
-          <Grid.Column width={4}>
-            <div>
-              <h3>Your Completed Challenges</h3>
-              {CompletedUserChallenges}
-            </div>
-          </Grid.Column>
-          <Grid.Column width={4}>
-            <div>
-              <h3>Other Challenges</h3>
-              {OtherChallenges}
-            </div>
-          </Grid.Column>
-          <Grid.Column width={4}>
-            <div>
-              <h3>Other Completed Challenges</h3>
-              {OtherCompletedChallenges}
-            </div>
-          </Grid.Column>
+          {this.state.showUserChallenges ? (
+            <Grid.Column width={4}>
+              <div>
+                <h3 onClick={this.showUserChallenges}>
+                  Your Current Challenges
+                </h3>
+                {UserChallenges}
+              </div>
+            </Grid.Column>
+          ) : (
+            <Grid.Column width={4}>
+              <h3 onClick={this.showUserChallenges}>Your Current Challenges</h3>
+            </Grid.Column>
+          )}
+          {this.state.showCompletedUserChallenges ? (
+            <Grid.Column width={4}>
+              <div>
+                <h3 onClick={this.showCompletedUserChallenges}>
+                  Your Completed Challenges
+                </h3>
+                {CompletedUserChallenges}
+              </div>
+            </Grid.Column>
+          ) : (
+            <Grid.Column width={4}>
+              <h3 onClick={this.showCompletedUserChallenges}>
+                Your Completed Challenges
+              </h3>
+            </Grid.Column>
+          )}
+          {this.state.showOtherChallenges ? (
+            <Grid.Column width={4}>
+              <div>
+                <h3 onClick={this.showOtherChallenges}>Other Challenges</h3>
+                {OtherChallenges}
+              </div>
+            </Grid.Column>
+          ) : (
+            <Grid.Column width={4}>
+              <h3 onClick={this.showOtherChallenges}>Other Challenges</h3>
+            </Grid.Column>
+          )}
+          {this.state.showOtherCompletedChallenges ? (
+            <Grid.Column width={4}>
+              <div>
+                <h3 onClick={this.showOtherCompletedChallenges}>
+                  Other Completed Challenges
+                </h3>
+                {OtherCompletedChallenges}
+              </div>
+            </Grid.Column>
+          ) : (
+            <Grid.Column width={4}>
+              <h3 onClick={this.showOtherCompletedChallenges}>
+                Other Completed Challenges
+              </h3>
+            </Grid.Column>
+          )}
         </Grid.Row>
       </Grid>
     );
