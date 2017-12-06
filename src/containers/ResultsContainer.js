@@ -31,7 +31,7 @@ class ResultsContainer extends Component {
 
   render() {
     return (
-      <div className="team container">
+      <div className="team container" style={{ paddingBottom: "0px" }}>
         <div className="spectators">
           {this.state.challenge.spectators ? (
             <TeamMembers

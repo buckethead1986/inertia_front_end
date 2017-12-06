@@ -6,6 +6,7 @@ import { Header, Icon, Image, Transition } from "semantic-ui-react";
 import Timer from "./Timer";
 
 const ChallengeView = props => {
+  console.log(props);
   return (
     <div>
       <Header centered as="h4" textAlign="center">
@@ -37,7 +38,10 @@ const ChallengeView = props => {
       ) : (
         ""
       )}
-      <CommentsContainer />
+      <CommentsContainer
+        challengeNumber={props.challenge.challengeNumber}
+        currentUser={props.currentUser}
+      />
     </div>
   );
 };

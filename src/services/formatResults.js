@@ -4,6 +4,7 @@ const getObject = () => {
     description: "",
     deadline: "",
     createdAt: "",
+    challengeNumber: "",
     teamOne: {
       name: "",
       participants: []
@@ -27,6 +28,7 @@ const clearResultsObject = () => {
   resultsObject.description = "";
   resultsObject.deadline = "";
   resultsObject.createdAt = "";
+  resultsObject.challengeNumber = "";
   resultsObject.teamOne = {
     name: "",
     participants: []
@@ -130,6 +132,7 @@ const voted = currentUser => {
 const deadline = challenge => {
   resultsObject.deadline = challenge.criteria;
   resultsObject.createdAt = challenge.created_at;
+  resultsObject.challengeNumber = challenge.id;
 };
 
 export const formatResults = (challenge, currentUser) => {

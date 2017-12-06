@@ -68,13 +68,6 @@ class ChallengeContainer extends Component {
       body: JSON.stringify({ vote: teamVotedFor })
     }).then(res => {
       this.fetchChallenge();
-      // this.setState({
-      //   voted: true,
-      //   challenge: {
-      //     ...this.state.challenge,
-      //     voter: { voted: true, team: teamVotedFor }
-      //   }
-      // });
     });
   };
 
