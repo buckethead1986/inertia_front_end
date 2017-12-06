@@ -20,6 +20,14 @@ export default class MenuExampleBasic extends Component {
         </Menu.Item>
 
         <Menu.Item
+          name="Users"
+          active={activeItem === "Users"}
+          onClick={this.props.usersLink}
+        >
+          Users
+        </Menu.Item>
+
+        <Menu.Item
           name="New Challenge"
           active={activeItem === "New Challenge"}
           onClick={this.props.newChallengeLink}

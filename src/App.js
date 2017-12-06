@@ -10,6 +10,8 @@ import Signup from "./components/createUser/Signup";
 import Login from "./components/loginUser/Login";
 import Challenges from "./components/challengeIndex/Challenges";
 import LoginNavbar from "./components/navbar/LoginNavbar";
+import ShowUser from "./components/showUser/ShowUser";
+import AllUsers from "./components/showUser/AllUsers";
 
 const url = "http://localhost:3001/api/v1/";
 
@@ -20,7 +22,8 @@ class App extends Component {
   }
 
   state = {
-    currentUser: {}
+    currentUser: {},
+    users: []
   };
 
   logout = () => {
@@ -31,6 +34,14 @@ class App extends Component {
 
   challengesLink = () => {
     this.props.history.push("/challenges");
+  };
+
+  usersLink = () => {
+    this.props.history.push("/users");
+  };
+
+  showUser = id => {
+    this.props.history.push(`/users/${id}`);
   };
 
   newChallengeLink = () => {
@@ -59,6 +70,14 @@ class App extends Component {
     })
       .then(res => res.json())
       .then(this.updateState);
+
+    fetch(`${url}users`)
+      .then(res => res.json())
+      .then(json =>
+        this.setState({
+          users: json
+        })
+      );
   };
 
   componentWillMount() {
@@ -81,6 +100,7 @@ class App extends Component {
             logout={this.logout}
             challengesLink={this.challengesLink}
             newChallengeLink={this.newChallengeLink}
+            usersLink={this.usersLink}
           />
         ) : (
           <LoginNavbar
@@ -104,9 +124,9 @@ class App extends Component {
             render={() => (
               <div>
                 <ChallengeForm
-                  users={this.state.users}
                   url={url}
                   currentUser={this.state.currentUser}
+                  users={this.state.users}
                 />
               </div>
             )}
@@ -117,6 +137,32 @@ class App extends Component {
             render={() => (
               <div>
                 <Challenges url={url} currentUser={this.state.currentUser} />
+              </div>
+            )}
+          />
+          <Route
+            exact
+            path="/users"
+            render={() => (
+              <div>
+                <AllUsers
+                  url={url}
+                  currentUser={this.state.currentUser}
+                  showUser={this.showUser}
+                  users={this.state.users}
+                />
+              </div>
+            )}
+          />
+          <Route
+            path="/users/:id"
+            render={props => (
+              <div>
+                <ShowUser
+                  {...props}
+                  url={url}
+                  currentUser={this.state.currentUser}
+                />
               </div>
             )}
           />

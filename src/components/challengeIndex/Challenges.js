@@ -73,7 +73,10 @@ class Challenges extends React.Component {
       );
     });
     const otherChallenges = this.state.challenges.filter(challenge => {
-      return !challenge.hasOwnProperty("containsUser");
+      return (
+        !challenge.hasOwnProperty("containsUser") &&
+        !challenge.hasOwnProperty("completed")
+      );
     });
     const otherCompletedChallenges = this.state.challenges.filter(challenge => {
       return (
@@ -93,6 +96,7 @@ class Challenges extends React.Component {
   };
 
   showUserChallenges = e => {
+    console.log(e);
     this.setState(prevState => {
       return { showUserChallenges: !prevState.showUserChallenges };
     });
