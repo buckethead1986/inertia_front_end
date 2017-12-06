@@ -44,7 +44,14 @@ class CommentsContainer extends Component {
       },
       method: "POST",
       body: JSON.stringify(body)
-    }).then(res => this.fetchComments());
+    }).then(res => this.resetText());
+  };
+
+  resetText = () => {
+    this.fetchComments();
+    this.setState({
+      commentValue: ""
+    });
   };
 
   handleClick = e => {
