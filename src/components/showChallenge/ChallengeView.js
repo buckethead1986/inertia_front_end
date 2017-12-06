@@ -12,6 +12,7 @@ const ChallengeView = props => {
         <Timer
           deadline={props.challenge.deadline}
           createdAt={props.challenge.createdAt}
+          deadlineOver={props.deadlineOver}
         />
       </Header>
       <Header centered as="h2" icon textAlign="center">

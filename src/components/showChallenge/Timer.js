@@ -6,7 +6,8 @@ class Timer extends React.Component {
     super(props);
 
     this.state = {
-      timeLeft: {}
+      timeLeft: {},
+      completed: false
     };
   }
 
@@ -17,16 +18,19 @@ class Timer extends React.Component {
   getTimeRemaining(endtime, createdAt) {
     let tb = Date.parse(endtime) - Date.parse(createdAt);
     let t = Date.parse(endtime) - Date.parse(new Date());
+    if (tb <= 0 || t <= 0) {
+      this.setState({
+        completed: true
+      });
+      tb = Math.abs(tb);
+      this.props.deadlineOver();
+    }
     let tr = (tb - t) / tb;
-    console.log(tr);
-    let progress = tr * 100;
-    console.log(progress);
+    let progress = Math.abs(tr * 100);
     let seconds = Math.floor((t / 1000) % 60);
     let minutes = Math.floor((t / 1000 / 60) % 60);
     let hours = Math.floor((t / (1000 * 60 * 60)) % 24);
     let days = Math.floor(t / (1000 * 60 * 60 * 24));
-    console.log(endtime);
-    console.log(createdAt);
 
     this.setState({
       timeLeft: {
@@ -60,10 +64,17 @@ class Timer extends React.Component {
   };
 
   render() {
+    console.log(this.state);
     return (
       <div onMouseOver={this.handleHover}>
         {this.state.timeLeft.percent ? (
-          <Progress percent={this.state.timeLeft.percent} indicating />
+          this.state.completed ? (
+            <Progress percent={this.state.timeLeft.percent} disabled success>
+              Challenge Completed
+            </Progress>
+          ) : (
+            <Progress percent={this.state.timeLeft.percent} indicating />
+          )
         ) : (
           ""
         )}

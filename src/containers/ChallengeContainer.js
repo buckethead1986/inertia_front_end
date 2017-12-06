@@ -77,6 +77,10 @@ class ChallengeContainer extends Component {
     });
   };
 
+  deadlineOver = () => {
+    console.log("Deadline Over");
+  };
+
   render() {
     return (
       <div>
@@ -86,6 +90,7 @@ class ChallengeContainer extends Component {
             currentUser={this.props.currentUser}
             fetchChallenge={this.fetchChallenge}
             handleVote={this.handleVote}
+            deadlineOver={this.deadlineOver}
           />
         ) : (
           ""
