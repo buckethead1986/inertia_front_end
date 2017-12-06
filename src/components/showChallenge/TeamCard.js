@@ -4,11 +4,15 @@ import { Card, Icon, Image, Transition, Button } from "semantic-ui-react";
 import TeamMembers from "./TeamMembers";
 
 class TeamCard extends React.Component {
-  state = {
-    visible: true,
-    teamVotedFor: null,
-    users: []
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      visible: true,
+      teamVotedFor: null,
+      users: []
+    };
+  }
 
   componentDidMount() {
     this.toggleVisibility();
