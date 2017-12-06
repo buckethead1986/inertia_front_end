@@ -8,24 +8,18 @@ import Timer from "./Timer";
 const ChallengeView = props => {
   return (
     <div>
-      <Header
-        style={{ padding: "20px", paddingBottom: "0px" }}
-        centered
-        as="h2"
-        icon
-        textAlign="center"
-      >
-        <Icon name="trophy" circular />
-        {props.challenge ? props.challenge.name : ""}
-      </Header>
-      <Header style={{ padding: "0px" }} centered as="h4" textAlign="center">
-        {props.challenge ? props.challenge.description : ""}
-      </Header>
       <Header style={{ padding: "0px" }} centered as="h4" textAlign="center">
         <Timer
           deadline={props.challenge.deadline}
           createdAt={props.challenge.createdAt}
         />
+      </Header>
+      <Header centered as="h2" icon textAlign="center">
+        <Icon name="trophy" circular />
+        {props.challenge ? props.challenge.name : ""}
+      </Header>
+      <Header style={{ padding: "0px" }} centered as="h4" textAlign="center">
+        {props.challenge ? props.challenge.description : ""}
       </Header>
       <Header style={{ padding: "0px" }} centered as="h4" textAlign="center">
         {props.challenge.voter
