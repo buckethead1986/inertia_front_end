@@ -12,7 +12,8 @@ class ChallengeContainer extends Component {
       originalChallenge: {},
       challenge: {},
       voted: null,
-      teamVotedFor: null
+      teamVotedFor: null,
+      completed: false
     };
   }
 
@@ -78,7 +79,9 @@ class ChallengeContainer extends Component {
   };
 
   deadlineOver = () => {
-    console.log("Deadline Over");
+    this.setState({
+      completed: true
+    });
   };
 
   render() {
@@ -91,6 +94,7 @@ class ChallengeContainer extends Component {
             fetchChallenge={this.fetchChallenge}
             handleVote={this.handleVote}
             deadlineOver={this.deadlineOver}
+            completed={this.state.completed}
           />
         ) : (
           ""
