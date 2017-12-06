@@ -14,14 +14,13 @@ class AllUsers extends React.Component {
   }
   //
   componentDidMount() {
-    // fetch(`${this.props.url}users`)
-    //   .then(res => res.json())
-    //   .then(json =>
+    const filteredUsers = this.props.users.filter(user => {
+      return user.id !== this.props.currentUser.id;
+    });
     this.setState({
-      users: this.props.users,
+      users: filteredUsers,
       filteredUsers: this.props.users
     });
-    // );
   }
 
   //removes currently logged in user from list of other users.
@@ -44,7 +43,7 @@ class AllUsers extends React.Component {
   changeUserInput = (e, data) => {
     const filteredUsers = this.state.users.filter(user => {
       return (
-        user.username.includes(data.searchQuery) &&
+        user.username.toLowerCase().includes(data.searchQuery.toLowerCase()) &&
         user.id !== this.props.currentUser.id
       );
     });
@@ -53,9 +52,17 @@ class AllUsers extends React.Component {
     });
   };
 
+  changeUser = (e, data) => {
+    if (data.value !== 0) {
+      this.props.showUser(data.value);
+    }
+  };
+
   render() {
+    const usersWithoutCurrentUser = this.state.users.filter(user => {
+      return user.id !== this.props.currentUser.id;
+    });
     const UserCards = this.state.filteredUsers.map(user => {
-      console.log(user);
       let color = "";
       if (user.id % 5 === 0) {
         color = "blue";
@@ -95,10 +102,11 @@ class AllUsers extends React.Component {
 
             <Grid.Column width="3">
               <SearchDropdown
+                onChange={this.changeUser}
                 changeUserInput={this.changeUserInput}
                 label="Select User"
                 title="Select User"
-                data={this.state.users}
+                data={usersWithoutCurrentUser}
               />
             </Grid.Column>
           </Grid.Row>
