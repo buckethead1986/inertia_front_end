@@ -78,6 +78,7 @@ class Signup extends React.Component {
               name="password"
               onChange={this.handleChange}
               label="Password"
+              type="Password"
               placeholder="Password"
             />
           </Form.Group>
