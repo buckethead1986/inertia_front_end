@@ -96,7 +96,6 @@ class Challenges extends React.Component {
   };
 
   showUserChallenges = e => {
-    console.log(e);
     this.setState(prevState => {
       return { showUserChallenges: !prevState.showUserChallenges };
     });

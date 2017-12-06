@@ -22,8 +22,7 @@ class App extends Component {
   }
 
   state = {
-    currentUser: {},
-    users: []
+    currentUser: {}
   };
 
   logout = () => {
@@ -123,11 +122,7 @@ class App extends Component {
             path="/challenge/new"
             render={() => (
               <div>
-                <ChallengeForm
-                  url={url}
-                  currentUser={this.state.currentUser}
-                  users={this.state.users}
-                />
+                <ChallengeForm url={url} currentUser={this.state.currentUser} />
               </div>
             )}
           />
@@ -149,7 +144,6 @@ class App extends Component {
                   url={url}
                   currentUser={this.state.currentUser}
                   showUser={this.showUser}
-                  users={this.state.users}
                 />
               </div>
             )}
