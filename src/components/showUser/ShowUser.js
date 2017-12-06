@@ -52,7 +52,7 @@ class User extends React.Component {
         challenge["completed"] = true;
       }
       return challenge.user_challenges.some(category => {
-        if (category.user_id === this.props.currentUser.id) {
+        if (category.user_id === this.state.user.id) {
           challenge["containsUser"] = true;
         }
       });
@@ -98,16 +98,21 @@ class User extends React.Component {
   };
 
   render() {
-    console.log(this.state);
     const UserChallenges = this.state.userChallenges.map((challenge, id) => {
       return (
-        <ChallengeCard color="blue" key={challenge.id} challenge={challenge} />
+        <ChallengeCard
+          thisUser={this.state.user.id}
+          color="blue"
+          key={challenge.id}
+          challenge={challenge}
+        />
       );
     });
     const CompletedUserChallenges = this.state.completedUserChallenges.map(
       (challenge, id) => {
         return (
           <ChallengeCard
+            thisUser={this.state.user.id}
             color="green"
             key={challenge.id}
             challenge={challenge}
@@ -115,7 +120,7 @@ class User extends React.Component {
         );
       }
     );
-    console.log(this.state.user);
+    console.log(CompletedUserChallenges);
     return (
       <Grid>
         <Grid.Row>
