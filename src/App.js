@@ -22,7 +22,8 @@ class App extends Component {
   }
 
   state = {
-    currentUser: {}
+    currentUser: {},
+    users: []
   };
 
   logout = () => {
@@ -138,15 +139,22 @@ class App extends Component {
           <Route
             exact
             path="/users"
-            render={() => (
-              <div>
-                <AllUsers
-                  url={url}
-                  currentUser={this.state.currentUser}
-                  showUser={this.showUser}
-                />
-              </div>
-            )}
+            render={() => {
+              if (this.state.users.length !== 0) {
+                return (
+                  <div>
+                    <AllUsers
+                      url={url}
+                      currentUser={this.state.currentUser}
+                      showUser={this.showUser}
+                      users={this.state.users}
+                    />
+                  </div>
+                );
+              } else {
+                return "";
+              }
+            }}
           />
           <Route
             path="/users/:id"
