@@ -57,7 +57,6 @@ class TeamMembers extends Component {
 
   render() {
     const { items } = this.state;
-    console.log("Votes are ", this.props.votes);
     return (
       <div>
         <div onClick={this.handleChange}>

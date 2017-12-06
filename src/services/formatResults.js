@@ -2,6 +2,8 @@ const getObject = () => {
   return {
     name: "",
     description: "",
+    deadline: "",
+    createdAt: "",
     teamOne: {
       name: "",
       participants: []
@@ -23,6 +25,8 @@ const resultsObject = getObject();
 const clearResultsObject = () => {
   resultsObject.name = "";
   resultsObject.description = "";
+  resultsObject.deadline = "";
+  resultsObject.createdAt = "";
   resultsObject.teamOne = {
     name: "",
     participants: []
@@ -123,9 +127,15 @@ const voted = currentUser => {
   }
 };
 
+const deadline = challenge => {
+  resultsObject.deadline = challenge.criteria;
+  resultsObject.createdAt = challenge.created_at;
+};
+
 export const formatResults = (challenge, currentUser) => {
   clearResultsObject();
   challengeName(challenge);
+  deadline(challenge);
   teamNames(challenge.team_names);
   filterParticipants(challenge);
   sortVotes(challenge);

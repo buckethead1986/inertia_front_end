@@ -30,7 +30,6 @@ class ResultsContainer extends Component {
   }
 
   render() {
-    console.log(this.props.handleVote);
     return (
       <div className="team container">
         <div className="spectators">
