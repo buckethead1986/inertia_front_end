@@ -13,7 +13,7 @@ import LoginNavbar from "./components/navbar/LoginNavbar";
 import ShowUser from "./components/showUser/ShowUser";
 import AllUsers from "./components/showUser/AllUsers";
 
-const url = "https://inertia-app.herokuapp.com/api/v1/";
+const url = "http://localhost:3001/api/v1/";
 
 class App extends Component {
   constructor() {

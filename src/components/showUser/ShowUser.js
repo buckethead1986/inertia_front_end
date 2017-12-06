@@ -98,6 +98,7 @@ class User extends React.Component {
   };
 
   render() {
+    console.log(this.state);
     const UserChallenges = this.state.userChallenges.map((challenge, id) => {
       return (
         <ChallengeCard
@@ -120,7 +121,6 @@ class User extends React.Component {
         );
       }
     );
-    console.log(CompletedUserChallenges);
     return (
       <Grid>
         <Grid.Row>

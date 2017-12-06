@@ -1,7 +1,7 @@
 import React from "react";
 import { Form } from "semantic-ui-react";
 
-const url = "https://inertia-app.herokuapp.com/api/v1/";
+const url = "http://localhost:3001/api/v1/";
 
 class Login extends React.Component {
   constructor() {
