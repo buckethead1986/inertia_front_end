@@ -8,7 +8,7 @@ import Timer from "./Timer";
 const ChallengeView = props => {
   return (
     <div>
-      <Header style={{ padding: "0px" }} centered as="h4" textAlign="center">
+      <Header centered as="h4" textAlign="center">
         <Timer
           deadline={props.challenge.deadline}
           createdAt={props.challenge.createdAt}
