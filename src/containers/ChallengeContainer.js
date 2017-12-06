@@ -59,14 +59,17 @@ class ChallengeContainer extends Component {
       }
     );
 
-    fetch(`http://localhost:3001/api/v1/user_challenges/${userChallenge.id}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      method: "PATCH",
-      body: JSON.stringify({ vote: teamVotedFor })
-    }).then(res => {
+    fetch(
+      `https://inertia-app.herokuapp.com/api/v1/user_challenges/${userChallenge.id}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        method: "PATCH",
+        body: JSON.stringify({ vote: teamVotedFor })
+      }
+    ).then(res => {
       this.fetchChallenge();
     });
   };
