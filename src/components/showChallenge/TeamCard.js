@@ -75,7 +75,11 @@ class TeamCard extends React.Component {
             </Card.Content>
             {this.props.currentVoter ? (
               !this.props.currentVoter.team ? (
-                <Button content="Like" onClick={this.handleClick} />
+                <Button
+                  content="Vote"
+                  disabled={this.props.completed}
+                  onClick={this.handleClick}
+                />
               ) : (
                 ""
               )

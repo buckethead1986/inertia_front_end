@@ -52,6 +52,7 @@ class ResultsContainer extends Component {
               onTeamOne
               currentVoter={this.state.challenge.voter}
               handleVote={this.props.handleVote}
+              completed={this.props.completed}
             />
           ) : (
             ""
@@ -67,6 +68,7 @@ class ResultsContainer extends Component {
               onTeamTwo
               currentVoter={this.state.challenge.voter}
               handleVote={this.props.handleVote}
+              completed={this.props.completed}
             />
           ) : (
             ""
