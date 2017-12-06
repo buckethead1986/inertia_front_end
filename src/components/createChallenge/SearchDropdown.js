@@ -8,6 +8,7 @@ const SearchDropdown = props => {
   return (
     <Dropdown
       onChange={props.changeUser}
+      onSearchChange={props.changeUserInput}
       placeholder={props.title}
       search
       selection

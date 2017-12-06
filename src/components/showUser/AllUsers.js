@@ -1,51 +1,71 @@
 import React from "react";
 import SearchDropdown from "../createChallenge/SearchDropdown";
 import { Card, Icon, Image, Transition, Button } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 
 class AllUsers extends React.Component {
   constructor() {
     super();
     this.state = {
       users: [],
-      passedUsers: []
+      filteredUsers: [],
+      currentSelectedUser: ""
     };
   }
-
+  //
   componentDidMount() {
-    fetch(`${this.props.url}users`)
-      .then(res => res.json())
-      .then(json =>
-        this.setState({
-          users: json
-        })
-      );
+    // fetch(`${this.props.url}users`)
+    //   .then(res => res.json())
+    //   .then(json =>
+    this.setState({
+      users: this.props.users,
+      filteredUsers: this.props.users
+    });
+    // );
   }
 
+  //removes currently logged in user from list of other users.
+  filterCurrentUser = () => {
+    const filteredUserList = this.state.users.filter(user => {
+      return user.id !== this.props.currentUser.id;
+    });
+    return filteredUserList;
+  };
+  //
   // componentWillReceiveProps(nextProps) {
-  //   if (this.state.passedUsers !== this.props.users) {
+  //   if (this.state.users !== nextProps.users) {
   //     this.setState({
-  //       passedUsers: nextProps.users
+  //       users: nextProps.users,
+  //       usersMinusCurrentUser: this.filterCurrentUser(nextProps.users)
   //     });
   //   }
   // }
 
-  changeUser = (e, data) => {
+  changeUserInput = (e, data) => {
+    const filteredUsers = this.state.users.filter(user => {
+      return (
+        user.username.includes(data.searchQuery) &&
+        user.id !== this.props.currentUser.id
+      );
+    });
     this.setState({
-      currentSelectedUser: data.value
+      filteredUsers: filteredUsers
     });
   };
 
   render() {
-    console.log(this.state);
-    const UserCards = this.state.users.map(user => {
+    const UserCards = this.state.filteredUsers.map(user => {
+      console.log(user);
       let color = "";
-      if (user.id % 4 === 0) {
+      if (user.id % 5 === 0) {
         color = "blue";
-      } else if (user.id % 4 === 3) {
+      } else if (user.id % 5 === 4) {
         color = "green";
-      } else if (user.id % 4 === 2) {
-        color = "purple";
-      } else if (user.id % 4 === 1) {
+      } else if (user.id % 5 === 3) {
+        color = "yellow";
+      } else if (user.id % 5 === 2) {
+        color = "orange";
+      } else if (user.id % 5 === 1) {
         color = "red";
       }
       return (
@@ -59,7 +79,9 @@ class AllUsers extends React.Component {
             <Card.Header>{user.username}</Card.Header>
             <Card.Meta>Super Cool</Card.Meta>
             <Card.Description>
-              Involved in {user.user_challenges.length} challenges
+              {user.user_challenges.length === 1
+                ? `Involved in ${user.user_challenges.length} challenge`
+                : `Involved in ${user.user_challenges.length} challenges`}
             </Card.Description>
           </Card.Content>
         </Card>
@@ -67,12 +89,20 @@ class AllUsers extends React.Component {
     });
     return (
       <div>
-        <SearchDropdown
-          changeUser={this.changeUser}
-          label="Select User"
-          title="Select User"
-          data={this.state.users}
-        />
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width="13" />
+
+            <Grid.Column width="3">
+              <SearchDropdown
+                changeUserInput={this.changeUserInput}
+                label="Select User"
+                title="Select User"
+                data={this.state.users}
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
         <Card.Group>{UserCards}</Card.Group>
       </div>
     );
