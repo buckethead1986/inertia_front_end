@@ -37,6 +37,7 @@ class User extends React.Component {
     console.log("this is a test");
     console.log("hey hey hey hey");
     console.log("thing things things");
+    console.log("bjswbvojsdbv");
   }
 
   // componentDidMount() {
