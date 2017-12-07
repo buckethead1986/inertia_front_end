@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "semantic-ui-react";
+import { Card, Image } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 
 class ChallengeCard extends React.Component {
@@ -39,10 +39,20 @@ class ChallengeCard extends React.Component {
         color={this.props.color}
         onClick={() =>
           this.props.history.push(`/challenges/${this.props.challenge.id}`)}
-        header={this.props.challenge.name}
-        meta={this.state.role}
-        description={this.props.challenge.description}
-      />
+      >
+        <Card.Content>
+          <Image
+            floated="right"
+            size="mini"
+            src="http://images.clipartpanda.com/challenge-clipart-k15443406.jpg"
+          />
+          <Card.Header>{this.props.challenge.name}</Card.Header>
+          <Card.Meta>{this.state.role}</Card.Meta>
+          <Card.Description>
+            {this.props.challenge.description}
+          </Card.Description>
+        </Card.Content>
+      </Card>
     );
   }
 }

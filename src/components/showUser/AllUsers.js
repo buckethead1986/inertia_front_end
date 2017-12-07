@@ -55,7 +55,7 @@ class AllUsers extends React.Component {
   changeUser = (e, data) => {
     console.log(e, data);
     if (data.value !== 0) {
-      this.props.showUser(data.value);
+      this.props.showUser(data.value + 1);
     }
   };
 
@@ -82,7 +82,7 @@ class AllUsers extends React.Component {
             <Image
               floated="right"
               size="mini"
-              src="/assets/images/avatar/large/steve.jpg"
+              src="http://donatered-asset.s3.amazonaws.com/assets/default/default_user-884fcb1a70325256218e78500533affb.jpg"
             />
             <Card.Header>{user.username}</Card.Header>
             <Card.Meta>Super Cool</Card.Meta>

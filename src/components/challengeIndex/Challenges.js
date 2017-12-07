@@ -84,15 +84,12 @@ class Challenges extends React.Component {
         challenge.hasOwnProperty("completed")
       );
     });
-    this.setState(
-      {
-        userChallenges,
-        completedUserChallenges,
-        otherChallenges,
-        otherCompletedChallenges
-      },
-      () => console.log(this.state)
-    );
+    this.setState({
+      userChallenges,
+      completedUserChallenges,
+      otherChallenges,
+      otherCompletedChallenges
+    });
   };
 
   showUserChallenges = e => {
@@ -121,7 +118,6 @@ class Challenges extends React.Component {
   };
 
   render() {
-    console.log(this.state);
     const UserChallenges = this.state.userChallenges.map((challenge, id) => {
       return (
         <ChallengeCard
