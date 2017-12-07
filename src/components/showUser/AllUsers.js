@@ -1,5 +1,5 @@
 import React from "react";
-import SearchDropdown from "../createChallenge/SearchDropdown";
+import UserSearchDropdown from "./UserSearchDropdown";
 import { Card, Icon, Image, Transition, Button } from "semantic-ui-react";
 import { Grid } from "semantic-ui-react";
 
@@ -53,8 +53,9 @@ class AllUsers extends React.Component {
   };
 
   changeUser = (e, data) => {
+    console.log(e, data);
     if (data.value !== 0) {
-      this.props.showUser(data.value);
+      this.props.showUser(data.value + 1);
     }
   };
 
@@ -81,7 +82,7 @@ class AllUsers extends React.Component {
             <Image
               floated="right"
               size="mini"
-              src="/assets/images/avatar/large/steve.jpg"
+              src="http://donatered-asset.s3.amazonaws.com/assets/default/default_user-884fcb1a70325256218e78500533affb.jpg"
             />
             <Card.Header>{user.username}</Card.Header>
             <Card.Meta>Super Cool</Card.Meta>
@@ -101,7 +102,7 @@ class AllUsers extends React.Component {
             <Grid.Column width="13" />
 
             <Grid.Column width="3">
-              <SearchDropdown
+              <UserSearchDropdown
                 onChange={this.changeUser}
                 changeUserInput={this.changeUserInput}
                 label="Select User"

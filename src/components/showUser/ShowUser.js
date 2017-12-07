@@ -8,7 +8,7 @@ class User extends React.Component {
     super();
     this.state = {
       user: [],
-      challenges: [],
+      // challenges: [],
       userChallenges: [],
       completedUserChallenges: [],
       showUserChallenges: true,
@@ -17,26 +17,21 @@ class User extends React.Component {
   }
 
   componentDidMount() {
-    // console.log(this.props);
     const user = this.props.users.filter(user => {
       return user.id.toString() === this.props.location.pathname.split("/")[2];
-    });
+    })[0];
     let now = new Date().toISOString();
     const mapped = this.props.challenges.map(challenge => {
       if (challenge.criteria < now) {
         challenge["completed"] = true;
       }
-      return challenge.user_challenges.some(category => {
-        if (category.user_id === this.state.user.id) {
+      challenge.user_challenges.some(category => {
+        if (category.user_id === user.id) {
           challenge["containsUser"] = true;
         }
       });
     });
-    console.log(mapped);
-    console.log(user);
-    console.log("this is a test");
-    console.log("hey hey hey hey");
-    console.log("thing things things");
+    this.updateChallenges(user);
   }
 
   // componentDidMount() {
@@ -67,45 +62,55 @@ class User extends React.Component {
   //   );
   // }
 
-  filterChallenges = json => {
-    //the time right now
-    let now = new Date().toISOString();
-    //check challenge.criteria for deadline, and challenge.user_challenges.user_id === current user id.
-    const mapped = json.map(challenge => {
-      if (challenge.criteria < now) {
-        challenge["completed"] = true;
-      }
-      return challenge.user_challenges.some(category => {
-        if (category.user_id === this.state.user.id) {
-          challenge["containsUser"] = true;
-        }
-      });
+  // filterChallenges = json => {
+  //   //the time right now
+  //   let now = new Date().toISOString();
+  //   //check challenge.criteria for deadline, and challenge.user_challenges.user_id === current user id.
+  //   const mapped = json.map(challenge => {
+  //     if (challenge.criteria < now) {
+  //       challenge["completed"] = true;
+  //     }
+  //     return challenge.user_challenges.some(category => {
+  //       if (category.user_id === this.state.user.id) {
+  //         challenge["containsUser"] = true;
+  //       }
+  //     });
+  //   });
+  //   const filtered = json.filter(challenge => {
+  //     return challenge.containsUser === true;
+  //   });
+  //   this.setState(
+  //     {
+  //       challenges: filtered
+  //     },
+  //     () => {
+  //       this.updateChallenges();
+  //     }
+  //   );
+  // };
+
+  //checks if current user participated in a challenge, if the challenge is completed, and updates state of those categories.
+  updateChallenges = user => {
+    const userChallenges = this.props.challenges.filter(challenge => {
+      return (
+        !challenge.hasOwnProperty("completed") &&
+        challenge.hasOwnProperty("containsUser")
+      );
     });
-    const filtered = json.filter(challenge => {
-      return challenge.containsUser === true;
+    const completedUserChallenges = this.props.challenges.filter(challenge => {
+      return (
+        challenge.hasOwnProperty("completed") &&
+        challenge.hasOwnProperty("containsUser")
+      );
     });
     this.setState(
       {
-        challenges: filtered
+        user,
+        userChallenges,
+        completedUserChallenges
       },
-      () => {
-        this.updateChallenges();
-      }
+      () => console.log(this.state)
     );
-  };
-
-  //checks if current user participated in a challenge, if the challenge is completed, and updates state of those categories.
-  updateChallenges = () => {
-    const userChallenges = this.state.challenges.filter(challenge => {
-      return !challenge.hasOwnProperty("completed");
-    });
-    const completedUserChallenges = this.state.challenges.filter(challenge => {
-      return challenge.hasOwnProperty("completed");
-    });
-    this.setState({
-      userChallenges,
-      completedUserChallenges
-    });
   };
 
   showUserChallenges = e => {

@@ -13,7 +13,8 @@ import LoginNavbar from "./components/navbar/LoginNavbar";
 import ShowUser from "./components/showUser/ShowUser";
 import AllUsers from "./components/showUser/AllUsers";
 
-const url = "http://inertia-app.herokuapp.com/api/v1/";
+// const url = "http://inertia-app.herokuapp.com/api/v1/";
+const url = "http://localhost:3001/api/v1/";
 
 class App extends Component {
   constructor() {
@@ -23,7 +24,8 @@ class App extends Component {
 
   state = {
     currentUser: {},
-    users: []
+    users: [],
+    challenges: []
   };
 
   logout = () => {
@@ -76,6 +78,13 @@ class App extends Component {
       .then(json =>
         this.setState({
           users: json
+        })
+      );
+    fetch(`${url}challenges`)
+      .then(res => res.json())
+      .then(json =>
+        this.setState({
+          challenges: json
         })
       );
   };
@@ -146,7 +155,10 @@ class App extends Component {
             exact
             path="/users"
             render={() => {
-              if (this.state.users.length !== 0) {
+              if (
+                this.state.users.length !== 0 &&
+                this.state.challenges.length !== 0
+              ) {
                 return (
                   <div>
                     <AllUsers
@@ -154,6 +166,7 @@ class App extends Component {
                       currentUser={this.state.currentUser}
                       showUser={this.showUser}
                       users={this.state.users}
+                      challenges={this.state.challenges}
                     />
                   </div>
                 );
@@ -164,15 +177,26 @@ class App extends Component {
           />
           <Route
             path="/users/:id"
-            render={props => (
-              <div>
-                <ShowUser
-                  {...props}
-                  url={url}
-                  currentUser={this.state.currentUser}
-                />
-              </div>
-            )}
+            render={props => {
+              if (
+                this.state.users.length !== 0 &&
+                this.state.challenges.length !== 0
+              ) {
+                return (
+                  <div>
+                    <ShowUser
+                      {...props}
+                      url={url}
+                      currentUser={this.state.currentUser}
+                      users={this.state.users}
+                      challenges={this.state.challenges}
+                    />
+                  </div>
+                );
+              } else {
+                return "";
+              }
+            }}
           />
           <Route
             path="/challenges/:id"
