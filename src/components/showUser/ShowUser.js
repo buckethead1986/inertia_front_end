@@ -17,31 +17,55 @@ class User extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`${this.props.url}users`)
-      .then(res => res.json())
-      .then(json =>
-        json.filter(user => {
-          return (
-            user.id.toString() === this.props.location.pathname.split("/")[2]
-          );
-        })
-      )
-      .then(json =>
-        this.setState({
-          user: json[0]
-        })
-      );
-    fetch(`${this.props.url}challenges`)
-      .then(res => res.json())
-      .then(json =>
-        this.setState(
-          {
-            challenges: json
-          },
-          () => this.filterChallenges(json)
-        )
-      );
+    // console.log(this.props);
+    const user = this.props.users.filter(user => {
+      return user.id.toString() === this.props.location.pathname.split("/")[2];
+    });
+    let now = new Date().toISOString();
+    const mapped = this.props.challenges.map(challenge => {
+      if (challenge.criteria < now) {
+        challenge["completed"] = true;
+      }
+      return challenge.user_challenges.some(category => {
+        if (category.user_id === this.state.user.id) {
+          challenge["containsUser"] = true;
+        }
+      });
+    });
+    console.log(mapped);
+    console.log(user);
+    console.log("this is a test");
+    console.log("hey hey hey hey");
+    console.log("thing things things");
   }
+
+  // componentDidMount() {
+  //   console.log(this.props);
+  // fetch(`${this.props.url}users`)
+  //   .then(res => res.json())
+  //   .then(json =>
+  //     json.filter(user => {
+  //       return (
+  //         user.id.toString() === this.props.location.pathname.split("/")[2]
+  //       );
+  //     })
+  //   )
+  //   .then(json =>
+  //     this.setState({
+  //       user: json[0]
+  //     })
+  //   );
+  // fetch(`${this.props.url}challenges`)
+  //   .then(res => res.json())
+  //   .then(json =>
+  //     this.setState(
+  //       {
+  //         challenges: json
+  //       },
+  //       () => this.filterChallenges(json)
+  //     )
+  //   );
+  // }
 
   filterChallenges = json => {
     //the time right now
@@ -98,7 +122,6 @@ class User extends React.Component {
   };
 
   render() {
-    console.log(this.state);
     const UserChallenges = this.state.userChallenges.map((challenge, id) => {
       return (
         <ChallengeCard
