@@ -34,61 +34,6 @@ class User extends React.Component {
     this.updateChallenges(user);
   }
 
-  // componentDidMount() {
-  //   console.log(this.props);
-  // fetch(`${this.props.url}users`)
-  //   .then(res => res.json())
-  //   .then(json =>
-  //     json.filter(user => {
-  //       return (
-  //         user.id.toString() === this.props.location.pathname.split("/")[2]
-  //       );
-  //     })
-  //   )
-  //   .then(json =>
-  //     this.setState({
-  //       user: json[0]
-  //     })
-  //   );
-  // fetch(`${this.props.url}challenges`)
-  //   .then(res => res.json())
-  //   .then(json =>
-  //     this.setState(
-  //       {
-  //         challenges: json
-  //       },
-  //       () => this.filterChallenges(json)
-  //     )
-  //   );
-  // }
-
-  // filterChallenges = json => {
-  //   //the time right now
-  //   let now = new Date().toISOString();
-  //   //check challenge.criteria for deadline, and challenge.user_challenges.user_id === current user id.
-  //   const mapped = json.map(challenge => {
-  //     if (challenge.criteria < now) {
-  //       challenge["completed"] = true;
-  //     }
-  //     return challenge.user_challenges.some(category => {
-  //       if (category.user_id === this.state.user.id) {
-  //         challenge["containsUser"] = true;
-  //       }
-  //     });
-  //   });
-  //   const filtered = json.filter(challenge => {
-  //     return challenge.containsUser === true;
-  //   });
-  //   this.setState(
-  //     {
-  //       challenges: filtered
-  //     },
-  //     () => {
-  //       this.updateChallenges();
-  //     }
-  //   );
-  // };
-
   //checks if current user participated in a challenge, if the challenge is completed, and updates state of those categories.
   updateChallenges = user => {
     const userChallenges = this.props.challenges.filter(challenge => {

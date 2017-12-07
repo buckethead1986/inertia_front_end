@@ -3,7 +3,7 @@ import { withRouter, Route } from "react-router-dom";
 import "./App.css";
 import "./date_time.css";
 import ChallengeContainer from "./containers/ChallengeContainer";
-import InertiaContainer from "./containers/InertiaContainer";
+// import InertiaContainer from "./containers/InertiaContainer";
 import ChallengeForm from "./components/createChallenge/ChallengeForm";
 import Navbar from "./components/navbar/Navbar";
 import Signup from "./components/createUser/Signup";
@@ -12,6 +12,7 @@ import Challenges from "./components/challengeIndex/Challenges";
 import LoginNavbar from "./components/navbar/LoginNavbar";
 import ShowUser from "./components/showUser/ShowUser";
 import AllUsers from "./components/showUser/AllUsers";
+import Profile from "./components/profile/Profile";
 
 // const url = "http://inertia-app.herokuapp.com/api/v1/";
 const url = "http://localhost:3001/api/v1/";
@@ -40,6 +41,10 @@ class App extends Component {
 
   usersLink = () => {
     this.props.history.push("/users");
+  };
+
+  profileLink = name => {
+    this.props.history.push("/user");
   };
 
   showUser = id => {
@@ -110,6 +115,7 @@ class App extends Component {
             challengesLink={this.challengesLink}
             newChallengeLink={this.newChallengeLink}
             usersLink={this.usersLink}
+            profileLink={this.profileLink}
           />
         ) : (
           <LoginNavbar
@@ -148,6 +154,19 @@ class App extends Component {
             render={() => (
               <div>
                 <Challenges url={url} currentUser={this.state.currentUser} />
+              </div>
+            )}
+          />
+          <Route
+            exact
+            path="/user"
+            render={() => (
+              <div>
+                <Profile
+                  url={url}
+                  currentUser={this.state.currentUser}
+                  challenges={this.state.challenges}
+                />
               </div>
             )}
           />
