@@ -17,7 +17,7 @@ class CommentsContainer extends Component {
   }
 
   fetchComments = () => {
-    fetch("http://localhost:3001/api/v1/comments")
+    fetch("http://inertia-app.herokuapp.com/api/v1/comments")
       .then(res => res.json())
       .then(json => this.getCommentsForChallenge(json));
   };
@@ -37,7 +37,7 @@ class CommentsContainer extends Component {
       user_id: this.props.currentUser.id,
       challenge_id: this.props.challengeNumber
     };
-    fetch("http://localhost:3001/api/v1/comments", {
+    fetch("http://inertia-app.herokuapp.com/api/v1/comments", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
