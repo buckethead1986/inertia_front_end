@@ -24,7 +24,7 @@ class Signup extends React.Component {
       Accept: "application/json",
       "Content-Type": "application/json"
     };
-    const body = this.state;
+    const body = JSON.stringify(this.state);
     fetch(`${url}users`, {
       method: "POST",
       headers,
