@@ -16,6 +16,7 @@ import Profile from "./components/profile/Profile";
 
 // const url = "http://inertia-app.herokuapp.com/api/v1/";
 const url = "http://localhost:3001/api/v1/";
+const test = "this is a test";
 
 class App extends Component {
   constructor() {
