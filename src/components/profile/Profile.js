@@ -11,30 +11,35 @@ class Profile extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+    if (nextProps.image_url !== this.props.image_url) {
+      this.setState({
+        image_url: nextProps.image_url
+      });
+    }
+  }
+
   addImage = () => {
-    console.log(this.props);
-    console.log(this.state);
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json"
     };
     const body = {
-      tagline: this.state.tagline,
       image_url: this.state.image_url
+      // tagline: this.state.tagline
     };
-    console.log(body);
-    fetch(`${this.props.url}users/${this.props.currentUser.id}`, {
+
+    fetch(`${this.props.url}users/${this.props.currentUser[0].id}`, {
       method: "PATCH",
-      heders: headers,
+      headers: headers,
       body: JSON.stringify({
-        user: {
-          tagline: this.state.tagline,
-          image_url: this.state.image_url
-        }
+        image_url: this.state.image_url
+        // tagline: this.state.tagline
       })
     })
       .then(res => res.json())
-      .then(json => console.log(json));
+      .then(json => this.props.fetchUser());
   };
 
   handleChange = e => {
@@ -44,16 +49,29 @@ class Profile extends React.Component {
   };
 
   render() {
-    return (
+    console.log(this.props.currentUser[0]);
+    console.log(this.state);
+
+    // debugger;
+    return this.props.currentUser[0] !== undefined ? (
       <div>
+        <h2>{this.props.currentUser[0].username}</h2>
+        <h3>{this.props.currentUser[0].tagline}</h3>
         <Grid>
           <Grid.Row>
-            <Grid.Column width={6}>
-              <Image
-                centered
-                src="http://donatered-asset.s3.amazonaws.com/assets/default/default_user-884fcb1a70325256218e78500533affb.jpg"
-              />
-            </Grid.Column>
+            {this.props.currentUser[0].image_url === null ||
+            this.props.currentUser[0].image_url === "" ? (
+              <Grid.Column width={6}>
+                <Image
+                  centered
+                  src="http://donatered-asset.s3.amazonaws.com/assets/default/default_user-884fcb1a70325256218e78500533affb.jpg"
+                />
+              </Grid.Column>
+            ) : (
+              <Grid.Column width={6}>
+                <Image centered src={this.props.currentUser[0].image_url} />
+              </Grid.Column>
+            )}
             <Grid.Column width={5}>
               <Form onSubmit={this.addImage}>
                 <Form.Field onChange={this.handleChange}>
@@ -69,8 +87,9 @@ class Profile extends React.Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-        {this.props.currentUser.username}
       </div>
+    ) : (
+      ""
     );
   }
 }

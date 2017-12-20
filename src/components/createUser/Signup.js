@@ -24,7 +24,8 @@ class Signup extends React.Component {
       Accept: "application/json",
       "Content-Type": "application/json"
     };
-    const body = JSON.stringify(this.state);
+    const body = this.state;
+    console.log(body);
     fetch(`${url}users`, {
       method: "POST",
       headers,
@@ -58,7 +59,7 @@ class Signup extends React.Component {
           this.props.history.push("/challenges");
         }
       })
-      .then(this.props.fetchUser);
+      .then(this.props.fetchUser());
   };
 
   render() {

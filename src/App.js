@@ -64,10 +64,18 @@ class App extends Component {
   };
 
   updateState = json => {
-    this.setState({ currentUser: json });
+    console.log(json);
+    console.log(this.state.users);
+    this.setState({
+      currentUser: json
+    });
   };
 
+  //id will be the currentUsers id. fetches currentUser id, and all users, then sets state
+  // of users, and current user by filtering 'users' state for that id. Then fetches all challenges
   fetchUserInformation = () => {
+    // debugger;
+    let id = "";
     fetch(`${url}current_user`, {
       headers: {
         "content-type": "application/json",
@@ -76,15 +84,22 @@ class App extends Component {
       }
     })
       .then(res => res.json())
-      .then(this.updateState);
-
-    fetch(`${url}users`)
-      .then(res => res.json())
-      .then(json =>
-        this.setState({
-          users: json
-        })
+      .then(json => {
+        id = json.id;
+      })
+      .then(
+        fetch(`${url}users`)
+          .then(res => res.json())
+          .then(json =>
+            this.setState({
+              users: json,
+              currentUser: json.filter(user => {
+                return user.id === id;
+              })
+            })
+          )
       );
+
     fetch(`${url}challenges`)
       .then(res => res.json())
       .then(json =>
@@ -106,6 +121,7 @@ class App extends Component {
   }
 
   render() {
+    // console.log(this.state);
     return (
       <div>
         {this.props.location.pathname !== "/login" &&
@@ -160,15 +176,26 @@ class App extends Component {
           <Route
             exact
             path="/user"
-            render={() => (
-              <div>
-                <Profile
-                  url={url}
-                  currentUser={this.state.currentUser}
-                  challenges={this.state.challenges}
-                />
-              </div>
-            )}
+            render={() => {
+              if (
+                this.state.currentUser.length !== 0 &&
+                this.state.users.length !== 0
+              ) {
+                return (
+                  <div>
+                    <Profile
+                      url={url}
+                      fetchUser={this.fetchUserInformation}
+                      users={this.state.users}
+                      currentUser={this.state.currentUser}
+                      challenges={this.state.challenges}
+                    />
+                  </div>
+                );
+              } else {
+                return "";
+              }
+            }}
           />
           <Route
             exact

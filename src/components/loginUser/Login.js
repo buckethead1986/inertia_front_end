@@ -38,7 +38,7 @@ class Login extends React.Component {
           this.props.history.push("/challenges");
         }
       })
-      .then(this.props.fetchUser);
+      .then(this.props.fetchUser());
   };
 
   render() {
