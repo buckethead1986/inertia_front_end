@@ -43,7 +43,7 @@ class Challenges extends React.Component {
         challenge["completed"] = true;
       }
       return challenge.user_challenges.some(category => {
-        if (category.user_id === this.props.currentUser.id) {
+        if (category.user_id === this.props.currUser.id) {
           challenge["containsUser"] = true;
         }
       });
@@ -118,13 +118,14 @@ class Challenges extends React.Component {
   };
 
   render() {
+    console.log(this.props.currUser[0]);
     const UserChallenges = this.state.userChallenges.map((challenge, id) => {
       return (
         <ChallengeCard
           color="blue"
           key={challenge.id}
           challenge={challenge}
-          user={this.props.currentUser.id}
+          user={this.props.currUser.id}
         />
       );
     });
@@ -135,7 +136,7 @@ class Challenges extends React.Component {
             color="green"
             key={challenge.id}
             challenge={challenge}
-            user={this.props.currentUser.id}
+            user={this.props.currUser.id}
           />
         );
       }
@@ -146,7 +147,7 @@ class Challenges extends React.Component {
           color="red"
           key={challenge.id}
           challenge={challenge}
-          user={this.props.currentUser.id}
+          user={this.props.currUser.id}
         />
       );
     });
@@ -157,14 +158,14 @@ class Challenges extends React.Component {
             color="purple"
             key={challenge.id}
             challenge={challenge}
-            user={this.props.currentUser.id}
+            user={this.props.currUser.id}
           />
         );
       }
     );
 
     //looks complex, but its the same thing 4 times.  Shows and hides current user challenges, completed user challenges, current other challenges, and completed other challenges, based on state.
-    return (
+    return this.props.currUser.length !== 0 ? (
       <Grid>
         <Grid.Row>
           {this.state.showUserChallenges ? (
@@ -227,6 +228,8 @@ class Challenges extends React.Component {
           )}
         </Grid.Row>
       </Grid>
+    ) : (
+      ""
     );
   }
 }

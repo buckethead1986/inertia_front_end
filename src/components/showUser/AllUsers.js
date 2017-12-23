@@ -12,10 +12,10 @@ class AllUsers extends React.Component {
       currentSelectedUser: ""
     };
   }
-  //
+
   componentDidMount() {
     const filteredUsers = this.props.users.filter(user => {
-      return user.id !== this.props.currentUser.id;
+      return user.id !== this.props.currUser.id;
     });
     this.setState({
       users: filteredUsers,
@@ -26,25 +26,16 @@ class AllUsers extends React.Component {
   //removes currently logged in user from list of other users.
   filterCurrentUser = () => {
     const filteredUserList = this.state.users.filter(user => {
-      return user.id !== this.props.currentUser.id;
+      return user.id !== this.props.currUser.id;
     });
     return filteredUserList;
   };
-  //
-  // componentWillReceiveProps(nextProps) {
-  //   if (this.state.users !== nextProps.users) {
-  //     this.setState({
-  //       users: nextProps.users,
-  //       usersMinusCurrentUser: this.filterCurrentUser(nextProps.users)
-  //     });
-  //   }
-  // }
 
   changeUserInput = (e, data) => {
     const filteredUsers = this.state.users.filter(user => {
       return (
         user.username.toLowerCase().includes(data.searchQuery.toLowerCase()) &&
-        user.id !== this.props.currentUser.id
+        user.id !== this.props.currUser.id
       );
     });
     this.setState({
@@ -53,7 +44,6 @@ class AllUsers extends React.Component {
   };
 
   changeUser = (e, data) => {
-    console.log(e, data);
     if (data.value !== 0) {
       this.props.showUser(data.value + 1);
     }
@@ -61,7 +51,7 @@ class AllUsers extends React.Component {
 
   render() {
     const usersWithoutCurrentUser = this.state.users.filter(user => {
-      return user.id !== this.props.currentUser.id;
+      return user.id !== this.props.currUser.id;
     });
     const UserCards = this.state.filteredUsers.map(user => {
       let color = "";
@@ -77,13 +67,21 @@ class AllUsers extends React.Component {
         color = "red";
       }
       return (
-        <Card color={color} onClick={() => this.props.showUser(user.id)}>
+        <Card
+          key={user.id}
+          color={color}
+          onClick={() => this.props.showUser(user.id)}
+        >
           <Card.Content>
-            <Image
-              floated="right"
-              size="mini"
-              src="http://donatered-asset.s3.amazonaws.com/assets/default/default_user-884fcb1a70325256218e78500533affb.jpg"
-            />
+            {user.image_url !== null || user.image_url === "" ? (
+              <Image floated="right" size="mini" src={user.image_url} />
+            ) : (
+              <Image
+                floated="right"
+                size="mini"
+                src="http://donatered-asset.s3.amazonaws.com/assets/default/default_user-884fcb1a70325256218e78500533affb.jpg"
+              />
+            )}
             <Card.Header>{user.username}</Card.Header>
             <Card.Meta>Super Cool</Card.Meta>
             <Card.Description>

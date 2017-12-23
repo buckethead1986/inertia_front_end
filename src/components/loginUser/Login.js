@@ -32,13 +32,16 @@ class Login extends React.Component {
       body: JSON.stringify(body)
     })
       .then(res => res.json())
-      .then(json => {
-        if (!json.error) {
-          localStorage.setItem("token", json.jwt);
-          this.props.history.push("/challenges");
-        }
-      })
-      .then(this.props.fetchUser());
+      .then(
+        json => {
+          if (!json.error) {
+            localStorage.setItem("token", json.jwt);
+            this.props.history.push("/challenges");
+          }
+        },
+        () => this.props.fetchUser()
+      );
+    // .then(this.props.fetchUser());
   };
 
   render() {

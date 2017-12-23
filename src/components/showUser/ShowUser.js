@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid } from "semantic-ui-react";
+import { Image, Grid } from "semantic-ui-react";
 import ChallengeCard from "../challengeIndex/ChallengeCard";
 import DateTime from "react-datetime";
 
@@ -98,7 +98,9 @@ class User extends React.Component {
       <Grid>
         <Grid.Row>
           <Grid.Column width={4}>
-            <h3>{this.state.user.username}</h3>
+            <h2>{this.state.user.username}</h2>
+            <h3>{this.state.user.tagline}</h3>
+            <Image centered src={this.state.user.image_url} />
             <h4>Active Challenges: {this.state.userChallenges.length}</h4>
             <h4>
               Completed Challenges: {this.state.completedUserChallenges.length}

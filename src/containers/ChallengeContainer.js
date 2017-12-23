@@ -22,7 +22,7 @@ class ChallengeContainer extends Component {
   }
 
   formatChallengeResults = challenge => {
-    const results = formatResults(challenge, this.props.currentUser);
+    const results = formatResults(challenge, this.props.currUser);
     let stateObj;
     if (results.voter) {
       stateObj = {
@@ -55,7 +55,7 @@ class ChallengeContainer extends Component {
     // Make a post request to the user challenge object
     const userChallenge = this.state.originalChallenge.user_challenges.find(
       uc => {
-        return uc.user.id === this.props.currentUser.id;
+        return uc.user.id === this.props.currUser.id;
       }
     );
 
@@ -83,7 +83,7 @@ class ChallengeContainer extends Component {
         {this.state.challenge.spectators ? (
           <ChallengeView
             challenge={this.state.challenge}
-            currentUser={this.props.currentUser}
+            currUser={this.props.currUser}
             fetchChallenge={this.fetchChallenge}
             handleVote={this.handleVote}
             deadlineOver={this.deadlineOver}

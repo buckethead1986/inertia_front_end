@@ -20,18 +20,19 @@ const url = "http://localhost:3001/api/v1/";
 class App extends Component {
   constructor() {
     super();
-    this.updateState = this.updateState.bind(this);
+    // this.updateState = this.updateState.bind(this);
   }
 
   state = {
-    currentUser: {},
+    currUser: {},
     users: [],
-    challenges: []
+    challenges: [],
+    id: 0
   };
 
   logout = () => {
     localStorage.removeItem("token");
-    this.setState({ currentUser: {} });
+    this.setState({ currUser: {} });
     this.props.history.push("/login");
   };
 
@@ -43,7 +44,7 @@ class App extends Component {
     this.props.history.push("/users");
   };
 
-  profileLink = name => {
+  profileLink = () => {
     this.props.history.push("/user");
   };
 
@@ -64,18 +65,21 @@ class App extends Component {
   };
 
   updateState = json => {
-    console.log(json);
-    console.log(this.state.users);
-    this.setState({
-      currentUser: json
-    });
+    this.setState({ currUser: json });
   };
 
-  //id will be the currentUsers id. fetches currentUser id, and all users, then sets state
-  // of users, and current user by filtering 'users' state for that id. Then fetches all challenges
   fetchUserInformation = () => {
-    // debugger;
-    let id = "";
+    fetch(`${url}users`)
+      .then(res => res.json())
+      .then(json =>
+        this.setState({
+          users: json
+        })
+      )
+      .then(() => this.fetchCurrentUser());
+  };
+
+  fetchCurrentUser = () => {
     fetch(`${url}current_user`, {
       headers: {
         "content-type": "application/json",
@@ -84,22 +88,21 @@ class App extends Component {
       }
     })
       .then(res => res.json())
-      .then(json => {
-        id = json.id;
-      })
-      .then(
-        fetch(`${url}users`)
-          .then(res => res.json())
-          .then(json =>
-            this.setState({
-              users: json,
-              currentUser: json.filter(user => {
-                return user.id === id;
-              })
-            })
-          )
-      );
+      .then(json =>
+        this.setState({
+          currUser: this.state.users.filter(user => {
+            return user.id === json.id;
+          }),
+          id: json.id,
+          currUser: this.state.users.filter(user => {
+            return user.id === json.id;
+          })
+        })
+      )
+      .then(() => this.fetchChallenges());
+  };
 
+  fetchChallenges = () => {
     fetch(`${url}challenges`)
       .then(res => res.json())
       .then(json =>
@@ -109,7 +112,7 @@ class App extends Component {
       );
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const token = localStorage.getItem("token");
     if (token) {
       this.fetchUserInformation();
@@ -121,7 +124,6 @@ class App extends Component {
   }
 
   render() {
-    // console.log(this.state);
     return (
       <div>
         {this.props.location.pathname !== "/login" &&
@@ -160,34 +162,38 @@ class App extends Component {
             path="/challenge/new"
             render={() => (
               <div>
-                <ChallengeForm url={url} currentUser={this.state.currentUser} />
+                <ChallengeForm url={url} currUser={this.state.currUser} />
               </div>
             )}
           />
           <Route
             exact
             path="/challenges"
-            render={() => (
-              <div>
-                <Challenges url={url} currentUser={this.state.currentUser} />
-              </div>
-            )}
+            render={() => {
+              if (this.state.currUser.length !== 0) {
+                return (
+                  <div>
+                    <Challenges url={url} currUser={this.state.currUser} />
+                  </div>
+                );
+              } else {
+                return "";
+              }
+            }}
           />
           <Route
             exact
             path="/user"
             render={() => {
-              if (
-                this.state.currentUser.length !== 0 &&
-                this.state.users.length !== 0
-              ) {
+              if (this.state.currUser.length !== 0) {
                 return (
                   <div>
                     <Profile
                       url={url}
-                      fetchUser={this.fetchUserInformation}
+                      id={this.state.id}
+                      currUser={this.state.currUser}
                       users={this.state.users}
-                      currentUser={this.state.currentUser}
+                      fetchUser={this.fetchUserInformation}
                       challenges={this.state.challenges}
                     />
                   </div>
@@ -209,7 +215,7 @@ class App extends Component {
                   <div>
                     <AllUsers
                       url={url}
-                      currentUser={this.state.currentUser}
+                      currUser={this.state.currUser}
                       showUser={this.showUser}
                       users={this.state.users}
                       challenges={this.state.challenges}
@@ -233,7 +239,7 @@ class App extends Component {
                     <ShowUser
                       {...props}
                       url={url}
-                      currentUser={this.state.currentUser}
+                      currUser={this.state.currUser}
                       users={this.state.users}
                       challenges={this.state.challenges}
                     />
@@ -251,7 +257,7 @@ class App extends Component {
                 <ChallengeContainer
                   {...props}
                   url={url}
-                  currentUser={this.state.currentUser}
+                  currUser={this.state.currUser}
                 />
               </div>
             )}

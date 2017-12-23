@@ -3,7 +3,7 @@ import { Dropdown } from "semantic-ui-react";
 
 const UserSearchDropdown = props => {
   const users = props.data.map((user, id) => {
-    return { key: id, value: id, text: user.username };
+    return { key: user.id, value: user.id, text: user.username };
   });
   return (
     <Dropdown
