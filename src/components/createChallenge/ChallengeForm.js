@@ -123,7 +123,7 @@ class ChallengeForm extends React.Component {
         criteria: this.state.challengeDeadline,
         public: true,
         team_names: this.state.teamAName + "/" + this.state.teamBName,
-        user_created: this.props.currentUser.id,
+        user_created: this.props.currUser.id,
         user_challenges: []
       };
       return fetch(`${this.props.url}challenges`, {

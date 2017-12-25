@@ -1,7 +1,6 @@
 import React from "react";
 import ChallengeCard from "./ChallengeCard";
 import { Grid } from "semantic-ui-react";
-import DateTime from "react-datetime";
 
 class Challenges extends React.Component {
   constructor() {
@@ -118,7 +117,6 @@ class Challenges extends React.Component {
   };
 
   render() {
-    console.log(this.props.currUser[0]);
     const UserChallenges = this.state.userChallenges.map((challenge, id) => {
       return (
         <ChallengeCard

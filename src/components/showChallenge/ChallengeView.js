@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import ResultsContainer from "../../containers/ResultsContainer";
 import CommentsContainer from "../../containers/CommentsContainer";
-import { formatResults } from "../../services/formatResults.js";
-import { Header, Icon, Image, Transition, Segment } from "semantic-ui-react";
+import { Grid, Header, Icon, Segment } from "semantic-ui-react";
 import Timer from "./Timer";
 
 const ChallengeView = props => {

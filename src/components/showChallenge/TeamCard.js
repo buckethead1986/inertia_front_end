@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Icon, Image, Transition, Button } from "semantic-ui-react";
+import { Card, Image, Transition, Button } from "semantic-ui-react";
 
 import TeamMembers from "./TeamMembers";
 
@@ -17,6 +17,15 @@ class TeamCard extends React.Component {
   componentDidMount() {
     this.toggleVisibility();
     this.checkCurrentVoter();
+    const newArray = [];
+    const userIds = [];
+    this.props.users.forEach(user => {
+      if (!userIds.includes(user.id)) newArray.push(user);
+      userIds.push(user.id);
+    });
+    this.setState({
+      users: newArray
+    });
   }
 
   checkCurrentVoter = () => {
@@ -44,17 +53,17 @@ class TeamCard extends React.Component {
     }
   };
 
-  componentDidMount() {
-    const newArray = [];
-    const userIds = [];
-    this.props.users.forEach(user => {
-      if (!userIds.includes(user.id)) newArray.push(user);
-      userIds.push(user.id);
-    });
-    this.setState({
-      users: newArray
-    });
-  }
+  // componentDidMount() {
+  //   const newArray = [];
+  //   const userIds = [];
+  //   this.props.users.forEach(user => {
+  //     if (!userIds.includes(user.id)) newArray.push(user);
+  //     userIds.push(user.id);
+  //   });
+  //   this.setState({
+  //     users: newArray
+  //   });
+  // }
 
   render() {
     return (

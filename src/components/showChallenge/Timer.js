@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Progress } from "semantic-ui-react";
+import { Progress } from "semantic-ui-react";
 
 class Timer extends React.Component {
   constructor(props) {
@@ -64,7 +64,6 @@ class Timer extends React.Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <div onMouseOver={this.handleHover}>
         {this.state.timeLeft.percent ? (

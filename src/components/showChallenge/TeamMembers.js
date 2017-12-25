@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React, { Component } from "react";
-import { Button, Image, List, Transition, Icon } from "semantic-ui-react";
+import { Button, Image, List, Transition } from "semantic-ui-react";
 
 class TeamMembers extends Component {
   constructor(props) {

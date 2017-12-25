@@ -3,7 +3,6 @@ import { withRouter, Route } from "react-router-dom";
 import "./App.css";
 import "./date_time.css";
 import ChallengeContainer from "./containers/ChallengeContainer";
-// import InertiaContainer from "./containers/InertiaContainer";
 import ChallengeForm from "./components/createChallenge/ChallengeForm";
 import Navbar from "./components/navbar/Navbar";
 import Signup from "./components/createUser/Signup";
@@ -18,11 +17,6 @@ import Profile from "./components/profile/Profile";
 const url = "http://localhost:3001/api/v1/";
 
 class App extends Component {
-  constructor() {
-    super();
-    // this.updateState = this.updateState.bind(this);
-  }
-
   state = {
     currUser: {},
     users: [],
@@ -32,7 +26,7 @@ class App extends Component {
 
   logout = () => {
     localStorage.removeItem("token");
-    this.setState({ currUser: {} });
+    this.setState({ currUser: {}, id: 0, users: [], challenges: [] });
     this.props.history.push("/login");
   };
 
@@ -69,6 +63,7 @@ class App extends Component {
   };
 
   fetchUserInformation = () => {
+    console.log("fetcUserInformation");
     fetch(`${url}users`)
       .then(res => res.json())
       .then(json =>
@@ -80,6 +75,7 @@ class App extends Component {
   };
 
   fetchCurrentUser = () => {
+    console.log("fetchCurrentUser");
     fetch(`${url}current_user`, {
       headers: {
         "content-type": "application/json",
@@ -90,9 +86,6 @@ class App extends Component {
       .then(res => res.json())
       .then(json =>
         this.setState({
-          currUser: this.state.users.filter(user => {
-            return user.id === json.id;
-          }),
           id: json.id,
           currUser: this.state.users.filter(user => {
             return user.id === json.id;
@@ -106,9 +99,12 @@ class App extends Component {
     fetch(`${url}challenges`)
       .then(res => res.json())
       .then(json =>
-        this.setState({
-          challenges: json
-        })
+        this.setState(
+          {
+            challenges: json
+          },
+          () => this.render()
+        )
       );
   };
 
@@ -185,7 +181,7 @@ class App extends Component {
             exact
             path="/user"
             render={() => {
-              if (this.state.currUser.length !== 0) {
+              if (this.state.id !== 0) {
                 return (
                   <div>
                     <Profile

@@ -7,18 +7,18 @@ class Profile extends React.Component {
 
     this.state = {
       image_url: "",
-      tagline: ""
+      tagline: "",
+      thisUser: {}
     };
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   console.log(nextProps);
-  //   if (nextProps.image_url !== this.props.image_url) {
-  //     this.setState({
-  //       image_url: nextProps.image_url
-  //     });
-  //   }
-  // }
+  componentDidMount() {
+    this.setState({
+      thisUser: this.props.users.filter(user => {
+        return user.id === this.props.id;
+      })
+    });
+  }
 
   addImage = () => {
     const headers = {
@@ -27,10 +27,10 @@ class Profile extends React.Component {
     };
     const body = {
       image_url: this.state.image_url,
-      tagline: this.props.currUser[0].tagline
+      tagline: this.state.thisUser[0].tagline
     };
 
-    fetch(`${this.props.url}users/${this.props.currUser[0].id}`, {
+    fetch(`${this.props.url}users/${this.state.thisUser[0].id}`, {
       method: "PATCH",
       headers: headers,
       body: JSON.stringify(body)
@@ -45,11 +45,11 @@ class Profile extends React.Component {
       "Content-Type": "application/json"
     };
     const body = {
-      image_url: this.props.currUser[0].image_url,
+      image_url: this.state.thisUser[0].image_url,
       tagline: this.state.tagline
     };
 
-    fetch(`${this.props.url}users/${this.props.currUser[0].id}`, {
+    fetch(`${this.props.url}users/${this.state.thisUser[0].id}`, {
       method: "PATCH",
       headers: headers,
       body: JSON.stringify(body)
@@ -65,53 +65,75 @@ class Profile extends React.Component {
   };
 
   render() {
-    console.log(this.props.currUser);
-    return this.props.currUser[0] !== undefined ? (
+    return this.state.thisUser[0] !== undefined ? (
       <div>
-        <h2>{this.props.currUser[0].username}</h2>
+        <h2>{this.state.thisUser[0].username}</h2>
         <Grid>
-          <Grid.Row>
-            <Grid.Column width={6}>
-              {this.state.tagline !== "" ? (
+          <Grid.Column width={6}>
+            {this.state.tagline !== "" ? (
+              <div>
                 <h3>Tagline: {this.state.tagline}</h3>
-              ) : (
-                <h3>Tagline: {this.props.currUser[0].tagline}</h3>
-              )}
-            </Grid.Column>
-            <Grid.Column width={6}>
-              {this.props.currUser[0].image_url === null ||
-              this.props.currUser[0].image_url === "" ? (
+                <Form onSubmit={this.addTagline}>
+                  <Form.Field onChange={this.handleChange}>
+                    <label>Change Tagline</label>
+                    <input name="tagline" placeholder="New Saying" />
+                  </Form.Field>
+                  <Button type="submit">Submit</Button>
+                </Form>
+              </div>
+            ) : (
+              <div>
+                <h3>Tagline: {this.state.thisUser[0].tagline}</h3>
+                <Form onSubmit={this.addTagline}>
+                  <Form.Field onChange={this.handleChange}>
+                    <label>Change Tagline</label>
+                    <input name="tagline" placeholder="New Saying" />
+                  </Form.Field>
+                  <Button type="submit">Submit</Button>
+                </Form>
+              </div>
+            )}
+            {this.state.thisUser[0].image_url === null ||
+            this.state.thisUser[0].image_url === "" ? (
+              <div>
                 <Image
                   centered
                   src="http://donatered-asset.s3.amazonaws.com/assets/default/default_user-884fcb1a70325256218e78500533affb.jpg"
                 />
-              ) : this.state.image_url !== "" ? (
+                <Form onSubmit={this.addImage}>
+                  <Form.Field onChange={this.handleChange}>
+                    <label>New Image Url</label>
+                    <input name="image_url" placeholder="Enter Url" />
+                  </Form.Field>
+                  <Button type="submit">Submit</Button>
+                </Form>
+              </div>
+            ) : this.state.image_url !== "" ? (
+              <div>
                 <Image centered src={this.state.image_url} />
-              ) : (
-                <Image centered src={this.props.currUser[0].image_url} />
-              )}
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column width={6}>
-              <Form onSubmit={this.addTagline}>
-                <Form.Field onChange={this.handleChange}>
-                  <label>Change Tagline</label>
-                  <input name="tagline" placeholder="New Saying" />
-                </Form.Field>
-                <Button type="submit">Submit</Button>
-              </Form>
-            </Grid.Column>
-            <Grid.Column width={6}>
-              <Form onSubmit={this.addImage}>
-                <Form.Field onChange={this.handleChange}>
-                  <label>New Image Url</label>
-                  <input name="image_url" placeholder="Enter Url" />
-                </Form.Field>
-                <Button type="submit">Submit</Button>
-              </Form>
-            </Grid.Column>
-          </Grid.Row>
+                <Form onSubmit={this.addImage}>
+                  <Form.Field onChange={this.handleChange}>
+                    <label>New Image Url</label>
+                    <input name="image_url" placeholder="Enter Url" />
+                  </Form.Field>
+                  <Button type="submit">Submit</Button>
+                </Form>
+              </div>
+            ) : (
+              <div>
+                <Image centered src={this.state.thisUser[0].image_url} />
+                <Form onSubmit={this.addImage}>
+                  <Form.Field onChange={this.handleChange}>
+                    <label>New Image Url</label>
+                    <input name="image_url" placeholder="Enter Url" />
+                  </Form.Field>
+                  <Button type="submit">Submit</Button>
+                </Form>
+              </div>
+            )}
+          </Grid.Column>
+          <Grid.Column width={6} />
+          <Grid.Column width={6} />
         </Grid>
       </div>
     ) : (

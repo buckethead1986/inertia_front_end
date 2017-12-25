@@ -13,7 +13,7 @@ class ChallengeCard extends React.Component {
 
   componentDidMount = () => {
     this.props.challenge.user_challenges.forEach(uc => {
-      console.log(uc, this.props.user);
+      // console.log(uc, this.props.user);
       if (
         uc.user_id === this.props.user ||
         uc.user_id === this.props.thisUser

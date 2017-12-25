@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Comments from "../components/showChallenge/Comments";
 import { Button, Comment, Form } from "semantic-ui-react";
 
 class CommentsContainer extends Component {

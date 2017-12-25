@@ -24,7 +24,10 @@ class Signup extends React.Component {
       Accept: "application/json",
       "Content-Type": "application/json"
     };
-    const body = this.state;
+    const body = Object.assign({}, this.state, {
+      image_url:
+        "http://donatered-asset.s3.amazonaws.com/assets/default/default_user-884fcb1a70325256218e78500533affb.jpg"
+    });
     console.log(body);
     fetch(`${url}users`, {
       method: "POST",

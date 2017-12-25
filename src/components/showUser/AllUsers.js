@@ -1,6 +1,6 @@
 import React from "react";
 import UserSearchDropdown from "./UserSearchDropdown";
-import { Card, Icon, Image, Transition, Button } from "semantic-ui-react";
+import { Card, Image } from "semantic-ui-react";
 import { Grid } from "semantic-ui-react";
 
 class AllUsers extends React.Component {
@@ -45,7 +45,7 @@ class AllUsers extends React.Component {
 
   changeUser = (e, data) => {
     if (data.value !== 0) {
-      this.props.showUser(data.value + 1);
+      this.props.showUser(data.value);
     }
   };
 
