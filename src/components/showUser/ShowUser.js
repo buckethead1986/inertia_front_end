@@ -24,6 +24,7 @@ class User extends React.Component {
         challenge["completed"] = true;
       }
       challenge.user_challenges.some(category => {
+        console.log(category, user);
         if (category.user_id === user.id) {
           challenge["containsUser"] = true;
         }
@@ -35,15 +36,15 @@ class User extends React.Component {
   //checks if current user participated in a challenge, if the challenge is completed, and updates state of those categories.
   updateChallenges = user => {
     const userChallenges = this.props.challenges.filter(challenge => {
+      console.log(challenge);
       return (
-        !challenge.hasOwnProperty("completed") &&
+        !(challenge.completed === true) &&
         challenge.hasOwnProperty("containsUser")
       );
     });
     const completedUserChallenges = this.props.challenges.filter(challenge => {
       return (
-        challenge.hasOwnProperty("completed") &&
-        challenge.hasOwnProperty("containsUser")
+        challenge.completed === true && challenge.hasOwnProperty("containsUser")
       );
     });
     this.setState(
@@ -108,6 +109,7 @@ class User extends React.Component {
               Completed Challenges: {this.state.completedUserChallenges.length}
             </h4>
           </Grid.Column>
+          <Grid.Column width={2} />
           {this.state.showUserChallenges ? (
             <Grid.Column width={4}>
               <div>

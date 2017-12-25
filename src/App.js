@@ -156,20 +156,34 @@ class App extends Component {
           <Route
             exact
             path="/challenge/new"
-            render={() => (
-              <div>
-                <ChallengeForm url={url} currUser={this.state.currUser} />
-              </div>
-            )}
+            render={() => {
+              if (this.state.currUser.length !== 0 && this.state.id !== 0) {
+                return (
+                  <div>
+                    <ChallengeForm
+                      url={url}
+                      currUser={this.state.currUser}
+                      fetchChallenges={this.fetchChallenges}
+                    />
+                  </div>
+                );
+              } else {
+                return "";
+              }
+            }}
           />
           <Route
             exact
             path="/challenges"
             render={() => {
-              if (this.state.currUser.length !== 0) {
+              if (this.state.currUser.length !== 0 && this.state.id !== 0) {
                 return (
                   <div>
-                    <Challenges url={url} currUser={this.state.currUser} />
+                    <Challenges
+                      url={url}
+                      currUser={this.state.currUser}
+                      challenges={this.state.challenges}
+                    />
                   </div>
                 );
               } else {
@@ -181,7 +195,7 @@ class App extends Component {
             exact
             path="/user"
             render={() => {
-              if (this.state.id !== 0) {
+              if (this.state.id !== 0 && this.state.challenges.length !== 0) {
                 return (
                   <div>
                     <Profile

@@ -38,11 +38,12 @@ class Challenges extends React.Component {
     let now = new Date().toISOString();
     //check challenge.criteria for deadline, and challenge.user_challenges.user_id === current user id.
     json.map(challenge => {
-      if (challenge.criteria < now) {
+      if (challenge.criteria < now && challenge.completed !== true) {
         challenge["completed"] = true;
+        this.completeChallenge();
       }
       return challenge.user_challenges.some(category => {
-        if (category.user_id === this.props.currUser.id) {
+        if (category.user_id === this.props.currUser[0].id) {
           challenge["containsUser"] = true;
         }
       });
@@ -57,30 +58,50 @@ class Challenges extends React.Component {
     );
   };
 
+  completeChallenge = () => {
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
+    const body = {
+      completed: true
+    };
+    fetch(`${this.props.url}challenges`, {
+      method: "PATCH",
+      headers: headers,
+      body: JSON.stringify(body)
+    })
+      .then(res => res.json())
+      .then(json => console.log(json));
+  };
+
   //checks if current user participated in a challenge, if the challenge is completed, and updates state of those categories.
   updateChallenges = () => {
+    console.log(this.state);
     const userChallenges = this.state.challenges.filter(challenge => {
       return (
         challenge.hasOwnProperty("containsUser") &&
-        !challenge.hasOwnProperty("completed")
+        (!challenge.hasOwnProperty("completed") ||
+          challenge.completed === false)
       );
     });
     const completedUserChallenges = this.state.challenges.filter(challenge => {
       return (
         challenge.hasOwnProperty("containsUser") &&
-        challenge.hasOwnProperty("completed")
+        (challenge.hasOwnProperty("completed") || challenge.completed === true)
       );
     });
     const otherChallenges = this.state.challenges.filter(challenge => {
       return (
         !challenge.hasOwnProperty("containsUser") &&
-        !challenge.hasOwnProperty("completed")
+        (!challenge.hasOwnProperty("completed") ||
+          challenge.completed === false)
       );
     });
     const otherCompletedChallenges = this.state.challenges.filter(challenge => {
       return (
         !challenge.hasOwnProperty("containsUser") &&
-        challenge.hasOwnProperty("completed")
+        (challenge.hasOwnProperty("completed") || challenge.completed === true)
       );
     });
     this.setState({

@@ -54,14 +54,6 @@ class ChallengeForm extends React.Component {
       );
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (this.state.users !== this.props.users) {
-  //     this.setState({
-  //       users: nextProps.users
-  //     });
-  //   }
-  // }
-
   formatTime = () => {
     if (this.state.challengeDeadline !== undefined) {
       const deadline = this.state.challengeDeadline.toString().split(" ");
@@ -123,8 +115,9 @@ class ChallengeForm extends React.Component {
         criteria: this.state.challengeDeadline,
         public: true,
         team_names: this.state.teamAName + "/" + this.state.teamBName,
-        user_created: this.props.currUser.id,
-        user_challenges: []
+        user_created: this.props.currUser[0].id,
+        user_challenges: [],
+        completed: false
       };
       return fetch(`${this.props.url}challenges`, {
         method: "POST",
@@ -323,10 +316,13 @@ class ChallengeForm extends React.Component {
   };
 
   submitForm = json_id => {
-    this.setState({
-      fireRedirect: true,
-      redirection: `/challenges/${json_id}`
-    });
+    this.setState(
+      {
+        fireRedirect: true,
+        redirection: `/challenges/${json_id}`
+      },
+      () => this.props.fetchChallenges()
+    );
   };
 
   clickWaiver = () => {
