@@ -1,7 +1,7 @@
 import React from "react";
 import { Form } from "semantic-ui-react";
 // const url = "http://inertia-app.herokuapp.com/api/v1/";
-const url = "http://localhost:3001/api/v1/";
+// const url = "http://localhost:3001/api/v1/";
 
 class Signup extends React.Component {
   constructor() {
@@ -29,7 +29,7 @@ class Signup extends React.Component {
         "http://donatered-asset.s3.amazonaws.com/assets/default/default_user-884fcb1a70325256218e78500533affb.jpg"
     });
     console.log(body);
-    fetch(`${url}users`, {
+    fetch(`${this.props.url}users`, {
       method: "POST",
       headers,
       body: JSON.stringify(body)
@@ -50,7 +50,7 @@ class Signup extends React.Component {
       "Content-Type": "application/json"
     };
     const body = this.state;
-    fetch(`${url}auth`, {
+    fetch(`${this.props.url}auth`, {
       method: "POST",
       headers,
       body: JSON.stringify(body)

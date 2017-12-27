@@ -2,7 +2,7 @@ import React from "react";
 import { Form } from "semantic-ui-react";
 
 // const url = "http://inertia-app.herokuapp.com/api/v1/";
-const url = "http://localhost:3001/api/v1/";
+// const url = "http://localhost:3001/api/v1/";
 
 class Login extends React.Component {
   constructor() {
@@ -26,7 +26,7 @@ class Login extends React.Component {
       "Content-Type": "application/json"
     };
     const body = this.state;
-    fetch(`${url}auth`, {
+    fetch(`${this.props.url}auth`, {
       method: "POST",
       headers,
       body: JSON.stringify(body)

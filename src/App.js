@@ -13,8 +13,8 @@ import ShowUser from "./components/showUser/ShowUser";
 import AllUsers from "./components/showUser/AllUsers";
 import Profile from "./components/profile/Profile";
 
-// const url = "http://inertia-app.herokuapp.com/api/v1/";
-const url = "http://localhost:3001/api/v1/";
+const url = "http://inertia-app.herokuapp.com/api/v1/";
+// const url = "http://localhost:3001/api/v1/";
 
 class App extends Component {
   state = {
@@ -143,14 +143,22 @@ class App extends Component {
             exact
             path="/login"
             render={props => (
-              <Login fetchUser={this.fetchUserInformation} {...props} />
+              <Login
+                url={url}
+                fetchUser={this.fetchUserInformation}
+                {...props}
+              />
             )}
           />
           <Route
             exact
             path="/signup"
             render={props => (
-              <Signup fetchUser={this.fetchUserInformation} {...props} />
+              <Signup
+                url={url}
+                fetchUser={this.fetchUserInformation}
+                {...props}
+              />
             )}
           />
           <Route

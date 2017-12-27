@@ -59,7 +59,7 @@ class ChallengeContainer extends Component {
       }
     );
 
-    fetch(`http://localhost:3001/api/v1/user_challenges/${userChallenge.id}`, {
+    fetch(`${this.props.url}user_challenges/${userChallenge.id}`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
