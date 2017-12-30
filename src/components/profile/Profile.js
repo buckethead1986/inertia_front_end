@@ -19,6 +19,7 @@ class Profile extends React.Component {
 
   componentDidMount() {
     console.log("componentDidMount");
+    console.log(this.props);
     this.setState({
       thisUser: this.props.users.filter(user => {
         return user.id === this.props.id;

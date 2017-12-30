@@ -13,7 +13,7 @@ import ShowUser from "./components/showUser/ShowUser";
 import AllUsers from "./components/showUser/AllUsers";
 import Profile from "./components/profile/Profile";
 
-const url = "http://inertia-app.herokuapp.com/api/v1/";
+const url = "https://inertia-app.herokuapp.com/api/v1/";
 // const url = "http://localhost:3001/api/v1/";
 
 class App extends Component {
@@ -203,7 +203,11 @@ class App extends Component {
             exact
             path="/user"
             render={() => {
-              if (this.state.id !== 0 && this.state.challenges.length !== 0) {
+              if (
+                this.state.id !== 0 &&
+                this.state.challenges.length !== 0 &&
+                this.state.currUser.length !== 0
+              ) {
                 return (
                   <div>
                     <Profile

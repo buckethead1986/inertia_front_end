@@ -1,6 +1,6 @@
 import React from "react";
 import { Form } from "semantic-ui-react";
-// const url = "http://inertia-app.herokuapp.com/api/v1/";
+const url = "https://inertia-app.herokuapp.com/api/v1/";
 // const url = "http://localhost:3001/api/v1/";
 
 class Signup extends React.Component {
@@ -29,9 +29,9 @@ class Signup extends React.Component {
         "http://donatered-asset.s3.amazonaws.com/assets/default/default_user-884fcb1a70325256218e78500533affb.jpg"
     });
     console.log(body);
-    fetch(`${this.props.url}users`, {
+    fetch(`${url}users`, {
       method: "POST",
-      headers,
+      headers: headers,
       body: JSON.stringify(body)
     })
       .then(res => res.json())
@@ -50,9 +50,9 @@ class Signup extends React.Component {
       "Content-Type": "application/json"
     };
     const body = this.state;
-    fetch(`${this.props.url}auth`, {
+    fetch(`${url}auth`, {
       method: "POST",
-      headers,
+      headers: headers,
       body: JSON.stringify(body)
     })
       .then(res => res.json())

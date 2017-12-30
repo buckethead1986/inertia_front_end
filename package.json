@@ -1,6 +1,9 @@
 {
   "name": "inertia",
   "version": "0.1.0",
+  "engines": {
+    "node": "6.11.2"
+  },
   "private": true,
   "homepage": "https://buckethead1986.github.io/inertia_front_end",
   "dependencies": {
