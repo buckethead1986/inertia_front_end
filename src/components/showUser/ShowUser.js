@@ -19,6 +19,7 @@ class User extends React.Component {
       return user.id.toString() === this.props.location.pathname.split("/")[2];
     })[0];
     let now = new Date().toISOString();
+    console.log(this.props.challenges);
     const mapped = this.props.challenges.map(challenge => {
       if (challenge.criteria < now) {
         challenge["completed"] = true;

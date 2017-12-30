@@ -63,7 +63,7 @@ class App extends Component {
   };
 
   fetchUserInformation = () => {
-    console.log("fetcUserInformation");
+    console.log("fetchUserInformation");
     fetch(`${url}users`)
       .then(res => res.json())
       .then(json =>
