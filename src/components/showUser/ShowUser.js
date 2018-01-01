@@ -25,10 +25,11 @@ class User extends React.Component {
         challenge["completed"] = true;
       }
       challenge.user_challenges.some(category => {
-        console.log(category, user);
+        console.log(category, user, challenge);
         if (category.user_id === user.id) {
           challenge["containsUser"] = true;
         }
+        console.log(challenge);
       });
     });
     this.updateChallenges(user);

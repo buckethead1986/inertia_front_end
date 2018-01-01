@@ -81,27 +81,24 @@ class Challenges extends React.Component {
     const userChallenges = this.state.challenges.filter(challenge => {
       return (
         challenge.hasOwnProperty("containsUser") &&
-        (!challenge.hasOwnProperty("completed") ||
-          challenge.completed === false)
+        challenge.completed === false
       );
     });
     const completedUserChallenges = this.state.challenges.filter(challenge => {
       return (
-        challenge.hasOwnProperty("containsUser") &&
-        (challenge.hasOwnProperty("completed") || challenge.completed === true)
+        challenge.hasOwnProperty("containsUser") && challenge.completed === true
       );
     });
     const otherChallenges = this.state.challenges.filter(challenge => {
       return (
         !challenge.hasOwnProperty("containsUser") &&
-        (!challenge.hasOwnProperty("completed") ||
-          challenge.completed === false)
+        challenge.completed === false
       );
     });
     const otherCompletedChallenges = this.state.challenges.filter(challenge => {
       return (
         !challenge.hasOwnProperty("containsUser") &&
-        (challenge.hasOwnProperty("completed") || challenge.completed === true)
+        challenge.completed === true
       );
     });
     this.setState({

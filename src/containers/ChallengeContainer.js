@@ -88,6 +88,7 @@ class ChallengeContainer extends Component {
             handleVote={this.handleVote}
             deadlineOver={this.deadlineOver}
             completed={this.state.completed}
+            url={this.props.url}
           />
         ) : (
           ""

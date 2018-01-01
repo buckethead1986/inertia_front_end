@@ -16,7 +16,7 @@ class CommentsContainer extends Component {
   }
 
   fetchComments = () => {
-    fetch("http://localhost:3001/api/v1/comments")
+    fetch(`${this.props.url}comments`)
       .then(res => res.json())
       .then(json => this.getCommentsForChallenge(json));
   };
@@ -33,10 +33,10 @@ class CommentsContainer extends Component {
   postComment = () => {
     const body = {
       content: this.state.commentValue,
-      user_id: this.props.currentUser.id,
+      user_id: this.props.currUser[0].id,
       challenge_id: this.props.challengeNumber
     };
-    fetch("http://localhost:3001/api/v1/comments", {
+    fetch(`${this.props.url}comments`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
@@ -64,12 +64,14 @@ class CommentsContainer extends Component {
   };
 
   render() {
+    console.log(this.state);
+    console.log(this.props);
     return (
       <div style={{ margin: "40px", paddingTop: "0px" }}>
         <Comment.Group>
-          {this.state.comments.map(comment => {
+          {this.state.comments.map((comment, index) => {
             return (
-              <Comment>
+              <Comment key={index}>
                 <Comment.Content>
                   <Comment.Author>{comment.user.username}</Comment.Author>
                   <Comment.Text>

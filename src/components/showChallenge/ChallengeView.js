@@ -8,7 +8,11 @@ const ChallengeView = props => {
   return (
     <div>
       <Segment disabled={props.completed}>
-        <Header centered as="h4" textAlign="center">
+        <Header
+          // centered
+          as="h4"
+          textAlign="center"
+        >
           <Timer
             deadline={props.challenge.deadline}
             createdAt={props.challenge.createdAt}
@@ -16,12 +20,23 @@ const ChallengeView = props => {
           />
         </Header>
         {props.completed ? (
-          <Header centered as="h2" icon disabled textAlign="center">
+          <Header
+            // centered
+            as="h2"
+            icon
+            disabled
+            textAlign="center"
+          >
             <Icon name="trophy" circular />
             {props.challenge ? props.challenge.name : ""}
           </Header>
         ) : (
-          <Header centered as="h2" icon textAlign="center">
+          <Header
+            // centered
+            as="h2"
+            icon
+            textAlign="center"
+          >
             <Icon name="trophy" circular />
             {props.challenge ? props.challenge.name : ""}
           </Header>
@@ -30,7 +45,8 @@ const ChallengeView = props => {
           <Header
             disabled
             style={{ padding: "0px" }}
-            centered
+            // centered
+
             as="h4"
             textAlign="center"
           >
@@ -39,14 +55,20 @@ const ChallengeView = props => {
         ) : (
           <Header
             style={{ padding: "0px" }}
-            centered
+            // centered
+
             as="h4"
             textAlign="center"
           >
             {props.challenge ? props.challenge.description : ""}
           </Header>
         )}
-        <Header style={{ padding: "0px" }} centered as="h4" textAlign="center">
+        <Header
+          style={{ padding: "0px" }}
+          // centered
+          as="h4"
+          textAlign="center"
+        >
           {props.challenge.voter
             ? props.voted
               ? `You voted for Team ${props.challenge.voter.team}`
@@ -65,7 +87,8 @@ const ChallengeView = props => {
       </Segment>
       <CommentsContainer
         challengeNumber={props.challenge.challengeNumber}
-        currentUser={props.currentUser}
+        currUser={props.currUser}
+        url={props.url}
       />
     </div>
   );
