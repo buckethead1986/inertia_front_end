@@ -310,6 +310,8 @@ class ChallengeForm extends React.Component {
   };
 
   handleChange = e => {
+    console.log(e.target);
+    debugger;
     this.setState({
       [e.target.name]: e.target.value
     });

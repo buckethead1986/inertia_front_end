@@ -96,6 +96,7 @@ class App extends Component {
   };
 
   fetchChallenges = () => {
+    console.log("fetchChallenges");
     fetch(`${url}challenges`)
       .then(res => res.json())
       .then(json =>
@@ -184,7 +185,11 @@ class App extends Component {
             exact
             path="/challenges"
             render={() => {
-              if (this.state.currUser.length !== 0 && this.state.id !== 0) {
+              if (
+                this.state.currUser.length !== 0 &&
+                this.state.id !== 0 &&
+                this.state.challenges.length !== 0
+              ) {
                 return (
                   <div>
                     <Challenges

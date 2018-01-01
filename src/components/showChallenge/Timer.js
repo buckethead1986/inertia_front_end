@@ -7,7 +7,8 @@ class Timer extends React.Component {
 
     this.state = {
       timeLeft: {},
-      completed: false
+      completed: false,
+      text: ""
     };
   }
 
@@ -60,6 +61,9 @@ class Timer extends React.Component {
   };
 
   handleHover = () => {
+    this.setState({
+      text: this.state.timeLeft.days
+    });
     console.log(this.state.timeLeft.days);
   };
 

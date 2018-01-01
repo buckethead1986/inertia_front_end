@@ -19,27 +19,17 @@ class Challenges extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`${this.props.url}challenges`)
-      .then(res => res.json())
-      .then(json =>
-        this.setState(
-          {
-            challenges: json
-          },
-          () => this.filterChallenges(json)
-        )
-      );
+    this.filterChallenges(this.props.challenges);
   }
 
   //adds key of 'completed:true' if the criteria date has been passed, and 'containsUser:true' if the current user participated in the challenge.
   //used for filtering challenges (this users, challenges this user has completed)
-  filterChallenges = json => {
+  filterChallenges = challenges => {
     //the time right now
     let now = new Date().toISOString();
     //check challenge.criteria for deadline, and challenge.user_challenges.user_id === current user id.
-    json.map(challenge => {
+    challenges.map(challenge => {
       if (challenge.criteria < now && challenge.completed !== true) {
-        challenge["completed"] = true;
         this.completeChallenge(challenge.id);
       }
       return challenge.user_challenges.some(category => {
@@ -50,7 +40,7 @@ class Challenges extends React.Component {
     });
     this.setState(
       {
-        challenges: json
+        challenges: challenges
       },
       () => {
         this.updateChallenges();
@@ -109,27 +99,11 @@ class Challenges extends React.Component {
     });
   };
 
-  showUserChallenges = e => {
-    this.setState(prevState => {
-      return { showUserChallenges: !prevState.showUserChallenges };
-    });
-  };
-  showCompletedUserChallenges = e => {
+  handleChange = e => {
+    e.persist();
     this.setState(prevState => {
       return {
-        showCompletedUserChallenges: !prevState.showCompletedUserChallenges
-      };
-    });
-  };
-  showOtherChallenges = e => {
-    this.setState(prevState => {
-      return { showOtherChallenges: !prevState.showOtherChallenges };
-    });
-  };
-  showOtherCompletedChallenges = e => {
-    this.setState(prevState => {
-      return {
-        showOtherCompletedChallenges: !prevState.showOtherCompletedChallenges
+        [e.target.title]: !prevState[e.target.title]
       };
     });
   };
@@ -187,7 +161,7 @@ class Challenges extends React.Component {
           {this.state.showUserChallenges ? (
             <Grid.Column width={4}>
               <div>
-                <h3 onClick={this.showUserChallenges}>
+                <h3 onClick={this.handleChange} title="showUserChallenges">
                   Your Current Challenges
                 </h3>
                 {UserChallenges}
@@ -195,13 +169,18 @@ class Challenges extends React.Component {
             </Grid.Column>
           ) : (
             <Grid.Column width={4}>
-              <h3 onClick={this.showUserChallenges}>Your Current Challenges</h3>
+              <h3 onClick={this.handleChange} title="showUserChallenges">
+                Your Current Challenges
+              </h3>
             </Grid.Column>
           )}
           {this.state.showCompletedUserChallenges ? (
             <Grid.Column width={4}>
               <div>
-                <h3 onClick={this.showCompletedUserChallenges}>
+                <h3
+                  onClick={this.handleChange}
+                  title="showCompletedUserChallenges"
+                >
                   Your Completed Challenges
                 </h3>
                 {CompletedUserChallenges}
@@ -209,7 +188,10 @@ class Challenges extends React.Component {
             </Grid.Column>
           ) : (
             <Grid.Column width={4}>
-              <h3 onClick={this.showCompletedUserChallenges}>
+              <h3
+                onClick={this.handleChange}
+                title="showCompletedUserChallenges"
+              >
                 Your Completed Challenges
               </h3>
             </Grid.Column>
@@ -217,19 +199,26 @@ class Challenges extends React.Component {
           {this.state.showOtherChallenges ? (
             <Grid.Column width={4}>
               <div>
-                <h3 onClick={this.showOtherChallenges}>Other Challenges</h3>
+                <h3 onClick={this.handleChange} title="showOtherChallenges">
+                  Other Challenges
+                </h3>
                 {OtherChallenges}
               </div>
             </Grid.Column>
           ) : (
             <Grid.Column width={4}>
-              <h3 onClick={this.showOtherChallenges}>Other Challenges</h3>
+              <h3 onClick={this.handleChange} title="showOtherChallenges">
+                Other Challenges
+              </h3>
             </Grid.Column>
           )}
           {this.state.showOtherCompletedChallenges ? (
             <Grid.Column width={4}>
               <div>
-                <h3 onClick={this.showOtherCompletedChallenges}>
+                <h3
+                  onClick={this.handleChange}
+                  title="showOtherCompletedChallenges"
+                >
                   Other Completed Challenges
                 </h3>
                 {OtherCompletedChallenges}
@@ -237,7 +226,10 @@ class Challenges extends React.Component {
             </Grid.Column>
           ) : (
             <Grid.Column width={4}>
-              <h3 onClick={this.showOtherCompletedChallenges}>
+              <h3
+                onClick={this.handleChange}
+                title="showOtherCompletedChallenges"
+              >
                 Other Completed Challenges
               </h3>
             </Grid.Column>

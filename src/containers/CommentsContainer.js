@@ -64,8 +64,6 @@ class CommentsContainer extends Component {
   };
 
   render() {
-    console.log(this.state);
-    console.log(this.props);
     return (
       <div style={{ margin: "40px", paddingTop: "0px" }}>
         <Comment.Group>

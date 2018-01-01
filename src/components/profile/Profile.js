@@ -19,7 +19,6 @@ class Profile extends React.Component {
 
   componentDidMount() {
     console.log("componentDidMount");
-    console.log(this.props);
     this.setState({
       thisUser: this.props.users.filter(user => {
         return user.id === this.props.id;
@@ -27,9 +26,6 @@ class Profile extends React.Component {
     });
     let now = new Date().toISOString();
     const mapped = this.props.challenges.map(challenge => {
-      if (challenge.criteria < now) {
-        challenge["completed"] = true;
-      }
       challenge.user_challenges.some(category => {
         if (category.user_id === this.props.currUser[0].id) {
           challenge["containsUser"] = true;
@@ -40,8 +36,6 @@ class Profile extends React.Component {
   }
 
   updateChallenges = () => {
-    console.log(this.state);
-    console.log(this.props);
     const userChallenges = this.props.challenges.filter(challenge => {
       return (
         !(challenge.completed === true) &&
