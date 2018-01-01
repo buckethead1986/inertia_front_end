@@ -64,7 +64,6 @@ class Timer extends React.Component {
     this.setState({
       text: this.state.timeLeft.days
     });
-    console.log(this.state.timeLeft.days);
   };
 
   render() {

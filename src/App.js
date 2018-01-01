@@ -173,6 +173,7 @@ class App extends Component {
                       url={url}
                       currUser={this.state.currUser}
                       fetchChallenges={this.fetchChallenges}
+                      fetchUserInformation={this.fetchUserInformation}
                     />
                   </div>
                 );

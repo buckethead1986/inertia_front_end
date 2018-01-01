@@ -103,7 +103,7 @@ class ChallengeForm extends React.Component {
 
   //posts challenge data to API upon form submit
   postChallengeData = e => {
-    if (this.state.waiverClicked === true) {
+    if (this.state.waiverClicked === true && this.state.challengeType !== "") {
       const headers = {
         Accept: "application/json",
         "Content-Type": "application/json"
@@ -150,6 +150,7 @@ class ChallengeForm extends React.Component {
     this.submitForm(json_id);
   };
 
+  //Stretch Goal, multiple challenges types.
   changeChallengeType = (e, data) => {
     if (data.value === "deadline") {
       this.setState({
@@ -310,8 +311,6 @@ class ChallengeForm extends React.Component {
   };
 
   handleChange = e => {
-    console.log(e.target);
-    debugger;
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -323,7 +322,8 @@ class ChallengeForm extends React.Component {
         fireRedirect: true,
         redirection: `/challenges/${json_id}`
       },
-      () => this.props.fetchChallenges()
+      () => this.props.fetchChallenges(),
+      this.props.fetchUserInformation()
     );
   };
 

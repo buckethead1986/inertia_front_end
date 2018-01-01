@@ -23,6 +23,7 @@ class ChallengeView extends React.Component {
   }
 
   formatTime = () => {
+    const now = new Date().toISOString();
     const deadline = this.props.challenge.deadline
       .toString()
       .split(" ")[0]
@@ -39,8 +40,11 @@ class ChallengeView extends React.Component {
     if (deadlineTime[0] === "00") {
       deadlineTime[0] = "12";
     }
-    const deadlineResult = `Challenge ends at ${deadlineTime[0]}:${deadlineTime[1]} ${deadline[7]} on ${deadlineDate[1]}/${deadlineDate[2]}/${deadlineDate[0]}`;
-    return deadlineResult;
+    if (now < deadline) {
+      return `Challenge ends at ${deadlineTime[0]}:${deadlineTime[1]} ${deadline[7]} on ${deadlineDate[1]}/${deadlineDate[2]}/${deadlineDate[0]}`;
+    } else {
+      return `Challenge ended at ${deadlineTime[0]}:${deadlineTime[1]} ${deadline[7]} on ${deadlineDate[1]}/${deadlineDate[2]}/${deadlineDate[0]}`;
+    }
   };
 
   render() {

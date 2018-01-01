@@ -24,8 +24,6 @@ class User extends React.Component {
       return user.id.toString() === this.props.location.pathname.split("/")[2];
     })[0];
     const mapped = this.props.challenges.filter(challenge => {
-      challenge["containsUser"] = false;
-      console.log(challenge);
       return challenge.user_challenges.some(category => {
         console.log(category, user, challenge);
         return category.user_id === user.id;

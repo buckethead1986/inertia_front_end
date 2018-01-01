@@ -9,7 +9,7 @@ class Profile extends React.Component {
     this.state = {
       image_url: "",
       tagline: "",
-      thisUser: {},
+      user: {},
       userChallenges: [],
       completedUserChallenges: [],
       showUserChallenges: true,
@@ -19,36 +19,40 @@ class Profile extends React.Component {
 
   componentDidMount() {
     console.log("componentDidMount");
-    this.setState({
-      thisUser: this.props.users.filter(user => {
-        return user.id === this.props.id;
-      })
-    });
-    let now = new Date().toISOString();
-    const mapped = this.props.challenges.map(challenge => {
-      challenge.user_challenges.some(category => {
-        if (category.user_id === this.props.currUser[0].id) {
-          challenge["containsUser"] = true;
-        }
-      });
-    });
+    // this.setState({
+    //   user: this.props.users.filter(user => {
+    //     return user.id === this.props.id;
+    //   })
+    // });
+
+    // const mapped = this.props.challenges.map(challenge => {
+    //   challenge.user_challenges.some(category => {
+    //     if (category.user_id === this.props.currUser[0].id) {
+    //       challenge["containsUser"] = true;
+    //     }
+    //   });
+    // });
     this.updateChallenges();
   }
 
   updateChallenges = () => {
-    const userChallenges = this.props.challenges.filter(challenge => {
-      return (
-        !(challenge.completed === true) &&
-        challenge.hasOwnProperty("containsUser")
-      );
+    const user = this.props.users.filter(user => {
+      return user.id === this.props.id;
     });
-    const completedUserChallenges = this.props.challenges.filter(challenge => {
-      return (
-        challenge.completed === true && challenge.hasOwnProperty("containsUser")
-      );
+    const mapped = this.props.challenges.filter(challenge => {
+      return challenge.user_challenges.some(category => {
+        return category.user_id === user[0].id;
+      });
+    });
+    const userChallenges = mapped.filter(challenge => {
+      return challenge.completed !== true;
+    });
+    const completedUserChallenges = mapped.filter(challenge => {
+      return challenge.completed === true;
     });
     this.setState(
       {
+        user,
         userChallenges,
         completedUserChallenges
       },
@@ -78,7 +82,7 @@ class Profile extends React.Component {
       image_url: this.state.image_url
     };
 
-    fetch(`${this.props.url}users/${this.state.thisUser[0].id}`, {
+    fetch(`${this.props.url}users/${this.state.user[0].id}`, {
       method: "PATCH",
       headers: headers,
       body: JSON.stringify(body)
@@ -96,7 +100,7 @@ class Profile extends React.Component {
       tagline: this.state.tagline
     };
 
-    fetch(`${this.props.url}users/${this.state.thisUser[0].id}`, {
+    fetch(`${this.props.url}users/${this.state.user[0].id}`, {
       method: "PATCH",
       headers: headers,
       body: JSON.stringify(body)
@@ -112,10 +116,11 @@ class Profile extends React.Component {
   };
 
   render() {
+    console.log(this.state.user);
     const UserChallenges = this.state.userChallenges.map((challenge, id) => {
       return (
         <ChallengeCard
-          thisUser={this.state.thisUser.id}
+          user={this.state.user[0].id}
           color="blue"
           key={challenge.id}
           challenge={challenge}
@@ -126,7 +131,7 @@ class Profile extends React.Component {
       (challenge, id) => {
         return (
           <ChallengeCard
-            thisUser={this.state.thisUser.id}
+            user={this.state.user[0].id}
             color="green"
             key={challenge.id}
             challenge={challenge}
@@ -134,12 +139,12 @@ class Profile extends React.Component {
         );
       }
     );
-    return this.state.thisUser[0] !== undefined ? (
+    return this.state.user[0] !== undefined ? (
       <div>
         <Grid>
           <Grid.Row>
             <Grid.Column width={4}>
-              <h2>{this.state.thisUser[0].username}</h2>
+              <h2>{this.state.user[0].username}</h2>
               {this.state.tagline !== "" ? (
                 <div>
                   <h3>Tagline: {this.state.tagline}</h3>
@@ -153,7 +158,7 @@ class Profile extends React.Component {
                 </div>
               ) : (
                 <div>
-                  <h3>Tagline: {this.state.thisUser[0].tagline}</h3>
+                  <h3>Tagline: {this.state.user[0].tagline}</h3>
                   <Form onSubmit={this.addTagline}>
                     <Form.Field onChange={this.handleChange}>
                       <label>Change Tagline</label>
@@ -163,8 +168,8 @@ class Profile extends React.Component {
                   </Form>
                 </div>
               )}
-              {this.state.thisUser[0].image_url === null ||
-              this.state.thisUser[0].image_url === "" ? (
+              {this.state.user[0].image_url === null ||
+              this.state.user[0].image_url === "" ? (
                 <div>
                   <Image
                     centered
@@ -191,7 +196,7 @@ class Profile extends React.Component {
                 </div>
               ) : (
                 <div>
-                  <Image centered src={this.state.thisUser[0].image_url} />
+                  <Image centered src={this.state.user[0].image_url} />
                   <Form onSubmit={this.addImage}>
                     <Form.Field onChange={this.handleChange}>
                       <label>New Image Url</label>
