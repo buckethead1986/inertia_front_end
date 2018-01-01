@@ -40,7 +40,7 @@ class Challenges extends React.Component {
     json.map(challenge => {
       if (challenge.criteria < now && challenge.completed !== true) {
         challenge["completed"] = true;
-        this.completeChallenge();
+        this.completeChallenge(challenge.id);
       }
       return challenge.user_challenges.some(category => {
         if (category.user_id === this.props.currUser[0].id) {
@@ -58,7 +58,7 @@ class Challenges extends React.Component {
     );
   };
 
-  completeChallenge = () => {
+  completeChallenge = id => {
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json"
@@ -66,7 +66,7 @@ class Challenges extends React.Component {
     const body = {
       completed: true
     };
-    fetch(`${this.props.url}challenges`, {
+    fetch(`${this.props.url}challenges/${id}`, {
       method: "PATCH",
       headers: headers,
       body: JSON.stringify(body)

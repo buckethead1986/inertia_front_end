@@ -81,8 +81,7 @@ class Profile extends React.Component {
       "Content-Type": "application/json"
     };
     const body = {
-      image_url: this.state.image_url,
-      tagline: this.state.thisUser[0].tagline
+      image_url: this.state.image_url
     };
 
     fetch(`${this.props.url}users/${this.state.thisUser[0].id}`, {
@@ -100,7 +99,6 @@ class Profile extends React.Component {
       "Content-Type": "application/json"
     };
     const body = {
-      image_url: this.state.thisUser[0].image_url,
       tagline: this.state.tagline
     };
 

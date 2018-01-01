@@ -15,39 +15,27 @@ class User extends React.Component {
   }
 
   componentDidMount() {
-    const user = this.props.users.filter(user => {
-      return user.id.toString() === this.props.location.pathname.split("/")[2];
-    })[0];
-    let now = new Date().toISOString();
-    console.log(this.props.challenges);
-    const mapped = this.props.challenges.map(challenge => {
-      if (challenge.criteria < now) {
-        challenge["completed"] = true;
-      }
-      challenge.user_challenges.some(category => {
-        console.log(category, user, challenge);
-        if (category.user_id === user.id) {
-          challenge["containsUser"] = true;
-        }
-        console.log(challenge);
-      });
-    });
-    this.updateChallenges(user);
+    this.updateChallenges();
   }
 
   //checks if current user participated in a challenge, if the challenge is completed, and updates state of those categories.
-  updateChallenges = user => {
-    const userChallenges = this.props.challenges.filter(challenge => {
+  updateChallenges = () => {
+    const user = this.props.users.filter(user => {
+      return user.id.toString() === this.props.location.pathname.split("/")[2];
+    })[0];
+    const mapped = this.props.challenges.filter(challenge => {
+      challenge["containsUser"] = false;
       console.log(challenge);
-      return (
-        !(challenge.completed === true) &&
-        challenge.hasOwnProperty("containsUser")
-      );
+      return challenge.user_challenges.some(category => {
+        console.log(category, user, challenge);
+        return category.user_id === user.id;
+      });
     });
-    const completedUserChallenges = this.props.challenges.filter(challenge => {
-      return (
-        challenge.completed === true && challenge.hasOwnProperty("containsUser")
-      );
+    const userChallenges = mapped.filter(challenge => {
+      return challenge.completed !== true;
+    });
+    const completedUserChallenges = mapped.filter(challenge => {
+      return challenge.completed === true;
     });
     this.setState(
       {
