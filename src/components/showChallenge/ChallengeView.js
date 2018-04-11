@@ -48,14 +48,11 @@ class ChallengeView extends React.Component {
   };
 
   render() {
+    console.log(this.props);
     return (
       <div>
         <Segment disabled={this.props.completed}>
-          <Header
-            // centered
-            as="h4"
-            textAlign="center"
-          >
+          <Header as="h4" textAlign="center">
             <ReactHover options={options}>
               <ReactHover.Trigger type="trigger">
                 <Timer
@@ -70,23 +67,12 @@ class ChallengeView extends React.Component {
             </ReactHover>
           </Header>
           {this.props.completed ? (
-            <Header
-              // centered
-              as="h2"
-              icon
-              disabled
-              textAlign="center"
-            >
+            <Header as="h2" icon disabled textAlign="center">
               <Icon name="trophy" circular />
               {this.props.challenge ? this.props.challenge.name : ""}
             </Header>
           ) : (
-            <Header
-              // centered
-              as="h2"
-              icon
-              textAlign="center"
-            >
+            <Header as="h2" icon textAlign="center">
               <Icon name="trophy" circular />
               {this.props.challenge ? this.props.challenge.name : ""}
             </Header>
@@ -95,30 +81,17 @@ class ChallengeView extends React.Component {
             <Header
               disabled
               style={{ padding: "0px" }}
-              // centered
-
               as="h4"
               textAlign="center"
             >
               {this.props.challenge ? this.props.challenge.description : ""}
             </Header>
           ) : (
-            <Header
-              style={{ padding: "0px" }}
-              // centered
-
-              as="h4"
-              textAlign="center"
-            >
+            <Header style={{ padding: "0px" }} as="h4" textAlign="center">
               {this.props.challenge ? this.props.challenge.description : ""}
             </Header>
           )}
-          <Header
-            style={{ padding: "0px" }}
-            // centered
-            as="h4"
-            textAlign="center"
-          >
+          <Header style={{ padding: "0px" }} as="h4" textAlign="center">
             {this.props.challenge.voter
               ? this.props.voted
                 ? `You voted for Team ${this.props.challenge.voter.team}`
