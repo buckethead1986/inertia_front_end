@@ -9,7 +9,7 @@ const styles = {
   fontSize: "20px"
 };
 
-class Login extends React.Component {
+class Signup extends React.Component {
   constructor() {
     super();
 
@@ -30,10 +30,34 @@ class Login extends React.Component {
       Accept: "application/json",
       "Content-Type": "application/json"
     };
+    const body = Object.assign({}, this.state, {
+      image_url:
+        "http://donatered-asset.s3.amazonaws.com/assets/default/default_user-884fcb1a70325256218e78500533affb.jpg"
+    });
+    fetch(`${this.props.url}users`, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(body)
+    })
+      .then(res => res.json())
+      .then(json => {
+        if (!json.error) {
+          localStorage.setItem("token", json.jwt);
+          this.props.history.push("/challenges");
+        }
+      })
+      .then(this.handleSubmitted);
+  };
+
+  handleSubmitted = () => {
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
     const body = this.state;
     fetch(`${this.props.url}auth`, {
       method: "POST",
-      headers,
+      headers: headers,
       body: JSON.stringify(body)
     })
       .then(res => res.json())
@@ -74,7 +98,7 @@ class Login extends React.Component {
             </Grid.Column>
             <Grid.Column width={2} />
             <Grid.Column width={5}>
-              <h2>Log in</h2>
+              <h2>Signup</h2>
               <Form onSubmit={this.handleSubmit}>
                 <Form.Group widths="12">
                   <Form.Input
@@ -102,4 +126,4 @@ class Login extends React.Component {
     );
   }
 }
-export default Login;
+export default Signup;

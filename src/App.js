@@ -5,7 +5,7 @@ import "./date_time.css";
 import ChallengeContainer from "./containers/ChallengeContainer";
 import ChallengeForm from "./components/createChallenge/ChallengeForm";
 import Navbar from "./components/navbar/Navbar";
-import Signup from "./components/createUser/Signup";
+import Signup from "./components/signupUser/Signup";
 import Login from "./components/loginUser/Login";
 import Challenges from "./components/challengeIndex/Challenges";
 import LoginNavbar from "./components/navbar/LoginNavbar";
