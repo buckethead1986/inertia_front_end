@@ -14,7 +14,7 @@ import {
 } from "semantic-ui-react";
 const options = [
   { key: 1, text: "Deadline", value: "deadline" }
-  // { key: 2, text: "Not Deadline", value: "not deadline" }
+  // { key: 2, text: "First to reach an amount", value: "amount" }
 ];
 const team_options = [
   { text: "Spectator", value: 3 },
@@ -54,6 +54,7 @@ class ChallengeForm extends React.Component {
       );
   }
 
+  //Reformats date to be human readable.
   formatTime = () => {
     if (this.state.challengeDeadline !== undefined) {
       const deadline = this.state.challengeDeadline.toString().split(" ");
@@ -129,6 +130,7 @@ class ChallengeForm extends React.Component {
     }
   };
 
+  //post challenge participants to API upon challenge submission
   postParticipantData = json => {
     const json_id = json.id;
     const headers = {
@@ -165,6 +167,7 @@ class ChallengeForm extends React.Component {
     }
   };
 
+  //Updates dropdown text values to equal unique team names that the challenge creator chooses
   updateDropdownTeamA = team => {
     team_options[1].text = this.state.teamAName;
   };
@@ -173,12 +176,13 @@ class ChallengeForm extends React.Component {
     team_options[2].text = this.state.teamBName;
   };
 
+  //updates team names, modifies them to prevent duplicate names, and a few easter eggs.
   changeTeamAName = e => {
     switch (e.target.value) {
       case "Spectators":
         this.setState(
           {
-            teamAName: "Spectaturds"
+            teamAName: "Cranberry Cheesecake"
           },
           () => this.updateDropdownTeamA()
         );
@@ -292,30 +296,42 @@ class ChallengeForm extends React.Component {
     }
   };
 
+  //updates state when challenge deadline is changed
   changeChallengeDeadline = data => {
     this.setState({
       challengeDeadline: data._d
     });
   };
 
+  //updates state when the user selection dropdown value changes
   changeUser = (e, data) => {
     this.setState({
       currentSelectedUser: data.value
     });
   };
 
+  //updates state when the team dropdown value changes
   changeTeam = (e, data) => {
     this.setState({
       currentSelectedTeam: data.value
     });
   };
 
+  //generic state update for challengeName and challengeDescription
   handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
   };
 
+  //update state when 'waiver' is clicked
+  clickWaiver = () => {
+    this.setState(prevState => {
+      return { waiverClicked: !prevState.waiverClicked };
+    });
+  };
+
+  //submits form, called from postParticipantData, updates challenges and users props (passed from App.js)
   submitForm = json_id => {
     this.setState(
       {
@@ -327,12 +343,8 @@ class ChallengeForm extends React.Component {
     );
   };
 
-  clickWaiver = () => {
-    this.setState(prevState => {
-      return { waiverClicked: !prevState.waiverClicked };
-    });
-  };
-
+  //large form, fields for challengeType, challengeDeadline, challengeName, two team names, challengeDescription. Dropdown selections for adding participants
+  //to the challenge on specific teams, and a section where the information supplied  is displayed as it is entered.
   render() {
     return (
       <div>

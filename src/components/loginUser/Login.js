@@ -43,7 +43,22 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{ align: "center" }}>
+        <p style={{ ...styles, fontSize: 24, textAlign: "center" }}>
+          Welcome to Inertial!
+        </p>
+        <p />
+        <p style={styles}>
+          Inertial is a friendly challenge tracking and event planning
+          application. Challenge your friends to fun contests, plan events, and
+          chat about the upcoming event!
+        </p>
+        <p />
+        <p style={styles}>
+          Create new challenges or events, add members to teams or just spectate
+          if they don't need a role, set a deadline, and allow event
+          participants to vote on the outcome and chat with each other
+        </p>
         <h2>Log in</h2>
         <Form onSubmit={this.handleSubmit}>
           <Form.Group widths="12">
