@@ -1,5 +1,7 @@
 ## Overview
 
+Find the application at https://inertial.herokuapp.com
+
 Inertia is a front-end React application that allows users to challenge each
 other to complete certain tasks. The teams can be made up of individuals or
 groups and the winning group is decided by a group of spectators who watch and
